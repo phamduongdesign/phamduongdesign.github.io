@@ -94,6 +94,11 @@ h1 em { font-family:Georgia,serif; font-weight:400; letter-spacing:-.04em; }
 .project:hover .project-name, .project:focus-visible .project-name { color:var(--site-accent); }
 .project:hover .project-type, .project:hover .project-year, .project:focus-visible .project-type, .project:focus-visible .project-year { color:#4f4b45; }
 .project[hidden] { display:none; }
+.gallery[hidden], .filter[hidden] { display:none; }
+/* Trang chủ: mỗi ô là ảnh bìa chung của một nhóm (jobs). Số cột do JS đặt qua --gcols (4 nhóm => 2x2, 3 nhóm => 3 cột). */
+.gallery.groups { grid-template-columns:repeat(var(--gcols,3),minmax(0,1fr)); }
+.groups .art { aspect-ratio:3 / 2; }
+@media (max-width:900px) { .gallery.groups { grid-template-columns:repeat(2,minmax(0,1fr)); } }
 .art { aspect-ratio: 16 / 9; width:100%; max-height: 520px; border-radius:calc(8px * var(--site-radius-scale)); overflow:hidden; position:relative; background:#e5e0d5; isolation:isolate; line-height:0; font-size:0; transition:transform .45s cubic-bezier(.2,.7,.2,1); }
 .project:hover .art { transform:translateY(-4px); }
 .art svg { display:block; width:100%; height:100%; }
@@ -417,9 +422,10 @@ Ho Chi Minh City, VN</span></div>
       <div class="section-head">
         <div><div class="section-title">Selected work <span id="project-count">/ 06</span></div><div class="section-sub">A selection of visual stories and design systems.</div></div>
         <div class="filters" role="group" aria-label="Filter projects">
-          <button class="filter active" data-filter="All">All work</button><button class="filter" data-filter="Editorial">Editorial</button><button class="filter" data-filter="Identity">Identity</button><button class="filter" data-filter="Digital">Digital</button><button class="filter" data-filter="Print">Print</button>
+          <button class="filter active" data-filter="All">All work</button><button class="filter" data-filter="Editorial">Editorial</button><button class="filter" data-filter="Identity">Identity</button><button class="filter" data-filter="Digital">Digital</button><button class="filter" data-filter="Print">Print</button><button class="filter" data-filter="Other" hidden>Other</button>
         </div>
       </div>
+      <div class="gallery groups" id="groups" hidden></div>
       <div class="gallery" id="gallery">
         <article class="project" tabindex="0" role="button" data-category="Editorial" data-title="Tide / Seafood Journal" data-type="Editorial design · Magazine cover" data-description="An editorial direction exploring the relationship between coastal life, sustainable aquaculture and contemporary Vietnamese seafood culture. Replace this concept artwork with your finished cover and real-world mockups.">
           <div class="art wide"><svg viewBox="0 0 700 560" xmlns="http://www.w3.org/2000/svg"><rect width="700" height="560" fill="#e5dfd1"/><rect x="44" y="38" width="612" height="484" fill="#f3eee2"/><path d="M44 348 C150 295 225 385 338 326 S530 300 656 356 V522 H44Z" fill="#6b817b"/><path d="M44 408 C190 360 244 448 360 391 S540 372 656 424 V522 H44Z" fill="#243f3e"/><circle cx="478" cy="188" r="83" fill="#d2a15d"/><path d="M86 380 C164 342 223 345 278 371" fill="none" stroke="#f3eee2" stroke-width="3" opacity=".7"/><text x="78" y="91" font-size="14" letter-spacing="4" fill="#253b38">FIELD NOTES / 01</text><text x="76" y="164" font-family="Georgia,serif" font-size="73" fill="#263b37" letter-spacing="-4">TIDE</text><text x="80" y="194" font-size="12" letter-spacing="3" fill="#263b37">SEAFOOD JOURNAL</text><text x="80" y="470" font-size="11" letter-spacing="2" fill="#f3eee2">CULTURE · WATER · FUTURE</text><path d="M540 96 l28 -16 24 22 -20 26Z" fill="#263b37"/></svg></div>
@@ -994,19 +1000,58 @@ const count = document.getElementById('project-count');
 const homeSections = [...document.querySelectorAll('#home-hero, #work, #about, .contact')];
 const detailPage = document.getElementById('project-detail');
 let activeProjectIndex = 0;
-filters.forEach(button => button.addEventListener('click', () => {
-  filters.forEach(item => item.classList.toggle('active', item === button));
-  const category = button.dataset.filter;
+/* Selected work: mặc định chỉ hiện ảnh bìa chung của từng nhóm (jobs). Bấm vào ô nhóm, hoặc nút lọc cùng tên ở bên cạnh,
+   để xem đủ các dự án trong nhóm; bấm vào từng dự án để xem riêng. "All work" quay về các ô nhóm. */
+const FILTER_ALIASES = { Editorial:['editorial','e-magazine','magazine'], Identity:['identity','logo','brand'], Digital:['digital','web','social'], Print:['print','book','cover'] };
+const GROUP_ORDER = ['Editorial', 'Identity', 'Digital', 'Print', 'Other'];
+const projectMatches = (project, category) => {
+  const raw = String(project.dataset.category || '').toLowerCase();
+  if (category === 'All') return true;
+  if (category === 'Other') return !Object.values(FILTER_ALIASES).some(terms => terms.some(term => raw.includes(term)));
+  return (FILTER_ALIASES[category] || [category.toLowerCase()]).some(term => raw.includes(term));
+};
+function applyFilter(category, fromTile) {
+  filters.forEach(item => item.classList.toggle('active', item.dataset.filter === category));
+  const groupsBox = document.getElementById('groups'), galleryBox = document.getElementById('gallery');
   let visible = 0;
-  projects.forEach(project => {
-    const raw = String(project.dataset.category || '').toLowerCase();
-    const aliases = { Editorial:['editorial','e-magazine','magazine'], Identity:['identity','logo','brand'], Digital:['digital','web','social'], Print:['print','book','cover'] };
-    const show = category === 'All' || (aliases[category] || [category.toLowerCase()]).some(term => raw.includes(term));
-    project.hidden = !show;
-    if (show) visible++;
-  });
+  projects.forEach(project => { const show = projectMatches(project, category); project.hidden = !show; if (show) visible++; });
+  const groupMode = category === 'All' && groupsBox.children.length > 0;
+  groupsBox.hidden = !groupMode; galleryBox.hidden = groupMode;
   count.textContent = '/ ' + String(visible).padStart(2, '0');
-}));
+  if (fromTile) { const head = document.querySelector('#work .section-head'); if (head && head.getBoundingClientRect().top < 0) head.scrollIntoView({ behavior:'smooth', block:'start' }); }
+}
+function buildGroups() {
+  const box = document.getElementById('groups');
+  box.innerHTML = '';
+  let made = 0, hasOther = false;
+  GROUP_ORDER.forEach(name => {
+    const list = projects.filter(project => projectMatches(project, name));
+    if (!list.length) return;
+    made++; if (name === 'Other') hasOther = true;
+    const lead = list.find(project => project.querySelector('.art img')) || list[0]; // ảnh bìa chung = bìa của dự án đầu tiên trong nhóm
+    const leadImg = lead.querySelector('.art img');
+    const noun = list.length === 1 ? 'project' : 'projects';
+    const tile = document.createElement('article');
+    tile.className = 'project group-tile'; tile.tabIndex = 0; tile.setAttribute('role', 'button');
+    tile.setAttribute('aria-label', name + ' — ' + list.length + ' ' + noun);
+    const art = document.createElement('div'); art.className = 'art';
+    if (leadImg) { const im = document.createElement('img'); im.src = leadImg.src; im.alt = name; im.loading = 'lazy'; art.appendChild(im); }
+    const info = document.createElement('div'); info.className = 'project-info';
+    const text = document.createElement('div');
+    const nm = document.createElement('div'); nm.className = 'project-name'; nm.textContent = name;
+    const tp = document.createElement('div'); tp.className = 'project-type'; tp.textContent = list.length + ' ' + noun;
+    text.append(nm, tp); info.appendChild(text);
+    const link = document.createElement('div'); link.className = 'view-link'; link.append(document.createTextNode('View projects '));
+    const arrow = document.createElement('span'); arrow.className = 'project-arrow';
+    arrow.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>'; link.appendChild(arrow);
+    tile.append(art, info, link); box.appendChild(tile);
+    tile.addEventListener('click', () => applyFilter(name, true));
+    tile.addEventListener('keydown', event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); applyFilter(name, true); } });
+  });
+  box.style.setProperty('--gcols', made === 4 ? 2 : Math.min(Math.max(made, 1), 3));
+  const otherPill = document.querySelector('.filter[data-filter="Other"]'); if (otherPill) otherPill.hidden = !hasOther;
+}
+filters.forEach(button => button.addEventListener('click', () => applyFilter(button.dataset.filter)));
 const detailFields = { title:document.getElementById('detail-title'), category:document.getElementById('detail-category'), summary:document.getElementById('detail-summary'), discipline:document.getElementById('detail-discipline'), year:document.getElementById('detail-year'), art:document.getElementById('detail-art'), mockups:document.getElementById('detail-mockups') };
 function showHome() {
   homeSections.forEach(section => section.style.display = '');
@@ -1247,8 +1292,7 @@ async function loadHomepageProjects() {
     card.addEventListener('keydown', event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); openProject(card); } });
   });
   projects = [...gallery.querySelectorAll('.project')];
-  count.textContent = '/ ' + String(projects.length).padStart(2, '0');
-  filters.forEach(button => button.classList.toggle('active', button.dataset.filter === 'All'));
+  buildGroups(); applyFilter('All');
 }
 // Phóng to ảnh thư viện dự án: bấm vào ảnh để xem lớn, bấm ra ngoài (hoặc phím Esc) để quay lại
 (() => {
