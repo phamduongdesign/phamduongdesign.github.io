@@ -139,6 +139,16 @@ input[type=checkbox]{width:auto}
 .bp-nav button:disabled{opacity:.35}
 .bp-nav span{min-width:150px;text-align:center;font-size:12px}
 .bp-info{margin-top:10px;font-size:11.5px;line-height:1.6;color:var(--muted);text-align:center}
+
+/* Ảnh bìa chung của nhóm (hiện ở trang chủ, mục Selected work) */
+.group-cover-box{display:grid;grid-template-columns:minmax(200px,300px) 1fr;gap:24px;align-items:start}
+.group-cover-preview{aspect-ratio:3 / 2;background:#ece9df;border:1px solid var(--line);display:grid;place-items:center;overflow:hidden;text-align:center;padding:12px;font-size:12px;line-height:1.6;color:var(--muted)}
+.group-cover-preview.has-img{padding:0;display:block}
+.group-cover-preview img{display:block;width:100%;height:100%;object-fit:cover}
+.group-cover-sql{margin-top:14px;font-size:12px;color:var(--muted);line-height:1.6}
+.group-cover-sql summary{cursor:pointer}
+.group-cover-sql code{display:block;margin-top:8px;padding:10px 12px;background:#f5f4ef;border:1px solid var(--line);font-size:11.5px;word-break:break-all;user-select:all}
+@media (max-width:700px){.group-cover-box{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -367,6 +377,26 @@ input[type=checkbox]{width:auto}
     </form>
   </section>
 
+  <section class="panel tab-panel" id="groupCoverPanel" data-panel="groupcover" hidden>
+    <h2 id="groupCoverTitle">Ảnh bìa chung của nhóm</h2>
+    <p class="tab-help">Đây là ảnh đại diện <strong>chung cho cả nhóm</strong> ở trang chủ (mục Selected work). Khách bấm vào ô này sẽ thấy đủ các dự án trong nhóm; mỗi dự án có <strong>ảnh bìa riêng</strong> (tải ở form “Thêm dự án” bên dưới). Chưa tải ảnh thì trang chủ tự dùng ảnh bìa của dự án đầu tiên trong nhóm.</p>
+    <div class="group-cover-box">
+      <div id="groupCoverPreview" class="group-cover-preview"></div>
+      <div>
+        <label for="groupCoverFile">Chọn ảnh bìa chung</label>
+        <input type="file" id="groupCoverFile" accept="image/*">
+        <small class="upload-note">KÍCH THƯỚC ĐỀ XUẤT: <strong>1500 × 1000 px (tỷ lệ 3:2)</strong> · Ưu tiên JPG/WebP · Dung lượng khoảng <strong>200–450 KB</strong>. Ô nhóm ở trang chủ có khung cố định 3:2 nên phần thừa ở mép ảnh có thể bị cắt.</small>
+        <div id="groupCoverInfo" class="muted"></div>
+        <div class="actions">
+          <button class="btn" type="button" id="groupCoverSave">Lưu ảnh bìa chung</button>
+          <button class="btn secondary" type="button" id="groupCoverRemove">Xóa ảnh bìa chung</button>
+        </div>
+        <div id="groupCoverMessage"></div>
+        <details class="group-cover-sql"><summary>Lần đầu dùng: cần chạy 1 câu SQL trong Supabase</summary>Vào Supabase → SQL Editor, dán câu dưới đây rồi bấm Run (chỉ cần làm một lần):<code>alter table public.site_settings add column if not exists category_covers jsonb default '{}'::jsonb;</code></details>
+      </div>
+    </div>
+  </section>
+
   <section class="panel tab-panel" id="projectEditorPanel" data-panel="projects" hidden>
     <h2 id="formTitle">Thêm dự án mới</h2>
     <form id="projectForm">
@@ -411,7 +441,7 @@ input[type=checkbox]{width:auto}
 
       <label>Ảnh bìa dự án</label>
       <input id="coverFile" type="file" accept="image/*">
-      <small class="upload-note">KÍCH THƯỚC ĐỀ XUẤT: <strong>1600 × 1200 px (tỷ lệ 4:3)</strong> · Ưu tiên JPG/WebP · Dung lượng khoảng <strong>200–450 KB</strong>. Ảnh bìa là ảnh đại diện trên trang chủ. Không bắt buộc đúng tuyệt đối kích thước này; tránh làm méo ảnh.</small>
+      <small class="upload-note">KÍCH THƯỚC ĐỀ XUẤT: cạnh dài khoảng <strong>1600 px</strong>, giữ nguyên tỷ lệ ảnh gốc · Ưu tiên JPG/WebP · Dung lượng khoảng <strong>200–450 KB</strong>. Đây là ảnh bìa <strong>riêng</strong> của dự án, hiện trong danh sách dự án của nhóm. Chiều ngang cố định theo web, chiều cao tự theo tỷ lệ ảnh nên không cần cắt trước; tránh làm méo ảnh.</small>
       <div id="coverFileInfo" class="file-check" aria-live="polite"></div>
       <img id="imagePreview" class="preview" alt="Xem trước ảnh bìa">
 
@@ -462,6 +492,7 @@ const $ = id => document.getElementById(id);
 let currentImageUrl = '';
 let currentGalleryImages = [];
 let pendingGalleryColumns = [];
+let groupCovers = {};           // ảnh bìa chung của từng nhóm: { editorial:url, identity:url, digital:url, print:url } (site_settings.category_covers)
 let pendingGalleryKinds = [];   // Editorial: 'single' (trang đơn) hoặc 'spread' (trang đôi) cho từng ảnh mới
 let pendingGalleryDims = [];    // Editorial: kích thước thật {w,h} của từng ảnh mới
 let pendingGalleryUrls = [];    // Editorial: URL xem trước của từng ảnh mới
@@ -526,9 +557,14 @@ function setActiveTab(tab) {
     $('formTitle').textContent = 'Thêm dự án — ' + categoryTabs[tab].label;
     renderProjectList();
     renderGalleryPreview();
+    $('groupCoverPanel').hidden = false;
+    $('groupCoverFile').value = ''; $('groupCoverInfo').innerHTML = '';
+    renderGroupCover();
+    loadGroupCovers();
   } else {
     $('projectEditorPanel').hidden = true;
     $('projectListPanel').hidden = true;
+    $('groupCoverPanel').hidden = true;
   }
 }
 
@@ -1369,6 +1405,19 @@ function galleryModel() {
   return { items, total: pos - 1, ratio };
 }
 
+// Xóa một trang vừa chọn (chưa lưu) khỏi danh sách tải lên, kể cả trang cuối
+async function removePendingFile(pi) {
+  const input = $('galleryFiles'), files = [...input.files];
+  if (pi < 0 || pi >= files.length) return;
+  const dt = new DataTransfer();
+  files.forEach((f, i) => { if (i !== pi) dt.items.add(f); });
+  input.files = dt.files;
+  URL.revokeObjectURL(pendingGalleryUrls[pi]);
+  [pendingGalleryUrls, pendingGalleryKinds, pendingGalleryDims, pendingGalleryColumns].forEach(list => list.splice(pi, 1));
+  renderGalleryPreview();
+  await showImageFileInfo([...input.files], 'galleryFileInfo', 'gallery');
+}
+
 function renderEditorialGallery() {
   const container = $('galleryPreview');
   container.innerHTML = '';
@@ -1415,6 +1464,11 @@ function renderEditorialGallery() {
       remove.type = 'button'; remove.className = 'remove-gallery'; remove.textContent = 'Xóa';
       remove.addEventListener('click', () => { currentGalleryImages.splice(it.ci, 1); renderGalleryPreview(); });
       item.append(up, down, remove);
+    } else {
+      const removeNew = document.createElement('button');
+      removeNew.type = 'button'; removeNew.className = 'remove-gallery'; removeNew.textContent = 'Xóa trang này';
+      removeNew.addEventListener('click', () => removePendingFile(it.pi));
+      item.append(removeNew);
     }
     it.warn.forEach(text => { const w = document.createElement('div'); w.className = 'gi-warn'; w.textContent = '⚠ ' + text; item.append(w); });
     container.append(item);
@@ -1465,6 +1519,81 @@ $('bpPrev').addEventListener('click', () => { bp.st -= 1; renderBookPreview(gall
 $('bpNext').addEventListener('click', () => { bp.st += 1; renderBookPreview(galleryModel()); });
 $('category').addEventListener('change', async () => { await preparePendingGallery(); renderGalleryPreview(); });
 
+/* ===== Ảnh bìa chung của nhóm (cột category_covers của site_settings, dạng JSON) ===== */
+function groupCoverMsg(text, error = false) {
+  $('groupCoverMessage').textContent = text;
+  $('groupCoverMessage').style.color = error ? '#b13e35' : '#777d52';
+}
+function renderGroupCover(previewUrl) {
+  const info = categoryTabs[activeTab]; if (!info) return;
+  $('groupCoverTitle').textContent = 'Ảnh bìa chung — ' + info.label;
+  const url = previewUrl || groupCovers[activeTab];
+  const box = $('groupCoverPreview');
+  box.innerHTML = ''; box.classList.toggle('has-img', !!url);
+  if (url) { const img = document.createElement('img'); img.src = url; img.alt = 'Ảnh bìa chung ' + info.label; box.appendChild(img); }
+  else box.textContent = 'Chưa có ảnh bìa chung. Trang chủ đang dùng ảnh bìa của dự án đầu tiên trong nhóm.';
+  $('groupCoverRemove').disabled = !groupCovers[activeTab];
+}
+async function loadGroupCovers() {
+  const tab = activeTab;
+  const {data, error} = await db.from('site_settings').select('category_covers').eq('id', 'homepage').maybeSingle();
+  if (tab !== activeTab) return;
+  if (error) {
+    groupCovers = {};
+    groupCoverMsg('Chưa đọc được ảnh bìa chung: ' + error.message + ' — hãy chạy câu SQL thêm cột category_covers (xem mục “Lần đầu dùng” bên dưới).', true);
+  } else {
+    groupCovers = (data && data.category_covers && typeof data.category_covers === 'object') ? data.category_covers : {};
+    groupCoverMsg('');
+  }
+  renderGroupCover();
+}
+async function writeGroupCovers(next) {
+  const {data, error} = await db.from('site_settings').update({category_covers: next}).eq('id', 'homepage').select('id');
+  if (error) throw error;
+  if (!data || !data.length) throw new Error('chưa có dòng cài đặt trang chủ — hãy lưu phần “Trang chủ & Hero” trước');
+  groupCovers = next;
+}
+async function uploadGroupCover(file) {
+  const extension = file.name.split('.').pop().toLowerCase();
+  const path = 'group-covers/' + crypto.randomUUID() + '.' + extension;
+  const {error} = await db.storage.from(BUCKET).upload(path, file, {cacheControl:'3600', upsert:false});
+  if (error) throw error;
+  return db.storage.from(BUCKET).getPublicUrl(path).data.publicUrl;
+}
+$('groupCoverFile').addEventListener('change', async () => {
+  const file = $('groupCoverFile').files[0];
+  if (!file) { $('groupCoverInfo').innerHTML = ''; renderGroupCover(); return; }
+  renderGroupCover(URL.createObjectURL(file)); // xem trước ảnh vừa chọn (chưa lưu)
+  groupCoverMsg('Đây là bản xem trước. Bấm “Lưu ảnh bìa chung” để áp dụng lên trang chủ.');
+  await showImageFileInfo([file], 'groupCoverInfo', 'group');
+});
+$('groupCoverSave').addEventListener('click', async () => {
+  const tab = activeTab, file = $('groupCoverFile').files[0];
+  if (!categoryTabs[tab]) return;
+  if (!file) { groupCoverMsg('Hãy chọn ảnh bìa chung trước khi lưu.', true); return; }
+  $('groupCoverSave').disabled = true; groupCoverMsg('Đang tải ảnh lên...');
+  try {
+    const url = await uploadGroupCover(file);
+    await writeGroupCovers({...groupCovers, [tab]: url});
+    $('groupCoverFile').value = ''; $('groupCoverInfo').innerHTML = '';
+    renderGroupCover();
+    groupCoverMsg('Đã lưu ảnh bìa chung của nhóm ' + categoryTabs[tab].label + '. Trang chủ sẽ cập nhật khi tải lại.');
+  } catch (error) {
+    groupCoverMsg('Không lưu được ảnh bìa chung: ' + error.message + ' — nếu đây là lần đầu, hãy kiểm tra đã chạy câu SQL thêm cột category_covers trong Supabase chưa.', true);
+  } finally { $('groupCoverSave').disabled = false; }
+});
+$('groupCoverRemove').addEventListener('click', async () => {
+  const tab = activeTab;
+  if (!categoryTabs[tab] || !groupCovers[tab]) return;
+  if (!confirm('Xóa ảnh bìa chung của nhóm ' + categoryTabs[tab].label + '? Trang chủ sẽ dùng lại ảnh bìa của dự án đầu tiên trong nhóm.')) return;
+  try {
+    const next = {...groupCovers}; delete next[tab];
+    await writeGroupCovers(next);
+    renderGroupCover();
+    groupCoverMsg('Đã xóa ảnh bìa chung của nhóm ' + categoryTabs[tab].label + '.');
+  } catch (error) { groupCoverMsg('Không xóa được: ' + error.message, true); }
+});
+
 function formatFileSize(bytes) {
   if (bytes < 1024 * 1024) return Math.round(bytes / 1024) + ' KB';
   return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
@@ -1488,10 +1617,11 @@ async function showImageFileInfo(files, targetId, mode) {
       const isLarge = file.size > 1024 * 1024;
       let recommendation = '';
       if (mode === 'cover') {
-        const ratioIsClose = Math.abs(ratio - (4 / 3)) < 0.04;
-        recommendation = ratioIsClose
-          ? 'Tỷ lệ gần 4:3, phù hợp ảnh bìa.'
-          : 'Ảnh không theo tỷ lệ 4:3; vẫn tải được, hãy kiểm tra cách ảnh hiển thị.';
+        recommendation = 'Ảnh hiển thị đủ nội dung: chiều ngang cố định theo web, chiều cao tự theo tỷ lệ ảnh.';
+      } else if (mode === 'group') {
+        recommendation = Math.abs(ratio - 1.5) < 0.06
+          ? 'Tỷ lệ gần 3:2, khớp khung ô nhóm ở trang chủ.'
+          : 'Ảnh không theo tỷ lệ 3:2; ô nhóm hiển thị theo khung 3:2 nên mép ảnh có thể bị cắt.';
       } else {
         const longEdge = Math.max(width, height);
         recommendation = longEdge >= 1200 && longEdge <= 2200
