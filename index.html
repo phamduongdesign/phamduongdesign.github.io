@@ -95,6 +95,13 @@ h1 em { font-family:Georgia,serif; font-weight:400; letter-spacing:-.04em; }
 .project:hover .project-type, .project:hover .project-year, .project:focus-visible .project-type, .project:focus-visible .project-year { color:#4f4b45; }
 .project[hidden] { display:none; }
 .gallery[hidden], .filter[hidden] { display:none; }
+/* Danh sách dự án trong nhóm: ảnh bìa riêng của từng dự án, chiều ngang cố định theo lưới của web, chiều cao tự theo tỷ lệ ảnh (không cắt ảnh).
+   Các ô được xếp dạng masonry: JS đo chiều cao từng ô rồi đặt số hàng cần chiếm; khoảng cách giữa các hàng vẫn lấy từ cài đặt "Giữa các hàng dự án" trong Admin. */
+#gallery .art { aspect-ratio:auto; max-height:none; min-height:120px; }
+#gallery .art.wide, #gallery .art.tall { aspect-ratio:auto; }
+#gallery .art img { position:static; inset:auto; height:auto; object-fit:initial; }
+#gallery.masonry { grid-auto-rows:1px; row-gap:0; align-items:start; }
+#gallery.masonry .project { align-self:start; }
 /* Trang chủ: mỗi ô là ảnh bìa chung của một nhóm (jobs). Số cột do JS đặt qua --gcols (4 nhóm => 2x2, 3 nhóm => 3 cột). */
 .gallery.groups { grid-template-columns:repeat(var(--gcols,3),minmax(0,1fr)); }
 .groups .art { aspect-ratio:3 / 2; }
@@ -185,6 +192,11 @@ h1 em { font-family:Georgia,serif; font-weight:400; letter-spacing:-.04em; }
 .detail-mockup[data-columns="3"] { grid-column:span 2; }
 .detail-mockup img { display:block; width:100%; height:100%; object-fit:cover; }
 .detail-mockup .art { width:100%; max-width:520px; box-shadow:0 16px 36px rgba(0,0,0,.08); }
+/* Ảnh chi tiết dự án: chiều ngang cố định theo lưới của web (1 / 2 / 3 ảnh mỗi hàng), chiều cao tự theo tỷ lệ ảnh, không cắt ảnh */
+.detail-mockups .detail-mockup { aspect-ratio:auto; min-height:120px; }
+.detail-mockups .detail-mockup img { height:auto; object-fit:initial; }
+.detail-mockups.masonry { grid-auto-rows:1px; row-gap:0; align-items:start; }
+.detail-mockups.masonry .detail-mockup { align-self:start; }
 .detail-next { display:flex; justify-content:space-between; align-items:center; gap:20px; border-top:1px solid rgba(41,41,35,.18); margin-top:58px; padding-top:24px; }
 .detail-next button { background:transparent; border:0; padding:0; color:inherit; text-align:left; cursor:pointer; }
 .detail-next strong { display:block; font-size:21.6px; font-weight:500; margin-top:7px; }
@@ -281,8 +293,14 @@ html.liq-touch .filter.active[data-liq-hold] { border-color:var(--site-primary);
 .flip { --pr:1.4; }
 .flip-issues { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:26px; }
 .issue { background:transparent; border:1px solid rgba(41,41,35,.2); color:#6c6b64; padding:9px 13px; border-radius:999px; font-size:13.2px; transition:all .2s ease; }
-.issue:hover, .issue:focus-visible { background:var(--site-hover-bg); color:var(--site-hover-text); border-color:var(--site-hover-border); }
-.issue.active, .issue.active:hover { background:var(--site-primary); color:var(--site-on-primary); border-color:var(--site-primary); }
+/* Nút chọn dự án (số tạp chí) có thêm class "filter" nên dùng chung hiệu ứng đổ mực với nút lọc ở trang chủ.
+   Viền và chữ lấy theo màu của giao diện (sáng/tối) nên lúc nào cũng thấy rõ, không cần rê chuột mới nhận ra còn dự án khác. */
+.flip-issues { --issue-line:color-mix(in srgb, var(--site-on-background) 45%, transparent); --issue-line-on:color-mix(in srgb, var(--site-on-background) 75%, transparent); }
+.issue { color:var(--site-on-background); border-color:var(--issue-line); }
+.issue.active { border-color:var(--issue-line-on); }
+html.liq-js .filter.issue:hover, html.liq-touch .filter.issue[data-liq-hold] { border-color:var(--issue-line); }
+html.liq-js .filter.issue.active:hover, html.liq-touch .filter.issue.active[data-liq-hold] { border-color:var(--issue-line-on); }
+html.liq-touch .filter.issue.active { background:var(--site-primary); color:var(--site-on-primary); }
 .flip-stage { --pw:min(34vw,480px); position:relative; display:flex; justify-content:center; perspective:2600px; padding:8px 0 34px; overflow-x:clip; }
 .flip-stage::after { content:""; position:absolute; left:50%; bottom:10px; width:calc(var(--pw) * 1.8); height:22px; transform:translateX(-50%); background:radial-gradient(closest-side, rgba(0,0,0,.3), transparent); filter:blur(6px); z-index:-1; }
 .flip-leaves { position:relative; width:calc(var(--pw) * 2); height:calc(var(--pw) * var(--pr)); transform-style:preserve-3d; transition:transform .9s cubic-bezier(.5,.05,.2,1), opacity .2s; cursor:pointer; touch-action:pan-y; user-select:none; }
@@ -1004,12 +1022,34 @@ let activeProjectIndex = 0;
    để xem đủ các dự án trong nhóm; bấm vào từng dự án để xem riêng. "All work" quay về các ô nhóm. */
 const FILTER_ALIASES = { Editorial:['editorial','e-magazine','magazine'], Identity:['identity','logo','brand'], Digital:['digital','web','social'], Print:['print','book','cover'] };
 const GROUP_ORDER = ['Editorial', 'Identity', 'Digital', 'Print', 'Other'];
+let categoryCovers = {}; // ảnh bìa chung của từng nhóm do Admin cài (khóa: editorial / identity / digital / print)
 const projectMatches = (project, category) => {
   const raw = String(project.dataset.category || '').toLowerCase();
   if (category === 'All') return true;
   if (category === 'Other') return !Object.values(FILTER_ALIASES).some(terms => terms.some(term => raw.includes(term)));
   return (FILTER_ALIASES[category] || [category.toLowerCase()]).some(term => raw.includes(term));
 };
+/* Masonry cho danh sách dự án: mỗi ô giữ chiều ngang theo lưới, chiều cao tự theo ảnh. Số hàng ô chiếm = chiều cao + khoảng cách giữa các hàng (đọc từ cài đặt Admin). */
+const masonryProbe = (() => { const el = document.createElement('div'); el.className = 'gallery'; el.setAttribute('aria-hidden', 'true'); el.style.display = 'none'; document.body.appendChild(el); return el; })();
+let masonryRaf = 0;
+function masonryPack(box, gap) {
+  box.classList.add('masonry');
+  [...box.children].forEach(card => { card.style.gridRowEnd = card.hidden ? '' : 'span ' + Math.max(1, Math.ceil(card.getBoundingClientRect().height + gap)); });
+}
+function masonryLayout() {
+  cancelAnimationFrame(masonryRaf);
+  masonryRaf = requestAnimationFrame(() => {
+    const box = document.getElementById('gallery');
+    if (box && !box.hidden) masonryPack(box, parseFloat(getComputedStyle(masonryProbe).rowGap) || 0);
+    const det = detailFields.mockups; // ảnh trong trang chi tiết dự án (sách lật của Editorial thì bỏ qua)
+    if (det && det.children.length && !det.classList.contains('flip-on')) masonryPack(det, parseFloat(getComputedStyle(det).columnGap) || 16);
+    else if (det) det.classList.remove('masonry');
+  });
+}
+const masonryRO = typeof ResizeObserver === 'function' ? new ResizeObserver(masonryLayout) : null;
+const detailRO = typeof ResizeObserver === 'function' ? new ResizeObserver(masonryLayout) : null;
+addEventListener('resize', masonryLayout);
+new MutationObserver(masonryLayout).observe(document.head, { childList:true, subtree:true, characterData:true }); // cài đặt khoảng cách từ Admin được nạp sau
 function applyFilter(category, fromTile) {
   filters.forEach(item => item.classList.toggle('active', item.dataset.filter === category));
   const groupsBox = document.getElementById('groups'), galleryBox = document.getElementById('gallery');
@@ -1018,6 +1058,7 @@ function applyFilter(category, fromTile) {
   const groupMode = category === 'All' && groupsBox.children.length > 0;
   groupsBox.hidden = !groupMode; galleryBox.hidden = groupMode;
   count.textContent = '/ ' + String(visible).padStart(2, '0');
+  masonryLayout();
   if (fromTile) { const head = document.querySelector('#work .section-head'); if (head && head.getBoundingClientRect().top < 0) head.scrollIntoView({ behavior:'smooth', block:'start' }); }
 }
 function buildGroups() {
@@ -1028,14 +1069,16 @@ function buildGroups() {
     const list = projects.filter(project => projectMatches(project, name));
     if (!list.length) return;
     made++; if (name === 'Other') hasOther = true;
-    const lead = list.find(project => project.querySelector('.art img')) || list[0]; // ảnh bìa chung = bìa của dự án đầu tiên trong nhóm
+    const lead = list.find(project => project.querySelector('.art img')) || list[0]; // chưa có ảnh bìa chung từ Admin thì dùng bìa của dự án đầu tiên trong nhóm
     const leadImg = lead.querySelector('.art img');
     const noun = list.length === 1 ? 'project' : 'projects';
     const tile = document.createElement('article');
     tile.className = 'project group-tile'; tile.tabIndex = 0; tile.setAttribute('role', 'button');
     tile.setAttribute('aria-label', name + ' — ' + list.length + ' ' + noun);
     const art = document.createElement('div'); art.className = 'art';
-    if (leadImg) { const im = document.createElement('img'); im.src = leadImg.src; im.alt = name; im.loading = 'lazy'; art.appendChild(im); }
+    const customCover = categoryCovers[name.toLowerCase()];
+    const coverSrc = (typeof customCover === 'string' && /^https?:\/\//.test(customCover)) ? customCover : (leadImg ? leadImg.src : '');
+    if (coverSrc) { const im = document.createElement('img'); im.src = coverSrc; im.alt = name; im.loading = 'lazy'; art.appendChild(im); }
     const info = document.createElement('div'); info.className = 'project-info';
     const text = document.createElement('div');
     const nm = document.createElement('div'); nm.className = 'project-name'; nm.textContent = name;
@@ -1180,10 +1223,11 @@ function buildFlip(project, imgs) {
   Object.assign(flip, { el, L: el.querySelector('.flip-leaves'), pages, single: flipMQ.matches && !FLIP_MOBILE_SPREAD });
   flipToolsInit(el);
   if (issues.length > 1) issues.forEach(p => {
-    const b = document.createElement('button'); b.type = 'button'; b.className = 'issue' + (p === project ? ' active' : ''); b.textContent = p.dataset.title;
+    const b = document.createElement('button'); b.type = 'button'; b.className = 'issue filter' + (p === project ? ' active' : ''); b.textContent = p.dataset.title;
     b.onclick = e => { e.stopPropagation(); if (p === project) return; const y = window.scrollY; openProject(p); window.scrollTo({ top: y, behavior: 'instant' }); };
     bar.append(b);
   }); else bar.remove();
+  if (window.liqRefresh) window.liqRefresh(); // nút chọn dự án vừa tạo: nhận hiệu ứng đổ mực (chế độ chạm cần đăng ký thêm)
   el.querySelectorAll('.flip-ar').forEach(b => b.onclick = () => flipGo(flip.want + Number(b.dataset.d)));
   flip.L.onclick = e => { if (flip.moved) return; const r = flip.L.getBoundingClientRect(), x = (e.clientX - r.left) / r.width; flipGo(flip.want + ((flip.single ? x < .3 : x < .5) ? -1 : 1)); };
   // Khổ sách tự theo các trang: lấy tỉ lệ cao/rộng ở giữa (median) của mọi trang, trang đôi tính theo 1 nửa. Ảnh chưa có kích thước (số cũ) thì đo trực tiếp.
@@ -1225,7 +1269,9 @@ function openProject(project, updateHistory = true) {
     frame.appendChild(image);
     detailFields.mockups.appendChild(frame);
   });
+  if (detailRO) { detailRO.disconnect(); [...detailFields.mockups.children].forEach(tile => detailRO.observe(tile)); }
   buildFlip(project, galleryImages);
+  masonryLayout();
   homeSections.forEach(section => section.style.display = 'none');
   document.querySelector('.topbar').classList.add('project-open');
   document.querySelector('.site-root').classList.add('project-open');
@@ -1292,6 +1338,12 @@ async function loadHomepageProjects() {
     card.addEventListener('keydown', event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); openProject(card); } });
   });
   projects = [...gallery.querySelectorAll('.project')];
+  categoryCovers = {};
+  try { // ảnh bìa chung của từng nhóm (nếu Admin đã cài); lỗi hoặc chưa có cột thì bỏ qua, trang tự dùng bìa dự án đầu tiên
+    const res = await supabaseClient.from('site_settings').select('category_covers').eq('id', 'homepage').maybeSingle();
+    if (!res.error && res.data && res.data.category_covers && typeof res.data.category_covers === 'object') categoryCovers = res.data.category_covers;
+  } catch (_) {}
+  if (masonryRO) { masonryRO.disconnect(); projects.forEach(card => masonryRO.observe(card)); }
   buildGroups(); applyFilter('All');
 }
 // Phóng to ảnh thư viện dự án: bấm vào ảnh để xem lớn, bấm ra ngoài (hoặc phím Esc) để quay lại
@@ -1513,10 +1565,10 @@ loadHomepageProjects().catch(error => {
       if (el && !el.matches('.filter')) { const st = states.get(el); if (!(st && st.hold)) pour(el, x, y); }
       start();
     }, true);
-    if (window.MutationObserver) {
-      const mo = new MutationObserver(() => syncFilters());   // bộ lọc đổi .active (do bấm hoặc do code) -> mực chuyển theo
-      document.querySelectorAll('.filter').forEach(el => mo.observe(el, { attributes: true, attributeFilter: ['class'] }));
-    }
+    const mo = window.MutationObserver ? new MutationObserver(() => syncFilters()) : null;   // bộ lọc đổi .active (do bấm hoặc do code) -> mực chuyển theo
+    const watchFilters = () => { if (mo) document.querySelectorAll('.filter').forEach(el => { if (!el.dataset.liqWatch) { el.dataset.liqWatch = '1'; mo.observe(el, { attributes: true, attributeFilter: ['class'] }); } }); };
+    watchFilters();
+    window.liqRefresh = () => { watchFilters(); syncFilters(true); };   // nút "filter" tạo sau khi trang đã mở (chọn dự án ở trang chi tiết) gọi hàm này để nhận mực
     syncFilters(true);                                        // bộ lọc đang chọn lúc mở trang: đã có sẵn mực
   }
 
