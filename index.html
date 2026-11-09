@@ -403,6 +403,43 @@ html.liq-touch :is(.filter, .skill, .contact-action, .footer-social a)[data-liq=
   .contact h2 { flex:0 0 auto; max-width:calc(100% - 334px); }
   .contact-action { flex:0 1 530px; width:auto; min-width:290px; margin:0 0 calc((.98 * clamp(38px,6.5vw,82px) - 52px) / 2); }
 }
+/* Trang chi tiết dự án nằm NGOÀI khung nền của site, nên màu phải theo chế độ sáng/tối của máy.
+   Trước đây nút chọn dự án (Issue) và các nút/chữ phụ lấy màu chữ tối của site -> chữ tối trên nền tối, không đọc được.
+   Giờ: chế độ tối dùng chữ sáng + viền sáng; chế độ sáng giữ nguyên như cũ. */
+.flip-issues { --issue-fg:light-dark(#292923, #f4f0e8); --issue-line:light-dark(rgba(41,41,35,.45), rgba(244,240,232,.62)); --issue-line-on:light-dark(rgba(41,41,35,.75), rgba(244,240,232,.95)); }
+.issue { color:var(--issue-fg); border-color:var(--issue-line); }
+.issue.active { border-color:var(--issue-line-on); }
+.detail-back, .detail-meta small, .flip-meta, .flip-hint { color:light-dark(#77766f, #b4b1a6); }
+.detail-meta, .detail-next { border-top-color:light-dark(rgba(41,41,35,.18), rgba(244,240,232,.24)); }
+.detail-meta { border-bottom-color:light-dark(rgba(41,41,35,.18), rgba(244,240,232,.24)); }
+.flip-ar, .flip-tool, .flip-hint kbd { border-color:light-dark(rgba(41,41,35,.25), rgba(244,240,232,.42)); }
+/* Ảnh lớn phần About: vị trí/kích thước/điểm lấy nét do Admin điều khiển (site_settings.about_photo). Không đặt gì thì giữ nguyên bố cục cũ. */
+.about.has-photo .about-photo > img { object-position:var(--ap-x,50%) var(--ap-y,25%); }
+.about.has-photo .about-photo { position:relative; isolation:isolate; background:var(--ap-bg,#e5e0d5); }
+.about.ap-nobg .about-photo > img { display:none; }
+.about.ap-center .about-photo { align-self:center; }
+.about.ap-end .about-photo { align-self:end; }
+@media (min-width:621px) {
+  .about.has-photo .about-photo { width:min(100%, var(--ap-w,460px)); }
+  .about.has-photo.ap-right .about-photo { grid-column:2; justify-self:end; }
+  .about.has-photo.ap-right #about-eyebrow, .about.has-photo.ap-right h2, .about.has-photo.ap-right .about-text { grid-column:1; }
+}
+@media (max-width:620px) { .about.has-photo.ap-m-bottom .about-photo { grid-row:5; margin-top:28px; } }
+/* Ảnh About 2 lớp: lớp dưới = nền chỉnh sửa trong Admin (màu / gradient / ảnh) phủ đầy khung; lớp trên = ảnh PNG.
+   Khi cuộn tới, PNG hiện từ 2 bên bằng hiệu ứng glitch, gộp lại ở giữa rồi đứng yên (chỉ chạy bằng transform/clip-path, tắt hẳn sau khi xong). */
+.ap-fg { position:absolute; inset:0; pointer-events:none; transform-origin:50% 100%; transform:translate(var(--ap-px,0%), var(--ap-py,0%)) scale(var(--ap-ps,1)); }
+.ap-fg[hidden] { display:none; }
+.about-photo .ap-fg img { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; object-position:50% 100%; display:block; }
+.about-photo .ap-fg .ap-ghost { display:none; }
+.about-photo[data-ap="idle"] .ap-fg img { opacity:0; }
+.about-photo[data-ap="run"] .ap-fg .ap-ghost { display:block; will-change:transform, clip-path; }
+.about-photo[data-ap="run"] .ap-main { animation:ap-main 1.8s steps(1, end) both; }
+.about-photo[data-ap="run"] .ap-l { animation:ap-l 1.8s steps(1, end) both; filter:drop-shadow(-7px 0 0 rgba(255,32,80,.85)); }
+.about-photo[data-ap="run"] .ap-r { animation:ap-r 1.8s steps(1, end) both; filter:drop-shadow(7px 0 0 rgba(0,210,255,.85)); }
+@keyframes ap-l { 0% { transform:translateX(-96%); clip-path:inset(0 0 62% 0); opacity:1; } 10% { transform:translateX(-78%); clip-path:inset(28% 0 40% 0); } 20% { transform:translateX(-61%); clip-path:inset(64% 0 6% 0); } 30% { transform:translateX(-47%); clip-path:inset(8% 0 52% 0); } 42% { transform:translateX(-30%); clip-path:inset(44% 0 18% 0); } 54% { transform:translateX(-16%); clip-path:inset(0 0 0 0); } 64% { transform:translateX(-9%); clip-path:inset(22% 0 46% 0); } 74% { transform:translateX(-4%); clip-path:inset(0 0 0 0); } 84% { transform:translateX(-2%); clip-path:inset(58% 0 12% 0); } 92% { transform:translateX(0); clip-path:inset(0 0 0 0); opacity:.55; } 100% { transform:none; clip-path:inset(0 0 0 0); opacity:0; } }
+@keyframes ap-r { 0% { transform:translateX(96%); clip-path:inset(58% 0 0 0); opacity:1; } 10% { transform:translateX(80%); clip-path:inset(6% 0 58% 0); } 20% { transform:translateX(63%); clip-path:inset(34% 0 30% 0); } 30% { transform:translateX(46%); clip-path:inset(70% 0 4% 0); } 42% { transform:translateX(31%); clip-path:inset(12% 0 50% 0); } 54% { transform:translateX(17%); clip-path:inset(0 0 0 0); } 64% { transform:translateX(8%); clip-path:inset(48% 0 16% 0); } 74% { transform:translateX(5%); clip-path:inset(0 0 0 0); } 84% { transform:translateX(2%); clip-path:inset(14% 0 50% 0); } 92% { transform:translateX(0); clip-path:inset(0 0 0 0); opacity:.55; } 100% { transform:none; clip-path:inset(0 0 0 0); opacity:0; } }
+@keyframes ap-main { 0% { opacity:0; } 50% { opacity:0; } 54% { opacity:1; transform:translateX(5px); } 60% { opacity:0; } 64% { opacity:1; transform:translateX(-4px); clip-path:inset(30% 0 20% 0); } 72% { opacity:1; transform:translateX(3px); clip-path:inset(0 0 0 0); } 80% { opacity:.6; transform:none; } 88% { opacity:1; transform:translateX(-2px); clip-path:inset(46% 0 10% 0); } 94% { opacity:1; transform:none; clip-path:inset(0 0 0 0); } 100% { opacity:1; transform:none; clip-path:inset(0 0 0 0); } }
+@media (prefers-reduced-motion:reduce) { .about-photo[data-ap="run"] .ap-main, .about-photo[data-ap="run"] .ap-l, .about-photo[data-ap="run"] .ap-r { animation:none; } .about-photo[data-ap="run"] .ap-fg .ap-ghost { display:none; } }
 </style>
 </head>
 <body>
@@ -472,7 +509,7 @@ Ho Chi Minh City, VN</span></div>
       </div>
     </section>
     <section class="about wrap" id="about">
-      <div><div class="eyebrow" id="about-eyebrow">A little about me</div><figure class="about-photo" id="about-photo"><img id="about-photo-img" alt="Portrait" loading="lazy" draggable="false"></figure><h2 id="about-heading">Thoughtful design.<br>Clear stories.<br><em>Lasting impressions.</em></h2></div>
+      <div><div class="eyebrow" id="about-eyebrow">A little about me</div><figure class="about-photo" id="about-photo"><img id="about-photo-img" alt="Portrait" loading="lazy" draggable="false"><div class="ap-fg" id="about-photo-fg" hidden><img class="ap-main" alt="" draggable="false"><img class="ap-ghost ap-l" alt="" aria-hidden="true" draggable="false"><img class="ap-ghost ap-r" alt="" aria-hidden="true" draggable="false"></div></figure><h2 id="about-heading">Thoughtful design.<br>Clear stories.<br><em>Lasting impressions.</em></h2></div>
       <div class="about-text" id="about-body">I’m Pham Duong, a graphic designer working across editorial, visual identity and digital communication. I’m interested in the meeting point between strong ideas, thoughtful typography and practical design systems.<div class="skills" id="about-skills"><span class="skill">Editorial design</span><span class="skill">Logo & identity</span><span class="skill">Digital content</span><span class="skill">Menu design</span><span class="skill">Book cover</span><span class="skill">E-magazine & infographic</span></div></div>
     </section>
     <section class="contact" id="contact"><div class="wrap"><div class="contact-top"><h2 id="contact-heading">Have a good idea?<br><em>Let’s make it real.</em></h2><a class="contact-action" id="contact-cta" href="https://zalo.me/0773520799" target="_blank" rel="noopener noreferrer"><span class="contact-arrow" aria-hidden="true"><span class="ca-track"><i class="ca"></i><i class="ca"></i></span></span><span class="contact-label">Start a conversation</span></a></div><div class="footer"><div id="social-links" class="footer-social" aria-label="Contact links"></div><a class="footer-phone" id="footer-phone" href="tel:+84773520799">(+84) 77 3520 799</a><a class="footer-back" href="#top">Back to top ↑</a></div></div></section>
@@ -516,7 +553,7 @@ async function loadHomepageSettings() {
     }
   }
   if (data.avatar_image) { const avatar = document.getElementById('brand-avatar'); avatar.textContent = ''; const image = document.createElement('img'); image.src = data.avatar_image; image.alt = 'Avatar'; avatar.appendChild(image); }
-  if (data.avatar_image) { document.getElementById('about-photo-img').src = data.avatar_image; document.getElementById('about').classList.add('has-photo'); }
+  window.__aboutAvatar = data.avatar_image || ''; if (window.__applyAboutPhoto) window.__applyAboutPhoto();
   if (data.hero_eyebrow) document.getElementById('hero-eyebrow').textContent = data.hero_eyebrow;
   if (data.hero_headline) document.getElementById('hero-headline').textContent = data.hero_headline;
   if (data.hero_intro) document.getElementById('hero-intro').textContent = data.hero_intro;
@@ -1615,6 +1652,74 @@ loadHomepageProjects().catch(error => {
     const fresh = JSON.stringify(data.layout_spacing);
     try { if (localStorage.getItem(CACHE_KEY) === fresh) return; localStorage.setItem(CACHE_KEY, fresh); } catch (e) {}
     apply(data.layout_spacing);
+  });
+})();
+</script>
+<script>
+/* Ảnh lớn phần About (Admin → Nội dung & Cài đặt → "Ảnh lớn phần About me", cột site_settings.about_photo):
+   - Lớp dưới: nền chỉnh sửa (màu/gradient/ảnh) phủ đầy khung. Chưa cài gì thì dùng avatar như trước.
+   - Lớp trên: ảnh PNG; khi cuộn tới thì chạy glitch từ 2 bên rồi gộp lại ở giữa và đứng yên.
+   - Vị trí khung: trái/phải, căn dọc, rộng, điểm lấy nét, vị trí trên điện thoại. */
+(function () {
+  const CACHE_KEY = 'phamduong_about_photo';
+  const about = document.getElementById('about'), img = document.getElementById('about-photo-img');
+  const frame = document.getElementById('about-photo'), fg = document.getElementById('about-photo-fg');
+  if (!about || !img || !frame || !fg) return;
+  const num = (v, lo, hi, d) => { const n = Number(v); return Number.isFinite(n) ? Math.min(hi, Math.max(lo, n)) : d; };
+  const color = v => (typeof v === 'string' && /^#[0-9a-f]{3,8}$/i.test(v)) ? v : '';
+  const reduce = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  let png = '', glitch = true, replay = false, io = null;
+  const setState = value => { if (value) frame.dataset.ap = value; else delete frame.dataset.ap; };
+  const watch = () => {
+    if (io || !('IntersectionObserver' in window)) return;
+    io = new IntersectionObserver(entries => entries.forEach(entry => {
+      if (entry.isIntersecting && frame.dataset.ap === 'idle') setState('run');
+      else if (!entry.isIntersecting && replay && frame.dataset.ap === 'done') setState('idle');
+    }), { threshold: .35 });
+    io.observe(frame);
+  };
+  fg.querySelector('.ap-main').addEventListener('animationend', () => { if (frame.dataset.ap === 'run') setState('done'); });
+  window.__applyAboutPhoto = () => {
+    const cfg = (window.__aboutCfg && typeof window.__aboutCfg === 'object') ? window.__aboutCfg : {};
+    const hasPng = typeof cfg.png === 'string' && !!cfg.png;
+    const colorMode = cfg.bgMode === 'color';
+    const url = colorMode ? '' : ((typeof cfg.url === 'string' && cfg.url) ? cfg.url : (hasPng ? '' : (window.__aboutAvatar || '')));
+    const show = cfg.show !== false && (hasPng || !!url || colorMode);
+    about.classList.toggle('has-photo', show);
+    about.classList.toggle('ap-nobg', !url);
+    if (url && img.getAttribute('src') !== url) img.src = url;
+    // lớp dưới: màu / gradient
+    let bg = null;
+    if (colorMode) { const c1 = color(cfg.bgColor) || '#e5e0d5', c2 = color(cfg.bgColor2); bg = c2 ? 'linear-gradient(' + Math.round(num(cfg.bgAngle, 0, 360, 160)) + 'deg, ' + c1 + ', ' + c2 + ')' : c1; }
+    else if (!url && hasPng) { const c1 = color(cfg.bgColor); if (c1) bg = c1; }
+    if (bg) about.style.setProperty('--ap-bg', bg); else about.style.removeProperty('--ap-bg');
+    // lớp trên: PNG
+    if (hasPng) {
+      if (png !== cfg.png) { png = cfg.png; fg.querySelectorAll('img').forEach(node => { node.src = png; }); setState(null); }
+      fg.hidden = false;
+      about.style.setProperty('--ap-ps', num(cfg.pngScale, 30, 200, 100) / 100);
+      about.style.setProperty('--ap-px', num(cfg.pngX, -60, 60, 0) + '%');
+      about.style.setProperty('--ap-py', num(cfg.pngY, -60, 60, 0) + '%');
+      glitch = cfg.glitch !== false; replay = cfg.replay === true;
+      if (!frame.dataset.ap) { if (glitch && !reduce && show) { setState('idle'); watch(); } else setState('done'); }
+      else if (!glitch && frame.dataset.ap !== 'done') setState('done');
+    } else { fg.hidden = true; png = ''; setState(null); }
+    about.classList.toggle('ap-right', cfg.side === 'right');
+    about.classList.toggle('ap-center', cfg.align === 'center');
+    about.classList.toggle('ap-end', cfg.align === 'end');
+    about.classList.toggle('ap-m-bottom', cfg.mobile === 'bottom');
+    const set = (name, value) => { if (value === null) about.style.removeProperty(name); else about.style.setProperty(name, value); };
+    set('--ap-w', 'width' in cfg ? Math.round(num(cfg.width, 240, 640, 460)) + 'px' : null);
+    set('--ap-x', 'fx' in cfg ? num(cfg.fx, 0, 100, 50) + '%' : null);
+    set('--ap-y', 'fy' in cfg ? num(cfg.fy, 0, 100, 25) + '%' : null);
+  };
+  try { const cached = JSON.parse(localStorage.getItem(CACHE_KEY) || 'null'); if (cached) window.__aboutCfg = cached; } catch (error) {}
+  window.__applyAboutPhoto();
+  supabaseClient.from('site_settings').select('about_photo').eq('id', 'homepage').maybeSingle().then(({ data, error }) => {
+    if (error || !data || !data.about_photo) return;
+    window.__aboutCfg = data.about_photo;
+    try { localStorage.setItem(CACHE_KEY, JSON.stringify(data.about_photo)); } catch (e) {}
+    window.__applyAboutPhoto();
   });
 })();
 </script>
