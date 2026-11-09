@@ -70,6 +70,39 @@ input[type=checkbox]{width:auto}
 .sp-row strong{display:block;font-size:13px;font-weight:600}
 .sp-row small{display:block;color:var(--muted);font-size:11px;line-height:1.5;margin-top:3px}
 .sp-row input{padding:9px 10px;text-align:right}
+.aph-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-top:6px}
+.aph-grid label{margin-top:12px}
+.aph-range{display:flex;align-items:center;gap:10px}.aph-range input[type=range]{flex:1;padding:0}.aph-range output{min-width:58px;text-align:right;font-size:12px;color:var(--muted)}
+.aph-check{display:flex;align-items:center;gap:10px;margin-top:14px;font-size:13px}.aph-check input{width:auto;margin:0}
+.aph-layer{margin-top:22px;padding:16px 18px;border:1px solid var(--line);background:#fbfaf6}
+.aph-layer>h4{margin:0 0 4px;font-size:13px;letter-spacing:.02em}
+.aph-layer>small{display:block;color:var(--muted);font-size:11px;line-height:1.55}
+.aph-layer input[type=color]{width:100%;height:42px;padding:2px}
+.aph-sub[hidden]{display:none}
+.aph-stage{display:grid;grid-template-columns:1fr 1fr;gap:18px;min-height:300px;margin-top:18px;padding:18px;background:#f6f4ef;border:1px solid var(--line)}
+.aph-stage.off .aph-photo{display:none}
+.aph-photo{position:relative;isolation:isolate;aspect-ratio:4/5;background:#e5e0d5;border-radius:6px;overflow:hidden;cursor:crosshair;grid-row:1}
+.aph-photo>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
+.aph-photo i{position:absolute;z-index:3;width:16px;height:16px;margin:-8px 0 0 -8px;border:2px solid #fff;border-radius:50%;box-shadow:0 0 0 1px rgba(0,0,0,.45);pointer-events:none}
+.aph-photo em[hidden],.aph-photo i[hidden],.aph-photo>img[hidden]{display:none}
+.aph-photo em{position:absolute;inset:0;display:grid;place-items:center;font-style:normal;font-size:12px;color:#8a897f}
+.aph-fg{position:absolute;inset:0;pointer-events:none;transform-origin:50% 100%}
+.aph-fg[hidden]{display:none}
+.aph-fg img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:50% 100%;display:block}
+.aph-fg .ap-ghost{display:none}
+.aph-photo[data-ap="idle"] .aph-fg img{opacity:0}
+.aph-photo[data-ap="run"] .aph-fg .ap-ghost{display:block}
+.aph-photo[data-ap="run"] .ap-main{animation:ap-main 1.8s steps(1,end) both}
+.aph-photo[data-ap="run"] .ap-l{animation:ap-l 1.8s steps(1,end) both;filter:drop-shadow(-7px 0 0 rgba(255,32,80,.85))}
+.aph-photo[data-ap="run"] .ap-r{animation:ap-r 1.8s steps(1,end) both;filter:drop-shadow(7px 0 0 rgba(0,210,255,.85))}
+@keyframes ap-l{0%{transform:translateX(-96%);clip-path:inset(0 0 62% 0);opacity:1}10%{transform:translateX(-78%);clip-path:inset(28% 0 40% 0)}20%{transform:translateX(-61%);clip-path:inset(64% 0 6% 0)}30%{transform:translateX(-47%);clip-path:inset(8% 0 52% 0)}42%{transform:translateX(-30%);clip-path:inset(44% 0 18% 0)}54%{transform:translateX(-16%);clip-path:inset(0 0 0 0)}64%{transform:translateX(-9%);clip-path:inset(22% 0 46% 0)}74%{transform:translateX(-4%);clip-path:inset(0 0 0 0)}84%{transform:translateX(-2%);clip-path:inset(58% 0 12% 0)}92%{transform:translateX(0);clip-path:inset(0 0 0 0);opacity:.55}100%{transform:none;clip-path:inset(0 0 0 0);opacity:0}}
+@keyframes ap-r{0%{transform:translateX(96%);clip-path:inset(58% 0 0 0);opacity:1}10%{transform:translateX(80%);clip-path:inset(6% 0 58% 0)}20%{transform:translateX(63%);clip-path:inset(34% 0 30% 0)}30%{transform:translateX(46%);clip-path:inset(70% 0 4% 0)}42%{transform:translateX(31%);clip-path:inset(12% 0 50% 0)}54%{transform:translateX(17%);clip-path:inset(0 0 0 0)}64%{transform:translateX(8%);clip-path:inset(48% 0 16% 0)}74%{transform:translateX(5%);clip-path:inset(0 0 0 0)}84%{transform:translateX(2%);clip-path:inset(14% 0 50% 0)}92%{transform:translateX(0);clip-path:inset(0 0 0 0);opacity:.55}100%{transform:none;clip-path:inset(0 0 0 0);opacity:0}}
+@keyframes ap-main{0%{opacity:0}50%{opacity:0}54%{opacity:1;transform:translateX(5px)}60%{opacity:0}64%{opacity:1;transform:translateX(-4px);clip-path:inset(30% 0 20% 0)}72%{opacity:1;transform:translateX(3px);clip-path:inset(0 0 0 0)}80%{opacity:.6;transform:none}88%{opacity:1;transform:translateX(-2px);clip-path:inset(46% 0 10% 0)}94%{opacity:1;transform:none;clip-path:inset(0 0 0 0)}100%{opacity:1;transform:none;clip-path:inset(0 0 0 0)}}
+.aph-text{grid-row:1;align-self:start;padding-top:2px}
+.aph-text b{display:block;height:7px;width:46%;background:#c9c5ba;margin-bottom:14px}
+.aph-text span{display:block;height:5px;background:#e2dfd6;margin-bottom:8px}
+.aph-text span:nth-child(3n){width:70%}
+.aph-note{font-size:11px;color:var(--muted);margin-top:8px;line-height:1.55}
 .sp-row .sp-def{font-size:10px;color:var(--muted);text-align:right;margin-top:3px}
 @media (max-width:700px){.sp-row{grid-template-columns:1fr 1fr}.sp-row>div:first-child{grid-column:1 / -1}.sp-row.sp-head>div:first-child{display:none}}
 .cms-note{background:#f5f4ef;padding:12px 14px;font-size:12px;line-height:1.65;color:#62645b;margin:14px 0}
@@ -328,6 +361,69 @@ input[type=checkbox]{width:auto}
         <input id="avatarFile" type="file" accept="image/*">
         <small class="field-help">Ảnh hiển thị trong vòng tròn nhỏ bên trái tên PHAM DUONG trên thanh đầu trang. Nên dùng ảnh vuông, JPG/PNG/WebP.</small>
         <img id="avatarPreview" class="avatar-preview" alt="Xem trước avatar">
+      </div>
+      <div class="cms-group">
+        <h3>Ảnh lớn phần About me — 2 lớp</h3>
+        <small class="field-help">Khung ảnh lớn cạnh đoạn giới thiệu “A little about me” gồm 2 lớp: <b>lớp dưới</b> là nền chỉnh sửa được (màu, gradient hoặc ảnh) phủ đầy khung; <b>lớp trên</b> là ảnh PNG nền trong suốt. Khi người xem cuộn tới, ảnh PNG hiện ra từ hai bên bằng hiệu ứng glitch, gộp lại ở giữa rồi đứng yên. Phần này tách riêng với avatar nhỏ ở góc trái; chưa cài gì thì website dùng ảnh avatar như trước.</small>
+        <label class="aph-check"><input type="checkbox" id="aphShow" checked> Hiển thị ảnh lớn ở phần About</label>
+        <div class="aph-grid">
+          <div><label>Vị trí khung (máy tính)</label><select id="aphSide"><option value="left">Bên trái chữ</option><option value="right">Bên phải chữ</option></select></div>
+          <div><label>Căn dọc so với chữ</label><select id="aphAlign"><option value="start">Ngang đỉnh dòng “A little about me”</option><option value="center">Giữa khối chữ</option><option value="end">Sát đáy</option></select></div>
+          <div><label>Vị trí trên điện thoại</label><select id="aphMobile"><option value="top">Khung nằm trên chữ</option><option value="bottom">Khung nằm dưới chữ</option></select></div>
+          <div><label>Chiều rộng khung (máy tính)</label><div class="aph-range"><input type="range" id="aphWidth" min="240" max="640" step="10" value="460"><output id="aphWidthOut">460 px</output></div></div>
+        </div>
+
+        <div class="aph-layer">
+          <h4>Lớp dưới — nội dung chỉnh sửa (nền khung)</h4>
+          <small>Hiện đầy khung avatar, nằm phía sau ảnh PNG.</small>
+          <div class="aph-grid">
+            <div><label>Loại nền</label><select id="aphBgMode"><option value="color">Màu / Gradient</option><option value="image">Ảnh</option></select></div>
+          </div>
+          <div class="aph-sub" id="aphSubColor">
+            <div class="aph-grid">
+              <div><label>Màu 1</label><input type="color" id="aphBg1" value="#e5e0d5"></div>
+              <div><label>Màu 2 (gradient)</label><input type="color" id="aphBg2" value="#1f2a44"></div>
+              <div><label>Hướng gradient</label><div class="aph-range"><input type="range" id="aphAngle" min="0" max="360" step="5" value="160"><output id="aphAngleOut">160°</output></div></div>
+            </div>
+            <label class="aph-check"><input type="checkbox" id="aphUseGrad"> Dùng gradient từ Màu 1 sang Màu 2 (bỏ chọn = chỉ dùng Màu 1)</label>
+          </div>
+          <div class="aph-sub" id="aphSubImage" hidden>
+            <label>Ảnh nền</label>
+            <input id="aboutPhotoFile" type="file" accept="image/*">
+            <small class="field-help">Nên dùng ảnh dọc tỉ lệ 4:5, JPG/PNG/WebP. Bấm lên khung xem trước để chọn điểm lấy nét.</small>
+            <div class="aph-grid">
+              <div><label>Điểm lấy nét — ngang</label><div class="aph-range"><input type="range" id="aphFx" min="0" max="100" step="1" value="50"><output id="aphFxOut">50%</output></div></div>
+              <div><label>Điểm lấy nét — dọc</label><div class="aph-range"><input type="range" id="aphFy" min="0" max="100" step="1" value="25"><output id="aphFyOut">25%</output></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="aph-layer">
+          <h4>Lớp trên — ảnh PNG</h4>
+          <small>Ảnh chân dung tách nền (PNG trong suốt) đứng ở giữa khung, đáy ảnh chạm đáy khung. Hiệu ứng glitch chạy trên lớp này.</small>
+          <label>Ảnh PNG</label>
+          <input id="aboutPngFile" type="file" accept="image/png,image/webp">
+          <div class="aph-grid">
+            <div><label>Kích thước</label><div class="aph-range"><input type="range" id="aphPngScale" min="30" max="200" step="1" value="100"><output id="aphPngScaleOut">100%</output></div></div>
+            <div><label>Dịch ngang</label><div class="aph-range"><input type="range" id="aphPngX" min="-60" max="60" step="1" value="0"><output id="aphPngXOut">0%</output></div></div>
+            <div><label>Dịch dọc</label><div class="aph-range"><input type="range" id="aphPngY" min="-60" max="60" step="1" value="0"><output id="aphPngYOut">0%</output></div></div>
+          </div>
+          <label class="aph-check"><input type="checkbox" id="aphGlitch" checked> Hiệu ứng glitch khi cuộn tới phần About</label>
+          <label class="aph-check"><input type="checkbox" id="aphReplay"> Chạy lại hiệu ứng mỗi lần cuộn tới (bỏ chọn = chỉ chạy một lần)</label>
+          <div class="actions" style="margin-top:12px"><button type="button" class="btn secondary" id="aphPlay">▶ Xem thử hiệu ứng</button></div>
+        </div>
+
+        <div class="aph-stage" id="aphStage" aria-label="Xem trước bố cục phần About">
+          <div class="aph-photo" id="aphPhoto" data-ap="done" title="Bấm vào khung để chọn điểm lấy nét (khi dùng ảnh nền)"><img id="aphImg" alt="" hidden><div class="aph-fg" id="aphFg" hidden><img class="ap-main" alt=""><img class="ap-ghost ap-l" alt="" aria-hidden="true"><img class="ap-ghost ap-r" alt="" aria-hidden="true"></div><em id="aphEmpty">Chưa có ảnh</em><i id="aphDot" hidden></i></div>
+          <div class="aph-text" id="aphText"><b></b><span></span><span></span><span></span><span></span><span></span><span></span></div>
+        </div>
+        <div class="aph-note">Xem trước đã đơn giản hóa bố cục thật. Bấm “Lưu ảnh & vị trí” để áp dụng lên website.</div>
+        <div class="actions" style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap">
+          <button type="button" class="btn" id="aphSave">Lưu ảnh & vị trí</button>
+          <button type="button" class="btn secondary" id="aphReset">Đặt lại vị trí</button>
+          <button type="button" class="btn secondary" id="aphClear">Bỏ ảnh riêng (dùng lại avatar)</button>
+        </div>
+        <div id="aboutPhotoMessage" aria-live="polite" style="margin-top:8px"></div>
       </div>
       <div class="cms-group">
         <h3>About — Giới thiệu bản thân</h3>
@@ -1191,6 +1287,132 @@ $('heroFrameImg').addEventListener('load', paintFrameRect);
   $('heroFrameReset').addEventListener('click', () => { heroFrame = null; paintFrameRect(); });
 })();
 
+// ===== Ảnh lớn phần About me — 2 lớp (cột about_photo, dạng JSON) =====
+// show, side, align, width, mobile | lớp dưới: bgMode('color'|'image'), bgColor, bgColor2, bgAngle, url, fx, fy | lớp trên: png, pngScale, pngX, pngY, glitch, replay
+const APH_DEFAULT = { show:true, side:'left', align:'start', width:460, mobile:'top', bgMode:'color', bgColor:'#e5e0d5', bgColor2:'', bgAngle:160, fx:50, fy:25, pngScale:100, pngX:0, pngY:0, glitch:true, replay:false };
+let aphUrl = '', aphPng = '';           // ảnh đã lưu (nền / PNG)
+let aphObjUrl = '', aphPngObj = '';     // ảnh vừa chọn, chưa lưu
+let aphTimer = 0;
+const aphHex = (v, d) => (typeof v === 'string' && /^#[0-9a-f]{6}$/i.test(v)) ? v : d;
+function aphNum(value, lo, hi, d) { const n = Number(value); return Number.isFinite(n) ? Math.min(hi, Math.max(lo, Math.round(n))) : d; }
+function aphRead() {
+  return {
+    show: $('aphShow').checked,
+    side: $('aphSide').value === 'right' ? 'right' : 'left',
+    align: ['start','center','end'].includes($('aphAlign').value) ? $('aphAlign').value : 'start',
+    width: aphNum($('aphWidth').value, 240, 640, 460),
+    mobile: $('aphMobile').value === 'bottom' ? 'bottom' : 'top',
+    bgMode: $('aphBgMode').value === 'image' ? 'image' : 'color',
+    bgColor: aphHex($('aphBg1').value, '#e5e0d5'),
+    bgColor2: $('aphUseGrad').checked ? aphHex($('aphBg2').value, '#1f2a44') : '',
+    bgAngle: aphNum($('aphAngle').value, 0, 360, 160),
+    fx: aphNum($('aphFx').value, 0, 100, 50),
+    fy: aphNum($('aphFy').value, 0, 100, 25),
+    pngScale: aphNum($('aphPngScale').value, 30, 200, 100),
+    pngX: aphNum($('aphPngX').value, -60, 60, 0),
+    pngY: aphNum($('aphPngY').value, -60, 60, 0),
+    glitch: $('aphGlitch').checked,
+    replay: $('aphReplay').checked
+  };
+}
+function aphPaint() {
+  const c = aphRead(), photo = $('aphPhoto'), img = $('aphImg'), fg = $('aphFg');
+  $('aphWidthOut').textContent = c.width + ' px'; $('aphAngleOut').textContent = c.bgAngle + '°';
+  $('aphFxOut').textContent = c.fx + '%'; $('aphFyOut').textContent = c.fy + '%';
+  $('aphPngScaleOut').textContent = c.pngScale + '%'; $('aphPngXOut').textContent = c.pngX + '%'; $('aphPngYOut').textContent = c.pngY + '%';
+  $('aphSubColor').hidden = c.bgMode !== 'color'; $('aphSubImage').hidden = c.bgMode !== 'image';
+  $('aphStage').classList.toggle('off', !c.show);
+  const right = c.side === 'right';
+  photo.style.gridColumn = right ? '2' : '1'; $('aphText').style.gridColumn = right ? '1' : '2';
+  photo.style.justifySelf = right ? 'end' : 'start'; photo.style.alignSelf = c.align;
+  photo.style.width = Math.min(100, Math.round(c.width / 560 * 100)) + '%';
+  // lớp dưới
+  const bgImg = c.bgMode === 'image' ? (aphObjUrl || aphUrl || '') : '';
+  photo.style.background = c.bgMode === 'color' ? (c.bgColor2 ? 'linear-gradient(' + c.bgAngle + 'deg, ' + c.bgColor + ', ' + c.bgColor2 + ')' : c.bgColor) : '#e5e0d5';
+  if (bgImg) { if (img.getAttribute('src') !== bgImg) img.src = bgImg; img.hidden = false; img.style.objectPosition = c.fx + '% ' + c.fy + '%'; } else img.hidden = true;
+  $('aphDot').hidden = !bgImg; $('aphDot').style.left = c.fx + '%'; $('aphDot').style.top = c.fy + '%';
+  // lớp trên
+  const pngSrc = aphPngObj || aphPng || '';
+  if (pngSrc) { fg.querySelectorAll('img').forEach(n => { if (n.getAttribute('src') !== pngSrc) n.src = pngSrc; }); fg.hidden = false; }
+  else fg.hidden = true;
+  fg.style.transform = 'translate(' + c.pngX + '%, ' + c.pngY + '%) scale(' + (c.pngScale / 100) + ')';
+  $('aphEmpty').hidden = !!(bgImg || pngSrc || c.bgMode === 'color');
+}
+function aphPlay() {
+  const photo = $('aphPhoto'); clearTimeout(aphTimer);
+  if (!($('aphFg').hidden === false)) return;
+  photo.dataset.ap = 'idle'; void photo.offsetWidth; photo.dataset.ap = 'run';
+  aphTimer = setTimeout(() => { photo.dataset.ap = 'done'; }, 1950);
+}
+function fillAboutPhoto(cfg) {
+  const saved = (cfg && typeof cfg === 'object') ? cfg : {};
+  const c = Object.assign({}, APH_DEFAULT, saved);
+  aphUrl = typeof saved.url === 'string' ? saved.url : '';
+  aphPng = typeof saved.png === 'string' ? saved.png : '';
+  aphObjUrl = ''; aphPngObj = '';
+  if (!saved.bgMode) c.bgMode = aphUrl ? 'image' : 'color'; // cấu hình cũ chỉ có ảnh: mở lại ở chế độ ảnh
+  $('aphShow').checked = c.show !== false;
+  $('aphSide').value = c.side === 'right' ? 'right' : 'left';
+  $('aphAlign').value = ['start','center','end'].includes(c.align) ? c.align : 'start';
+  $('aphMobile').value = c.mobile === 'bottom' ? 'bottom' : 'top';
+  $('aphWidth').value = aphNum(c.width, 240, 640, 460);
+  $('aphBgMode').value = c.bgMode === 'image' ? 'image' : 'color';
+  $('aphBg1').value = aphHex(c.bgColor, '#e5e0d5');
+  $('aphBg2').value = aphHex(c.bgColor2, '#1f2a44');
+  $('aphUseGrad').checked = !!aphHex(c.bgColor2, '');
+  $('aphAngle').value = aphNum(c.bgAngle, 0, 360, 160);
+  $('aphFx').value = aphNum(c.fx, 0, 100, 50); $('aphFy').value = aphNum(c.fy, 0, 100, 25);
+  $('aphPngScale').value = aphNum(c.pngScale, 30, 200, 100);
+  $('aphPngX').value = aphNum(c.pngX, -60, 60, 0); $('aphPngY').value = aphNum(c.pngY, -60, 60, 0);
+  $('aphGlitch').checked = c.glitch !== false; $('aphReplay').checked = c.replay === true;
+  aphPaint();
+}
+['aphShow','aphSide','aphAlign','aphMobile','aphWidth','aphBgMode','aphBg1','aphBg2','aphUseGrad','aphAngle','aphFx','aphFy','aphPngScale','aphPngX','aphPngY','aphGlitch','aphReplay'].forEach(id => $(id).addEventListener('input', aphPaint));
+$('aboutPhotoFile').addEventListener('change', () => { const f = $('aboutPhotoFile').files[0]; aphObjUrl = f ? URL.createObjectURL(f) : ''; aphPaint(); });
+$('aboutPngFile').addEventListener('change', () => { const f = $('aboutPngFile').files[0]; aphPngObj = f ? URL.createObjectURL(f) : ''; aphPaint(); aphPlay(); });
+$('aphPhoto').addEventListener('pointerdown', event => {
+  if ($('aphBgMode').value !== 'image') return;
+  const r = $('aphPhoto').getBoundingClientRect();
+  $('aphFx').value = aphNum((event.clientX - r.left) / r.width * 100, 0, 100, 50);
+  $('aphFy').value = aphNum((event.clientY - r.top) / r.height * 100, 0, 100, 25);
+  aphPaint();
+});
+$('aphPlay').addEventListener('click', aphPlay);
+$('aphReset').addEventListener('click', () => { fillAboutPhoto(Object.assign({}, APH_DEFAULT, aphUrl ? { url: aphUrl, bgMode: 'image' } : {}, aphPng ? { png: aphPng } : {})); });
+async function aphUpload(file, prefix) {
+  const extension = (file.name.split('.').pop() || 'png').toLowerCase();
+  const path = 'about/' + prefix + crypto.randomUUID() + '.' + extension;
+  const {error:uploadError} = await db.storage.from(BUCKET).upload(path, file, {cacheControl:'3600', upsert:false});
+  if (uploadError) throw uploadError;
+  return db.storage.from(BUCKET).getPublicUrl(path).data.publicUrl;
+}
+async function saveAboutPhoto(clearPhoto) {
+  const msg = $('aboutPhotoMessage');
+  msg.style.color = ''; msg.textContent = 'Đang lưu...';
+  ['aphSave','aphClear'].forEach(id => $(id).disabled = true);
+  try {
+    const cfg = aphRead();
+    let url = clearPhoto ? '' : aphUrl, png = clearPhoto ? '' : aphPng;
+    const bgFile = $('aboutPhotoFile').files[0], pngFile = $('aboutPngFile').files[0];
+    if (!clearPhoto && bgFile) url = await aphUpload(bgFile, '');
+    if (!clearPhoto && pngFile) png = await aphUpload(pngFile, 'png-');
+    if (url) cfg.url = url;
+    if (png) cfg.png = png;
+    const payload = clearPhoto ? null : cfg;
+    const {error} = await db.from('site_settings').upsert({id:'homepage', about_photo:payload, updated_at:new Date().toISOString()}, {onConflict:'id'});
+    if (error) throw error;
+    aphUrl = url; aphPng = png; aphObjUrl = ''; aphPngObj = ''; $('aboutPhotoFile').value = ''; $('aboutPngFile').value = '';
+    if (clearPhoto) fillAboutPhoto(null); else aphPaint();
+    msg.textContent = clearPhoto ? 'Đã bỏ ảnh riêng, website dùng lại ảnh avatar.' : 'Đã lưu ảnh và vị trí. Tải lại trang chủ để thấy thay đổi.';
+    msg.style.color = 'var(--olive)';
+  } catch (error) {
+    msg.textContent = 'Không thể lưu ảnh About: ' + error.message + ' — hãy kiểm tra đã chạy câu SQL thêm cột about_photo trong Supabase chưa.';
+    msg.style.color = '#b13e35';
+  } finally { ['aphSave','aphClear'].forEach(id => $(id).disabled = false); }
+}
+$('aphSave').addEventListener('click', () => saveAboutPhoto(false));
+$('aphClear').addEventListener('click', () => { if (confirm('Bỏ ảnh riêng (cả lớp dưới và lớp PNG) và dùng lại ảnh avatar cho phần About?')) saveAboutPhoto(true); });
+aphPaint();
 const cmsFields = ['aboutHeading','aboutEyebrow','aboutBody','aboutSkills','contactHeading','contactCta','contactEmail','contactPhone','contactLocation','socialZalo','socialInstagram','socialBehance','socialLinkedin','socialFacebook','themePrimary','themeAccent','themeBackground','themeText','themeFont','themeFontWeight','themeFontStyle','seoTitle','seoDescription','seoImage'];
 async function loadCmsSettings() {
   const {data,error} = await db.from('site_settings').select('*').eq('id','homepage').maybeSingle();
@@ -1200,6 +1422,7 @@ async function loadCmsSettings() {
   cmsFields.forEach(id => { const value = data[columns[id]]; if (value !== null && value !== undefined && $(id)) $(id).value = value; });
   currentAvatarUrl = data.avatar_image || '';
   if (currentAvatarUrl) { $('avatarPreview').src = currentAvatarUrl; $('avatarPreview').style.display = 'block'; }
+  fillAboutPhoto(data.about_photo);
   refreshColorSwatches();
 }
 $('cmsForm').addEventListener('submit', async event => {
