@@ -425,21 +425,52 @@ html.liq-touch :is(.filter, .skill, .contact-action, .footer-social a)[data-liq=
   .about.has-photo.ap-right #about-eyebrow, .about.has-photo.ap-right h2, .about.has-photo.ap-right .about-text { grid-column:1; }
 }
 @media (max-width:620px) { .about.has-photo.ap-m-bottom .about-photo { grid-row:5; margin-top:28px; } }
-/* Ảnh About 2 lớp: lớp dưới = nền chỉnh sửa trong Admin (màu / gradient / ảnh) phủ đầy khung; lớp trên = ảnh PNG.
-   Khi cuộn tới, PNG hiện từ 2 bên bằng hiệu ứng glitch, gộp lại ở giữa rồi đứng yên (chỉ chạy bằng transform/clip-path, tắt hẳn sau khi xong). */
-.ap-fg { position:absolute; inset:0; pointer-events:none; transform-origin:50% 100%; transform:translate(var(--ap-px,0%), var(--ap-py,0%)) scale(var(--ap-ps,1)); }
+/* Ảnh About 2 lớp: lớp dưới = nền + nội dung chữ chỉnh sửa trong Admin, phủ đầy khung; lớp trên = ảnh PNG.
+   Khi cuộn tới, PNG hiện từ 2 bên bằng glitch ĐEN TRẮNG kiểu tivi cũ (sọc ngang, dải sáng cuộn, nhiễu), gộp lại ở giữa, rồi một vệt sáng quét từ trên xuống: chạy tới đâu ảnh về màu thật tới đó, sau đó đứng yên. */
+.about.has-photo .about-photo { container-type:inline-size; }
+.ap-content { position:absolute; inset:0; z-index:1; display:flex; flex-direction:column; box-sizing:border-box; padding:var(--ap-tpad,8%); pointer-events:none; white-space:pre-line; overflow-wrap:anywhere; color:var(--ap-tc,#fff); font-family:var(--ap-tf,var(--site-font-heading)); font-weight:var(--ap-tw,700); font-size:calc(var(--ap-ts,64) / 460 * 100cqw); line-height:var(--ap-tl,1); letter-spacing:var(--ap-tt,0em); text-transform:var(--ap-tcase,none); text-align:var(--ap-ta,center); align-items:var(--ap-tai,center); justify-content:var(--ap-tv,center); }
+.ap-content[hidden] { display:none; }
+.ap-fg { position:absolute; inset:0; z-index:2; pointer-events:none; transform-origin:50% 100%; transform:translate(var(--ap-px,0%), var(--ap-py,0%)) scale(var(--ap-ps,1)); }
 .ap-fg[hidden] { display:none; }
 .about-photo .ap-fg img { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; object-position:50% 100%; display:block; }
 .about-photo .ap-fg .ap-ghost { display:none; }
 .about-photo[data-ap="idle"] .ap-fg img { opacity:0; }
+.about-photo[data-ap="run"] .ap-fg img { filter:grayscale(1) contrast(1.6) brightness(1.05); }
 .about-photo[data-ap="run"] .ap-fg .ap-ghost { display:block; will-change:transform, clip-path; }
 .about-photo[data-ap="run"] .ap-main { animation:ap-main 1.8s steps(1, end) both; }
-.about-photo[data-ap="run"] .ap-l { animation:ap-l 1.8s steps(1, end) both; filter:drop-shadow(-7px 0 0 rgba(255,32,80,.85)); }
-.about-photo[data-ap="run"] .ap-r { animation:ap-r 1.8s steps(1, end) both; filter:drop-shadow(7px 0 0 rgba(0,210,255,.85)); }
-@keyframes ap-l { 0% { transform:translateX(-96%); clip-path:inset(0 0 62% 0); opacity:1; } 10% { transform:translateX(-78%); clip-path:inset(28% 0 40% 0); } 20% { transform:translateX(-61%); clip-path:inset(64% 0 6% 0); } 30% { transform:translateX(-47%); clip-path:inset(8% 0 52% 0); } 42% { transform:translateX(-30%); clip-path:inset(44% 0 18% 0); } 54% { transform:translateX(-16%); clip-path:inset(0 0 0 0); } 64% { transform:translateX(-9%); clip-path:inset(22% 0 46% 0); } 74% { transform:translateX(-4%); clip-path:inset(0 0 0 0); } 84% { transform:translateX(-2%); clip-path:inset(58% 0 12% 0); } 92% { transform:translateX(0); clip-path:inset(0 0 0 0); opacity:.55; } 100% { transform:none; clip-path:inset(0 0 0 0); opacity:0; } }
-@keyframes ap-r { 0% { transform:translateX(96%); clip-path:inset(58% 0 0 0); opacity:1; } 10% { transform:translateX(80%); clip-path:inset(6% 0 58% 0); } 20% { transform:translateX(63%); clip-path:inset(34% 0 30% 0); } 30% { transform:translateX(46%); clip-path:inset(70% 0 4% 0); } 42% { transform:translateX(31%); clip-path:inset(12% 0 50% 0); } 54% { transform:translateX(17%); clip-path:inset(0 0 0 0); } 64% { transform:translateX(8%); clip-path:inset(48% 0 16% 0); } 74% { transform:translateX(5%); clip-path:inset(0 0 0 0); } 84% { transform:translateX(2%); clip-path:inset(14% 0 50% 0); } 92% { transform:translateX(0); clip-path:inset(0 0 0 0); opacity:.55; } 100% { transform:none; clip-path:inset(0 0 0 0); opacity:0; } }
-@keyframes ap-main { 0% { opacity:0; } 50% { opacity:0; } 54% { opacity:1; transform:translateX(5px); } 60% { opacity:0; } 64% { opacity:1; transform:translateX(-4px); clip-path:inset(30% 0 20% 0); } 72% { opacity:1; transform:translateX(3px); clip-path:inset(0 0 0 0); } 80% { opacity:.6; transform:none; } 88% { opacity:1; transform:translateX(-2px); clip-path:inset(46% 0 10% 0); } 94% { opacity:1; transform:none; clip-path:inset(0 0 0 0); } 100% { opacity:1; transform:none; clip-path:inset(0 0 0 0); } }
-@media (prefers-reduced-motion:reduce) { .about-photo[data-ap="run"] .ap-main, .about-photo[data-ap="run"] .ap-l, .about-photo[data-ap="run"] .ap-r { animation:none; } .about-photo[data-ap="run"] .ap-fg .ap-ghost { display:none; } }
+.about-photo[data-ap="run"] .ap-l { animation:ap-l 1.8s steps(1, end) both; filter:grayscale(1) contrast(1.9) brightness(1.4); }
+.about-photo[data-ap="run"] .ap-r { animation:ap-r 1.8s steps(1, end) both; filter:grayscale(1) contrast(1.9) brightness(.7); }
+.about-photo[data-ap="run"]::before { content:""; position:absolute; inset:0; z-index:5; pointer-events:none; background:repeating-linear-gradient(0deg, rgba(0,0,0,.6) 0 1px, rgba(0,0,0,0) 1px 3px), linear-gradient(180deg, rgba(255,255,255,0), rgba(255,255,255,.34) 50%, rgba(255,255,255,0)); background-size:auto, 100% 32%; background-repeat:repeat, no-repeat; background-position:0 0, 0 -45%; animation:ap-scan 1.8s steps(1, end) both, ap-roll .6s linear 3; }
+.about-photo[data-ap="run"]::after { content:""; position:absolute; inset:0; z-index:6; pointer-events:none; background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1.4 -.45'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); background-size:160px 160px; mix-blend-mode:screen; opacity:.5; animation:ap-noise 1.8s steps(1, end) both; }
+@keyframes ap-l { 0% { transform:translateX(-96%); clip-path:inset(0 0 62% 0); opacity:1; } 10% { transform:translateX(-78%); clip-path:inset(28% 0 40% 0); } 20% { transform:translateX(-61%); clip-path:inset(64% 0 6% 0); } 30% { transform:translateX(-47%); clip-path:inset(8% 0 52% 0); } 42% { transform:translateX(-30%); clip-path:inset(44% 0 18% 0); } 54% { transform:translateX(-16%); clip-path:inset(0 0 0 0); } 64% { transform:translateX(-9%); clip-path:inset(22% 0 46% 0); } 74% { transform:translateX(-4%); clip-path:inset(0 0 0 0); } 84% { transform:translateX(-2%); clip-path:inset(58% 0 12% 0); } 92% { transform:translateX(0); clip-path:inset(0 0 0 0); opacity:.5; } 100% { transform:none; clip-path:inset(0 0 0 0); opacity:0; } }
+@keyframes ap-r { 0% { transform:translateX(96%); clip-path:inset(58% 0 0 0); opacity:1; } 10% { transform:translateX(80%); clip-path:inset(6% 0 58% 0); } 20% { transform:translateX(63%); clip-path:inset(34% 0 30% 0); } 30% { transform:translateX(46%); clip-path:inset(70% 0 4% 0); } 42% { transform:translateX(31%); clip-path:inset(12% 0 50% 0); } 54% { transform:translateX(17%); clip-path:inset(0 0 0 0); } 64% { transform:translateX(8%); clip-path:inset(48% 0 16% 0); } 74% { transform:translateX(5%); clip-path:inset(0 0 0 0); } 84% { transform:translateX(2%); clip-path:inset(14% 0 50% 0); } 92% { transform:translateX(0); clip-path:inset(0 0 0 0); opacity:.5; } 100% { transform:none; clip-path:inset(0 0 0 0); opacity:0; } }
+@keyframes ap-main { 0% { opacity:0; } 50% { opacity:0; } 54% { opacity:1; transform:translateX(5px); } 60% { opacity:0; } 64% { opacity:1; transform:translateX(-4px); clip-path:inset(30% 0 20% 0); } 72% { opacity:1; transform:translateX(3px); clip-path:inset(0 0 0 0); } 80% { opacity:.6; transform:none; } 86% { opacity:1; transform:translateX(-2px); clip-path:inset(46% 0 10% 0); } 90% { opacity:1; transform:none; clip-path:inset(0 0 0 0); filter:grayscale(1) contrast(1.8) brightness(1.4); } 93% { filter:grayscale(1) contrast(1.4); } 96% { filter:grayscale(1) contrast(1.6) brightness(1.05); } 100% { opacity:1; transform:none; clip-path:inset(0 0 0 0); filter:grayscale(1) contrast(1.6) brightness(1.05); } }
+@keyframes ap-scan { 0%, 100% { opacity:1; } }
+@keyframes ap-roll { 0% { background-position:0 0, 0 -45%; } 100% { background-position:0 0, 0 150%; } }
+@keyframes ap-noise { 0% { background-position:0 0; opacity:.55; } 12% { background-position:-37px 21px; } 24% { background-position:52px -33px; } 36% { background-position:-11px 64px; } 48% { background-position:44px 9px; opacity:.4; } 60% { background-position:-60px -18px; } 72% { background-position:23px 47px; opacity:.35; } 84% { background-position:-29px -52px; opacity:.35; } 100% { background-position:0 0; opacity:.35; } }
+@media (prefers-reduced-motion:reduce) { .about-photo[data-ap="run"] .ap-main, .about-photo[data-ap="run"] .ap-l, .about-photo[data-ap="run"] .ap-r { animation:none; } .about-photo[data-ap="run"] .ap-fg .ap-ghost, .about-photo[data-ap="run"]::before, .about-photo[data-ap="run"]::after { display:none; } .about-photo[data-ap="run"] .ap-fg img { filter:none; } }
+/* Kết thúc hiệu ứng ảnh About: (1) ảnh vẫn giữ hiệu ứng tivi cũ (đen trắng, sọc ngang, nhiễu, giật nhẹ trái phải) thêm ~0.7s;
+   (2) vệt sáng mềm quét từ trên xuống: phần đã quét về ảnh gốc (màu thật), phần chưa quét vẫn hiệu ứng tivi; (3) quét hết thì về ảnh gốc hoàn toàn.
+   Cả 3 lớp (.ap-main đen trắng, .ap-col màu gốc, .ap-tv sọc+nhiễu) dùng CHUNG một mặt nạ mờ mép + cùng thời lượng/easing nên luôn khớp vệt sáng.
+   Chỉnh tốc độ: 1.6s (thời gian quét) và .7s (độ trễ giữ hiệu ứng tivi trước khi quét) trong các dòng animation bên dưới. */
+.about-photo .ap-fg .ap-col, .about-photo .ap-fg .ap-streak, .about-photo .ap-fg .ap-tv { display:none; }
+.about-photo[data-ap="morph"] .ap-fg .ap-main { filter:grayscale(1) contrast(1.6) brightness(1.05); -webkit-mask-image:linear-gradient(180deg, transparent 0, transparent 38%, #000 38.5%, #000 100%); mask-image:linear-gradient(180deg, transparent 0, transparent 38%, #000 38.5%, #000 100%); -webkit-mask-size:100% 300%; mask-size:100% 300%; -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat; will-change:transform, mask-position; animation:ap-tv-shake .5s steps(1, end) infinite, ap-main-out 1.6s cubic-bezier(.37,0,.63,1) .7s both; }
+.about-photo[data-ap="morph"] .ap-fg .ap-col { display:block; -webkit-mask-image:linear-gradient(180deg, #000 0, #000 38%, transparent 45%, transparent 100%); mask-image:linear-gradient(180deg, #000 0, #000 38%, transparent 45%, transparent 100%); -webkit-mask-size:100% 300%; mask-size:100% 300%; -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat; will-change:mask-position; animation:ap-col-in 1.6s cubic-bezier(.37,0,.63,1) .7s both; }
+.about-photo[data-ap="morph"] .ap-fg .ap-tv { display:block; position:absolute; inset:0; pointer-events:none; }
+.about-photo .ap-fg .ap-tv::before, .about-photo .ap-fg .ap-tv::after { content:""; position:absolute; inset:0; pointer-events:none; -webkit-mask-image:linear-gradient(180deg, transparent 0, transparent 38%, #000 45%, #000 100%); mask-image:linear-gradient(180deg, transparent 0, transparent 38%, #000 45%, #000 100%); -webkit-mask-size:100% 300%; mask-size:100% 300%; -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat; }
+.about-photo .ap-fg .ap-tv::before { background:repeating-linear-gradient(0deg, rgba(0,0,0,.6) 0 1px, rgba(0,0,0,0) 1px 3px), linear-gradient(180deg, rgba(255,255,255,0), rgba(255,255,255,.3) 50%, rgba(255,255,255,0)); background-size:auto, 100% 32%; background-repeat:repeat, no-repeat; background-position:0 0, 0 -45%; animation:ap-tv-roll .9s linear infinite, ap-tv-mask 1.6s cubic-bezier(.37,0,.63,1) .7s both; }
+.about-photo .ap-fg .ap-tv::after { background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1.4 -.45'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); background-size:160px 160px; mix-blend-mode:screen; opacity:.35; animation:ap-tv-noise .4s steps(1, end) infinite, ap-tv-mask 1.6s cubic-bezier(.37,0,.63,1) .7s both; }
+/* Vệt sáng: dải mềm (nhiều điểm dừng kiểu chuông) di chuyển bằng transform nên mượt; nằm đúng mép mờ của mặt nạ */
+.about-photo .ap-fg .ap-streak { position:absolute; left:-4%; right:-4%; top:0; width:auto; height:36%; margin:0; border:0; border-radius:0; box-shadow:none; pointer-events:none; mix-blend-mode:screen; transform:translate3d(0,-79%,0); will-change:transform, opacity; background:linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,.03) 12%, rgba(255,255,255,.12) 24%, rgba(255,255,255,.38) 36%, rgba(255,255,255,.8) 46%, rgba(255,255,255,.95) 50%, rgba(255,255,255,.8) 54%, rgba(255,255,255,.38) 64%, rgba(255,255,255,.12) 76%, rgba(255,255,255,.03) 88%, rgba(255,255,255,0) 100%); }
+.about-photo[data-ap="morph"] .ap-fg .ap-streak { display:block; animation:ap-streak 1.6s cubic-bezier(.37,0,.63,1) .7s both; }
+@keyframes ap-tv-shake { 0% { transform:translate3d(0,0,0); opacity:1; } 18% { transform:translate3d(.7%,0,0); } 34% { transform:translate3d(-.6%,0,0); opacity:.9; } 46% { transform:translate3d(0,0,0); opacity:1; } 63% { transform:translate3d(-.8%,0,0); } 78% { transform:translate3d(.5%,0,0); opacity:.92; } 90% { transform:translate3d(0,0,0); opacity:1; } }
+@keyframes ap-main-out { from { -webkit-mask-position:0 67.5%; mask-position:0 67.5%; } to { -webkit-mask-position:0 7%; mask-position:0 7%; } }
+@keyframes ap-col-in { from { -webkit-mask-position:0 67.5%; mask-position:0 67.5%; } to { -webkit-mask-position:0 7%; mask-position:0 7%; } }
+@keyframes ap-tv-mask { from { -webkit-mask-position:0 67.5%; mask-position:0 67.5%; } to { -webkit-mask-position:0 7%; mask-position:0 7%; } }
+@keyframes ap-tv-roll { 0% { background-position:0 0, 0 -45%; } 100% { background-position:0 0, 0 150%; } }
+@keyframes ap-tv-noise { 0% { background-position:0 0; } 25% { background-position:-37px 21px; } 50% { background-position:52px -33px; } 75% { background-position:-11px 64px; } }
+@keyframes ap-streak { 0% { transform:translate3d(0,-79%,0); opacity:0; } 8% { opacity:1; } 88% { opacity:1; } 100% { transform:translate3d(0,257%,0); opacity:0; } }
+@media (prefers-reduced-motion:reduce) { .about-photo[data-ap="morph"] .ap-fg .ap-main, .about-photo[data-ap="morph"] .ap-fg .ap-col, .about-photo[data-ap="morph"] .ap-fg .ap-streak, .about-photo .ap-fg .ap-tv::before, .about-photo .ap-fg .ap-tv::after { animation:none; } .about-photo .ap-fg .ap-tv { display:none !important; } }
 </style>
 </head>
 <body>
@@ -509,7 +540,7 @@ Ho Chi Minh City, VN</span></div>
       </div>
     </section>
     <section class="about wrap" id="about">
-      <div><div class="eyebrow" id="about-eyebrow">A little about me</div><figure class="about-photo" id="about-photo"><img id="about-photo-img" alt="Portrait" loading="lazy" draggable="false"><div class="ap-fg" id="about-photo-fg" hidden><img class="ap-main" alt="" draggable="false"><img class="ap-ghost ap-l" alt="" aria-hidden="true" draggable="false"><img class="ap-ghost ap-r" alt="" aria-hidden="true" draggable="false"></div></figure><h2 id="about-heading">Thoughtful design.<br>Clear stories.<br><em>Lasting impressions.</em></h2></div>
+      <div><div class="eyebrow" id="about-eyebrow">A little about me</div><figure class="about-photo" id="about-photo"><img id="about-photo-img" alt="Portrait" loading="lazy" draggable="false"><div class="ap-content" id="about-photo-txt" hidden></div><div class="ap-fg" id="about-photo-fg" hidden><img class="ap-main" alt="" draggable="false"><img class="ap-ghost ap-l" alt="" aria-hidden="true" draggable="false"><img class="ap-ghost ap-r" alt="" aria-hidden="true" draggable="false"><img class="ap-col" alt="" aria-hidden="true" draggable="false"><span class="ap-tv" aria-hidden="true"></span><i class="ap-streak" aria-hidden="true"></i></div></figure><h2 id="about-heading">Thoughtful design.<br>Clear stories.<br><em>Lasting impressions.</em></h2></div>
       <div class="about-text" id="about-body">I’m Pham Duong, a graphic designer working across editorial, visual identity and digital communication. I’m interested in the meeting point between strong ideas, thoughtful typography and practical design systems.<div class="skills" id="about-skills"><span class="skill">Editorial design</span><span class="skill">Logo & identity</span><span class="skill">Digital content</span><span class="skill">Menu design</span><span class="skill">Book cover</span><span class="skill">E-magazine & infographic</span></div></div>
     </section>
     <section class="contact" id="contact"><div class="wrap"><div class="contact-top"><h2 id="contact-heading">Have a good idea?<br><em>Let’s make it real.</em></h2><a class="contact-action" id="contact-cta" href="https://zalo.me/0773520799" target="_blank" rel="noopener noreferrer"><span class="contact-arrow" aria-hidden="true"><span class="ca-track"><i class="ca"></i><i class="ca"></i></span></span><span class="contact-label">Start a conversation</span></a></div><div class="footer"><div id="social-links" class="footer-social" aria-label="Contact links"></div><a class="footer-phone" id="footer-phone" href="tel:+84773520799">(+84) 77 3520 799</a><a class="footer-back" href="#top">Back to top ↑</a></div></div></section>
@@ -1678,13 +1709,16 @@ loadHomepageProjects().catch(error => {
     }), { threshold: .35 });
     io.observe(frame);
   };
-  fg.querySelector('.ap-main').addEventListener('animationend', () => { if (frame.dataset.ap === 'run') setState('done'); });
+  // Hết glitch đen trắng thì chạy vệt sáng quét từ trên xuống (trạng thái 'morph'); quét xong ảnh về màu gốc và đứng yên ('done')
+  fg.querySelector('.ap-main').addEventListener('animationend', event => { if (frame.dataset.ap === 'run' && event.animationName === 'ap-main') setState('morph'); });
+  fg.querySelector('.ap-col').addEventListener('animationend', event => { if (frame.dataset.ap === 'morph' && event.animationName === 'ap-col-in') setState('done'); });
   window.__applyAboutPhoto = () => {
     const cfg = (window.__aboutCfg && typeof window.__aboutCfg === 'object') ? window.__aboutCfg : {};
     const hasPng = typeof cfg.png === 'string' && !!cfg.png;
     const colorMode = cfg.bgMode === 'color';
     const url = colorMode ? '' : ((typeof cfg.url === 'string' && cfg.url) ? cfg.url : (hasPng ? '' : (window.__aboutAvatar || '')));
-    const show = cfg.show !== false && (hasPng || !!url || colorMode);
+    const txt = (typeof cfg.txt === 'string') ? cfg.txt.trim() : '';
+    const show = cfg.show !== false && (hasPng || !!url || colorMode || !!txt);
     about.classList.toggle('has-photo', show);
     about.classList.toggle('ap-nobg', !url);
     if (url && img.getAttribute('src') !== url) img.src = url;
@@ -1693,6 +1727,24 @@ loadHomepageProjects().catch(error => {
     if (colorMode) { const c1 = color(cfg.bgColor) || '#e5e0d5', c2 = color(cfg.bgColor2); bg = c2 ? 'linear-gradient(' + Math.round(num(cfg.bgAngle, 0, 360, 160)) + 'deg, ' + c1 + ', ' + c2 + ')' : c1; }
     else if (!url && hasPng) { const c1 = color(cfg.bgColor); if (c1) bg = c1; }
     if (bg) about.style.setProperty('--ap-bg', bg); else about.style.removeProperty('--ap-bg');
+    // lớp dưới: nội dung chữ trong khung
+    const box = document.getElementById('about-photo-txt');
+    if (box) {
+      box.hidden = !txt; box.textContent = txt.slice(0, 600);
+      const A = { left:'flex-start', center:'center', right:'flex-end' }, V = { top:'flex-start', center:'center', bottom:'flex-end' };
+      const fonts = { heading:'var(--site-font-heading)', body:'var(--site-font-body)', mono:"'DM Mono', monospace" };
+      const align = ['left','center','right'].includes(cfg.txtAlign) ? cfg.txtAlign : 'center';
+      about.style.setProperty('--ap-ts', num(cfg.txtSize, 12, 240, 64));
+      about.style.setProperty('--ap-tc', color(cfg.txtColor) || '#ffffff');
+      about.style.setProperty('--ap-ta', align); about.style.setProperty('--ap-tai', A[align]);
+      about.style.setProperty('--ap-tv', V[cfg.txtV] || 'center');
+      about.style.setProperty('--ap-tw', [400,500,700,900].includes(Number(cfg.txtWeight)) ? Number(cfg.txtWeight) : 700);
+      about.style.setProperty('--ap-tt', num(cfg.txtTrack, -10, 40, 0) / 100 + 'em');
+      about.style.setProperty('--ap-tl', num(cfg.txtLine, 70, 200, 100) / 100);
+      about.style.setProperty('--ap-tpad', num(cfg.txtPad, 0, 30, 8) + '%');
+      about.style.setProperty('--ap-tcase', cfg.txtCase === 'upper' ? 'uppercase' : 'none');
+      about.style.setProperty('--ap-tf', fonts[cfg.txtFont] || fonts.heading);
+    }
     // lớp trên: PNG
     if (hasPng) {
       if (png !== cfg.png) { png = cfg.png; fg.querySelectorAll('img').forEach(node => { node.src = png; }); setState(null); }
