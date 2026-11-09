@@ -86,18 +86,27 @@ input[type=checkbox]{width:auto}
 .aph-photo i{position:absolute;z-index:3;width:16px;height:16px;margin:-8px 0 0 -8px;border:2px solid #fff;border-radius:50%;box-shadow:0 0 0 1px rgba(0,0,0,.45);pointer-events:none}
 .aph-photo em[hidden],.aph-photo i[hidden],.aph-photo>img[hidden]{display:none}
 .aph-photo em{position:absolute;inset:0;display:grid;place-items:center;font-style:normal;font-size:12px;color:#8a897f}
-.aph-fg{position:absolute;inset:0;pointer-events:none;transform-origin:50% 100%}
+.aph-photo{container-type:inline-size}
+.aph-content{position:absolute;inset:0;z-index:1;display:flex;flex-direction:column;box-sizing:border-box;pointer-events:none;white-space:pre-line;overflow-wrap:anywhere}
+.aph-content[hidden]{display:none}
+.aph-fg{position:absolute;inset:0;z-index:2;pointer-events:none;transform-origin:50% 100%}
 .aph-fg[hidden]{display:none}
 .aph-fg img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:50% 100%;display:block}
 .aph-fg .ap-ghost{display:none}
 .aph-photo[data-ap="idle"] .aph-fg img{opacity:0}
+.aph-photo[data-ap="run"] .aph-fg img{filter:grayscale(1) contrast(1.6) brightness(1.05)}
 .aph-photo[data-ap="run"] .aph-fg .ap-ghost{display:block}
 .aph-photo[data-ap="run"] .ap-main{animation:ap-main 1.8s steps(1,end) both}
-.aph-photo[data-ap="run"] .ap-l{animation:ap-l 1.8s steps(1,end) both;filter:drop-shadow(-7px 0 0 rgba(255,32,80,.85))}
-.aph-photo[data-ap="run"] .ap-r{animation:ap-r 1.8s steps(1,end) both;filter:drop-shadow(7px 0 0 rgba(0,210,255,.85))}
-@keyframes ap-l{0%{transform:translateX(-96%);clip-path:inset(0 0 62% 0);opacity:1}10%{transform:translateX(-78%);clip-path:inset(28% 0 40% 0)}20%{transform:translateX(-61%);clip-path:inset(64% 0 6% 0)}30%{transform:translateX(-47%);clip-path:inset(8% 0 52% 0)}42%{transform:translateX(-30%);clip-path:inset(44% 0 18% 0)}54%{transform:translateX(-16%);clip-path:inset(0 0 0 0)}64%{transform:translateX(-9%);clip-path:inset(22% 0 46% 0)}74%{transform:translateX(-4%);clip-path:inset(0 0 0 0)}84%{transform:translateX(-2%);clip-path:inset(58% 0 12% 0)}92%{transform:translateX(0);clip-path:inset(0 0 0 0);opacity:.55}100%{transform:none;clip-path:inset(0 0 0 0);opacity:0}}
-@keyframes ap-r{0%{transform:translateX(96%);clip-path:inset(58% 0 0 0);opacity:1}10%{transform:translateX(80%);clip-path:inset(6% 0 58% 0)}20%{transform:translateX(63%);clip-path:inset(34% 0 30% 0)}30%{transform:translateX(46%);clip-path:inset(70% 0 4% 0)}42%{transform:translateX(31%);clip-path:inset(12% 0 50% 0)}54%{transform:translateX(17%);clip-path:inset(0 0 0 0)}64%{transform:translateX(8%);clip-path:inset(48% 0 16% 0)}74%{transform:translateX(5%);clip-path:inset(0 0 0 0)}84%{transform:translateX(2%);clip-path:inset(14% 0 50% 0)}92%{transform:translateX(0);clip-path:inset(0 0 0 0);opacity:.55}100%{transform:none;clip-path:inset(0 0 0 0);opacity:0}}
-@keyframes ap-main{0%{opacity:0}50%{opacity:0}54%{opacity:1;transform:translateX(5px)}60%{opacity:0}64%{opacity:1;transform:translateX(-4px);clip-path:inset(30% 0 20% 0)}72%{opacity:1;transform:translateX(3px);clip-path:inset(0 0 0 0)}80%{opacity:.6;transform:none}88%{opacity:1;transform:translateX(-2px);clip-path:inset(46% 0 10% 0)}94%{opacity:1;transform:none;clip-path:inset(0 0 0 0)}100%{opacity:1;transform:none;clip-path:inset(0 0 0 0)}}
+.aph-photo[data-ap="run"] .ap-l{animation:ap-l 1.8s steps(1,end) both;filter:grayscale(1) contrast(1.9) brightness(1.4)}
+.aph-photo[data-ap="run"] .ap-r{animation:ap-r 1.8s steps(1,end) both;filter:grayscale(1) contrast(1.9) brightness(.7)}
+.aph-photo[data-ap="run"]::before{content:"";position:absolute;inset:0;z-index:5;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(0,0,0,.6) 0 1px,rgba(0,0,0,0) 1px 3px),linear-gradient(180deg,rgba(255,255,255,0),rgba(255,255,255,.34) 50%,rgba(255,255,255,0));background-size:auto,100% 32%;background-repeat:repeat,no-repeat;background-position:0 0,0 -45%;animation:ap-scan 1.8s steps(1,end) both,ap-roll .6s linear 3}
+.aph-photo[data-ap="run"]::after{content:"";position:absolute;inset:0;z-index:6;pointer-events:none;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1.4 -.45'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:160px 160px;mix-blend-mode:screen;opacity:.5;animation:ap-noise 1.8s steps(1,end) both}
+@keyframes ap-l{0%{transform:translateX(-96%);clip-path:inset(0 0 62% 0);opacity:1;}10%{transform:translateX(-78%);clip-path:inset(28% 0 40% 0);}20%{transform:translateX(-61%);clip-path:inset(64% 0 6% 0);}30%{transform:translateX(-47%);clip-path:inset(8% 0 52% 0);}42%{transform:translateX(-30%);clip-path:inset(44% 0 18% 0);}54%{transform:translateX(-16%);clip-path:inset(0 0 0 0);}64%{transform:translateX(-9%);clip-path:inset(22% 0 46% 0);}74%{transform:translateX(-4%);clip-path:inset(0 0 0 0);}84%{transform:translateX(-2%);clip-path:inset(58% 0 12% 0);}92%{transform:translateX(0);clip-path:inset(0 0 0 0);opacity:.5;}100%{transform:none;clip-path:inset(0 0 0 0);opacity:0;}}
+@keyframes ap-r{0%{transform:translateX(96%);clip-path:inset(58% 0 0 0);opacity:1;}10%{transform:translateX(80%);clip-path:inset(6% 0 58% 0);}20%{transform:translateX(63%);clip-path:inset(34% 0 30% 0);}30%{transform:translateX(46%);clip-path:inset(70% 0 4% 0);}42%{transform:translateX(31%);clip-path:inset(12% 0 50% 0);}54%{transform:translateX(17%);clip-path:inset(0 0 0 0);}64%{transform:translateX(8%);clip-path:inset(48% 0 16% 0);}74%{transform:translateX(5%);clip-path:inset(0 0 0 0);}84%{transform:translateX(2%);clip-path:inset(14% 0 50% 0);}92%{transform:translateX(0);clip-path:inset(0 0 0 0);opacity:.5;}100%{transform:none;clip-path:inset(0 0 0 0);opacity:0;}}
+@keyframes ap-main{0%{opacity:0;}50%{opacity:0;}54%{opacity:1;transform:translateX(5px);}60%{opacity:0;}64%{opacity:1;transform:translateX(-4px);clip-path:inset(30% 0 20% 0);}72%{opacity:1;transform:translateX(3px);clip-path:inset(0 0 0 0);}80%{opacity:.6;transform:none;}86%{opacity:1;transform:translateX(-2px);clip-path:inset(46% 0 10% 0);}90%{opacity:1;transform:none;clip-path:inset(0 0 0 0);filter:grayscale(1) contrast(1.8) brightness(1.4);}93%{filter:grayscale(1) contrast(1.4);}96%{filter:grayscale(1) contrast(1.6) brightness(1.05);}100%{opacity:1;transform:none;clip-path:inset(0 0 0 0);filter:grayscale(1) contrast(1.6) brightness(1.05);}}
+@keyframes ap-scan{0%,100%{opacity:1;}}
+@keyframes ap-roll{0%{background-position:0 0,0 -45%;}100%{background-position:0 0,0 150%;}}
+@keyframes ap-noise{0%{background-position:0 0;opacity:.55;}12%{background-position:-37px 21px;}24%{background-position:52px -33px;}36%{background-position:-11px 64px;}48%{background-position:44px 9px;opacity:.4;}60%{background-position:-60px -18px;}72%{background-position:23px 47px;opacity:.35;}84%{background-position:-29px -52px;opacity:.35;}100%{background-position:0 0;opacity:.35;}}
 .aph-text{grid-row:1;align-self:start;padding-top:2px}
 .aph-text b{display:block;height:7px;width:46%;background:#c9c5ba;margin-bottom:14px}
 .aph-text span{display:block;height:5px;background:#e2dfd6;margin-bottom:8px}
@@ -182,6 +191,28 @@ input[type=checkbox]{width:auto}
 .group-cover-sql summary{cursor:pointer}
 .group-cover-sql code{display:block;margin-top:8px;padding:10px 12px;background:#f5f4ef;border:1px solid var(--line);font-size:11.5px;word-break:break-all;user-select:all}
 @media (max-width:700px){.group-cover-box{grid-template-columns:1fr}}
+/* Kết thúc hiệu ứng ảnh About: (1) ảnh vẫn giữ hiệu ứng tivi cũ (đen trắng, sọc ngang, nhiễu, giật nhẹ trái phải) thêm ~0.7s;
+   (2) vệt sáng mềm quét từ trên xuống: phần đã quét về ảnh gốc (màu thật), phần chưa quét vẫn hiệu ứng tivi; (3) quét hết thì về ảnh gốc hoàn toàn.
+   Cả 3 lớp (.ap-main đen trắng, .ap-col màu gốc, .ap-tv sọc+nhiễu) dùng CHUNG một mặt nạ mờ mép + cùng thời lượng/easing nên luôn khớp vệt sáng.
+   Chỉnh tốc độ: 1.6s (thời gian quét) và .7s (độ trễ giữ hiệu ứng tivi trước khi quét) trong các dòng animation bên dưới. */
+.aph-photo .aph-fg .ap-col, .aph-photo .aph-fg .ap-streak, .aph-photo .aph-fg .ap-tv { display:none; }
+.aph-photo[data-ap="morph"] .aph-fg .ap-main { filter:grayscale(1) contrast(1.6) brightness(1.05); -webkit-mask-image:linear-gradient(180deg, transparent 0, transparent 38%, #000 38.5%, #000 100%); mask-image:linear-gradient(180deg, transparent 0, transparent 38%, #000 38.5%, #000 100%); -webkit-mask-size:100% 300%; mask-size:100% 300%; -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat; will-change:transform, mask-position; animation:ap-tv-shake .5s steps(1, end) infinite, ap-main-out 1.6s cubic-bezier(.37,0,.63,1) .7s both; }
+.aph-photo[data-ap="morph"] .aph-fg .ap-col { display:block; -webkit-mask-image:linear-gradient(180deg, #000 0, #000 38%, transparent 45%, transparent 100%); mask-image:linear-gradient(180deg, #000 0, #000 38%, transparent 45%, transparent 100%); -webkit-mask-size:100% 300%; mask-size:100% 300%; -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat; will-change:mask-position; animation:ap-col-in 1.6s cubic-bezier(.37,0,.63,1) .7s both; }
+.aph-photo[data-ap="morph"] .aph-fg .ap-tv { display:block; position:absolute; inset:0; pointer-events:none; }
+.aph-photo .aph-fg .ap-tv::before, .aph-photo .aph-fg .ap-tv::after { content:""; position:absolute; inset:0; pointer-events:none; -webkit-mask-image:linear-gradient(180deg, transparent 0, transparent 38%, #000 45%, #000 100%); mask-image:linear-gradient(180deg, transparent 0, transparent 38%, #000 45%, #000 100%); -webkit-mask-size:100% 300%; mask-size:100% 300%; -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat; }
+.aph-photo .aph-fg .ap-tv::before { background:repeating-linear-gradient(0deg, rgba(0,0,0,.6) 0 1px, rgba(0,0,0,0) 1px 3px), linear-gradient(180deg, rgba(255,255,255,0), rgba(255,255,255,.3) 50%, rgba(255,255,255,0)); background-size:auto, 100% 32%; background-repeat:repeat, no-repeat; background-position:0 0, 0 -45%; animation:ap-tv-roll .9s linear infinite, ap-tv-mask 1.6s cubic-bezier(.37,0,.63,1) .7s both; }
+.aph-photo .aph-fg .ap-tv::after { background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1.4 -.45'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); background-size:160px 160px; mix-blend-mode:screen; opacity:.35; animation:ap-tv-noise .4s steps(1, end) infinite, ap-tv-mask 1.6s cubic-bezier(.37,0,.63,1) .7s both; }
+/* Vệt sáng: dải mềm (nhiều điểm dừng kiểu chuông) di chuyển bằng transform nên mượt; nằm đúng mép mờ của mặt nạ */
+.aph-photo .aph-fg .ap-streak { position:absolute; left:-4%; right:-4%; top:0; width:auto; height:36%; margin:0; border:0; border-radius:0; box-shadow:none; pointer-events:none; mix-blend-mode:screen; transform:translate3d(0,-79%,0); will-change:transform, opacity; background:linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,.03) 12%, rgba(255,255,255,.12) 24%, rgba(255,255,255,.38) 36%, rgba(255,255,255,.8) 46%, rgba(255,255,255,.95) 50%, rgba(255,255,255,.8) 54%, rgba(255,255,255,.38) 64%, rgba(255,255,255,.12) 76%, rgba(255,255,255,.03) 88%, rgba(255,255,255,0) 100%); }
+.aph-photo[data-ap="morph"] .aph-fg .ap-streak { display:block; animation:ap-streak 1.6s cubic-bezier(.37,0,.63,1) .7s both; }
+@keyframes ap-tv-shake { 0% { transform:translate3d(0,0,0); opacity:1; } 18% { transform:translate3d(.7%,0,0); } 34% { transform:translate3d(-.6%,0,0); opacity:.9; } 46% { transform:translate3d(0,0,0); opacity:1; } 63% { transform:translate3d(-.8%,0,0); } 78% { transform:translate3d(.5%,0,0); opacity:.92; } 90% { transform:translate3d(0,0,0); opacity:1; } }
+@keyframes ap-main-out { from { -webkit-mask-position:0 67.5%; mask-position:0 67.5%; } to { -webkit-mask-position:0 7%; mask-position:0 7%; } }
+@keyframes ap-col-in { from { -webkit-mask-position:0 67.5%; mask-position:0 67.5%; } to { -webkit-mask-position:0 7%; mask-position:0 7%; } }
+@keyframes ap-tv-mask { from { -webkit-mask-position:0 67.5%; mask-position:0 67.5%; } to { -webkit-mask-position:0 7%; mask-position:0 7%; } }
+@keyframes ap-tv-roll { 0% { background-position:0 0, 0 -45%; } 100% { background-position:0 0, 0 150%; } }
+@keyframes ap-tv-noise { 0% { background-position:0 0; } 25% { background-position:-37px 21px; } 50% { background-position:52px -33px; } 75% { background-position:-11px 64px; } }
+@keyframes ap-streak { 0% { transform:translate3d(0,-79%,0); opacity:0; } 8% { opacity:1; } 88% { opacity:1; } 100% { transform:translate3d(0,257%,0); opacity:0; } }
+@media (prefers-reduced-motion:reduce) { .aph-photo[data-ap="morph"] .aph-fg .ap-main, .aph-photo[data-ap="morph"] .aph-fg .ap-col, .aph-photo[data-ap="morph"] .aph-fg .ap-streak, .aph-photo .aph-fg .ap-tv::before, .aph-photo .aph-fg .ap-tv::after { animation:none; } .aph-photo .aph-fg .ap-tv { display:none !important; } }
 </style>
 </head>
 <body>
@@ -364,7 +395,7 @@ input[type=checkbox]{width:auto}
       </div>
       <div class="cms-group">
         <h3>Ảnh lớn phần About me — 2 lớp</h3>
-        <small class="field-help">Khung ảnh lớn cạnh đoạn giới thiệu “A little about me” gồm 2 lớp: <b>lớp dưới</b> là nền chỉnh sửa được (màu, gradient hoặc ảnh) phủ đầy khung; <b>lớp trên</b> là ảnh PNG nền trong suốt. Khi người xem cuộn tới, ảnh PNG hiện ra từ hai bên bằng hiệu ứng glitch, gộp lại ở giữa rồi đứng yên. Phần này tách riêng với avatar nhỏ ở góc trái; chưa cài gì thì website dùng ảnh avatar như trước.</small>
+        <small class="field-help">Khung ảnh lớn cạnh đoạn giới thiệu “A little about me” gồm 2 lớp: <b>lớp dưới</b> là nền chỉnh sửa được (màu, gradient hoặc ảnh) phủ đầy khung; <b>lớp trên</b> là ảnh PNG nền trong suốt. Khi người xem cuộn tới, ảnh PNG hiện ra từ hai bên bằng hiệu ứng glitch đen trắng sọc ngang như tivi cũ, gộp lại ở giữa rồi đứng yên. Phần này tách riêng với avatar nhỏ ở góc trái; chưa cài gì thì website dùng ảnh avatar như trước.</small>
         <label class="aph-check"><input type="checkbox" id="aphShow" checked> Hiển thị ảnh lớn ở phần About</label>
         <div class="aph-grid">
           <div><label>Vị trí khung (máy tính)</label><select id="aphSide"><option value="left">Bên trái chữ</option><option value="right">Bên phải chữ</option></select></div>
@@ -374,8 +405,8 @@ input[type=checkbox]{width:auto}
         </div>
 
         <div class="aph-layer">
-          <h4>Lớp dưới — nội dung chỉnh sửa (nền khung)</h4>
-          <small>Hiện đầy khung avatar, nằm phía sau ảnh PNG.</small>
+          <h4>Lớp dưới — nền khung</h4>
+          <small>Hiện đầy khung avatar, nằm phía sau ảnh PNG. Nội dung chữ điền ở mục ngay bên dưới.</small>
           <div class="aph-grid">
             <div><label>Loại nền</label><select id="aphBgMode"><option value="color">Màu / Gradient</option><option value="image">Ảnh</option></select></div>
           </div>
@@ -399,8 +430,27 @@ input[type=checkbox]{width:auto}
         </div>
 
         <div class="aph-layer">
+          <h4>Lớp dưới — nội dung chữ trong khung</h4>
+          <small>Chữ bạn điền sẽ nằm trong khung, phía sau ảnh PNG (ví dụ tên, nghề nghiệp, câu slogan cỡ lớn). Để trống nếu không cần.</small>
+          <label>Nội dung (xuống dòng để tách dòng)</label>
+          <textarea id="aphTxt" rows="4" maxlength="600" placeholder="PHAM DUONG&#10;Graphic Designer"></textarea>
+          <div class="aph-grid">
+            <div><label>Kích cỡ chữ</label><div class="aph-range"><input type="range" id="aphTxtSize" min="12" max="240" step="1" value="64"><output id="aphTxtSizeOut">64</output></div></div>
+            <div><label>Màu chữ</label><input type="color" id="aphTxtColor" value="#ffffff"></div>
+            <div><label>Căn ngang</label><select id="aphTxtAlign"><option value="left">Trái</option><option value="center" selected>Giữa</option><option value="right">Phải</option></select></div>
+            <div><label>Vị trí dọc</label><select id="aphTxtV"><option value="top">Trên</option><option value="center" selected>Giữa</option><option value="bottom">Dưới</option></select></div>
+            <div><label>Kiểu font</label><select id="aphTxtFont"><option value="heading" selected>Font tiêu đề của website</option><option value="body">Font nội dung của website</option><option value="mono">Mono (DM Mono)</option></select></div>
+            <div><label>Độ đậm</label><select id="aphTxtWeight"><option value="400">Regular</option><option value="500">Medium</option><option value="700" selected>Bold</option><option value="900">Black</option></select></div>
+            <div><label>Khoảng cách chữ</label><div class="aph-range"><input type="range" id="aphTxtTrack" min="-10" max="40" step="1" value="0"><output id="aphTxtTrackOut">0</output></div></div>
+            <div><label>Khoảng cách dòng</label><div class="aph-range"><input type="range" id="aphTxtLine" min="70" max="200" step="1" value="100"><output id="aphTxtLineOut">100%</output></div></div>
+            <div><label>Lề trong khung</label><div class="aph-range"><input type="range" id="aphTxtPad" min="0" max="30" step="1" value="8"><output id="aphTxtPadOut">8%</output></div></div>
+          </div>
+          <label class="aph-check"><input type="checkbox" id="aphTxtUpper"> IN HOA toàn bộ</label>
+        </div>
+
+        <div class="aph-layer">
           <h4>Lớp trên — ảnh PNG</h4>
-          <small>Ảnh chân dung tách nền (PNG trong suốt) đứng ở giữa khung, đáy ảnh chạm đáy khung. Hiệu ứng glitch chạy trên lớp này.</small>
+          <small>Ảnh chân dung tách nền (PNG trong suốt) đứng ở giữa khung, đáy ảnh chạm đáy khung. Hiệu ứng glitch đen trắng kiểu tivi cũ chạy trên lớp này, kết thúc bằng một vệt sáng quét từ trên xuống: chạy tới đâu ảnh về màu gốc tới đó.</small>
           <label>Ảnh PNG</label>
           <input id="aboutPngFile" type="file" accept="image/png,image/webp">
           <div class="aph-grid">
@@ -414,7 +464,7 @@ input[type=checkbox]{width:auto}
         </div>
 
         <div class="aph-stage" id="aphStage" aria-label="Xem trước bố cục phần About">
-          <div class="aph-photo" id="aphPhoto" data-ap="done" title="Bấm vào khung để chọn điểm lấy nét (khi dùng ảnh nền)"><img id="aphImg" alt="" hidden><div class="aph-fg" id="aphFg" hidden><img class="ap-main" alt=""><img class="ap-ghost ap-l" alt="" aria-hidden="true"><img class="ap-ghost ap-r" alt="" aria-hidden="true"></div><em id="aphEmpty">Chưa có ảnh</em><i id="aphDot" hidden></i></div>
+          <div class="aph-photo" id="aphPhoto" data-ap="done" title="Bấm vào khung để chọn điểm lấy nét (khi dùng ảnh nền)"><img id="aphImg" alt="" hidden><div class="aph-content" id="aphContent" hidden></div><div class="aph-fg" id="aphFg" hidden><img class="ap-main" alt=""><img class="ap-ghost ap-l" alt="" aria-hidden="true"><img class="ap-ghost ap-r" alt="" aria-hidden="true"><img class="ap-col" alt="" aria-hidden="true"><span class="ap-tv" aria-hidden="true"></span><i class="ap-streak" aria-hidden="true"></i></div><em id="aphEmpty">Chưa có ảnh</em><i id="aphDot" hidden></i></div>
           <div class="aph-text" id="aphText"><b></b><span></span><span></span><span></span><span></span><span></span><span></span></div>
         </div>
         <div class="aph-note">Xem trước đã đơn giản hóa bố cục thật. Bấm “Lưu ảnh & vị trí” để áp dụng lên website.</div>
@@ -1289,7 +1339,7 @@ $('heroFrameImg').addEventListener('load', paintFrameRect);
 
 // ===== Ảnh lớn phần About me — 2 lớp (cột about_photo, dạng JSON) =====
 // show, side, align, width, mobile | lớp dưới: bgMode('color'|'image'), bgColor, bgColor2, bgAngle, url, fx, fy | lớp trên: png, pngScale, pngX, pngY, glitch, replay
-const APH_DEFAULT = { show:true, side:'left', align:'start', width:460, mobile:'top', bgMode:'color', bgColor:'#e5e0d5', bgColor2:'', bgAngle:160, fx:50, fy:25, pngScale:100, pngX:0, pngY:0, glitch:true, replay:false };
+const APH_DEFAULT = { txt:'', txtSize:64, txtColor:'#ffffff', txtAlign:'center', txtV:'center', txtFont:'heading', txtWeight:700, txtTrack:0, txtLine:100, txtPad:8, txtCase:'normal', show:true, side:'left', align:'start', width:460, mobile:'top', bgMode:'color', bgColor:'#e5e0d5', bgColor2:'', bgAngle:160, fx:50, fy:25, pngScale:100, pngX:0, pngY:0, glitch:true, replay:false };
 let aphUrl = '', aphPng = '';           // ảnh đã lưu (nền / PNG)
 let aphObjUrl = '', aphPngObj = '';     // ảnh vừa chọn, chưa lưu
 let aphTimer = 0;
@@ -1312,7 +1362,18 @@ function aphRead() {
     pngX: aphNum($('aphPngX').value, -60, 60, 0),
     pngY: aphNum($('aphPngY').value, -60, 60, 0),
     glitch: $('aphGlitch').checked,
-    replay: $('aphReplay').checked
+    replay: $('aphReplay').checked,
+    txt: $('aphTxt').value.slice(0, 600),
+    txtSize: aphNum($('aphTxtSize').value, 12, 240, 64),
+    txtColor: aphHex($('aphTxtColor').value, '#ffffff'),
+    txtAlign: ['left','center','right'].includes($('aphTxtAlign').value) ? $('aphTxtAlign').value : 'center',
+    txtV: ['top','center','bottom'].includes($('aphTxtV').value) ? $('aphTxtV').value : 'center',
+    txtFont: ['heading','body','mono'].includes($('aphTxtFont').value) ? $('aphTxtFont').value : 'heading',
+    txtWeight: [400,500,700,900].includes(Number($('aphTxtWeight').value)) ? Number($('aphTxtWeight').value) : 700,
+    txtTrack: aphNum($('aphTxtTrack').value, -10, 40, 0),
+    txtLine: aphNum($('aphTxtLine').value, 70, 200, 100),
+    txtPad: aphNum($('aphTxtPad').value, 0, 30, 8),
+    txtCase: $('aphTxtUpper').checked ? 'upper' : 'normal'
   };
 }
 function aphPaint() {
@@ -1331,18 +1392,24 @@ function aphPaint() {
   photo.style.background = c.bgMode === 'color' ? (c.bgColor2 ? 'linear-gradient(' + c.bgAngle + 'deg, ' + c.bgColor + ', ' + c.bgColor2 + ')' : c.bgColor) : '#e5e0d5';
   if (bgImg) { if (img.getAttribute('src') !== bgImg) img.src = bgImg; img.hidden = false; img.style.objectPosition = c.fx + '% ' + c.fy + '%'; } else img.hidden = true;
   $('aphDot').hidden = !bgImg; $('aphDot').style.left = c.fx + '%'; $('aphDot').style.top = c.fy + '%';
+  // lớp dưới: nội dung chữ
+  const ct = $('aphContent'), AL = { left:'flex-start', center:'center', right:'flex-end' }, VL = { top:'flex-start', center:'center', bottom:'flex-end' };
+  const FONTS = { heading:"'Helvetica Neue', Arial, sans-serif", body:"'Inter', sans-serif", mono:"'DM Mono', monospace" };
+  ct.hidden = !c.txt.trim(); ct.textContent = c.txt;
+  Object.assign(ct.style, { padding:c.txtPad + '%', color:c.txtColor, fontFamily:FONTS[c.txtFont], fontWeight:c.txtWeight, fontSize:'calc(' + c.txtSize + ' / 460 * 100cqw)', lineHeight:c.txtLine / 100, letterSpacing:(c.txtTrack / 100) + 'em', textTransform:c.txtCase === 'upper' ? 'uppercase' : 'none', textAlign:c.txtAlign, alignItems:AL[c.txtAlign], justifyContent:VL[c.txtV] });
+  $('aphTxtSizeOut').textContent = c.txtSize; $('aphTxtTrackOut').textContent = c.txtTrack; $('aphTxtLineOut').textContent = c.txtLine + '%'; $('aphTxtPadOut').textContent = c.txtPad + '%';
   // lớp trên
   const pngSrc = aphPngObj || aphPng || '';
   if (pngSrc) { fg.querySelectorAll('img').forEach(n => { if (n.getAttribute('src') !== pngSrc) n.src = pngSrc; }); fg.hidden = false; }
   else fg.hidden = true;
   fg.style.transform = 'translate(' + c.pngX + '%, ' + c.pngY + '%) scale(' + (c.pngScale / 100) + ')';
-  $('aphEmpty').hidden = !!(bgImg || pngSrc || c.bgMode === 'color');
+  $('aphEmpty').hidden = !!(bgImg || pngSrc || c.bgMode === 'color' || c.txt.trim());
 }
 function aphPlay() {
   const photo = $('aphPhoto'); clearTimeout(aphTimer);
   if (!($('aphFg').hidden === false)) return;
   photo.dataset.ap = 'idle'; void photo.offsetWidth; photo.dataset.ap = 'run';
-  aphTimer = setTimeout(() => { photo.dataset.ap = 'done'; }, 1950);
+  aphTimer = setTimeout(() => { photo.dataset.ap = 'morph'; aphTimer = setTimeout(() => { photo.dataset.ap = 'done'; }, 2400); }, 1850); // glitch 1.8s -> giữ hiệu ứng tivi .7s + vệt sáng quét 1.6s -> đứng yên
 }
 function fillAboutPhoto(cfg) {
   const saved = (cfg && typeof cfg === 'object') ? cfg : {};
@@ -1365,9 +1432,17 @@ function fillAboutPhoto(cfg) {
   $('aphPngScale').value = aphNum(c.pngScale, 30, 200, 100);
   $('aphPngX').value = aphNum(c.pngX, -60, 60, 0); $('aphPngY').value = aphNum(c.pngY, -60, 60, 0);
   $('aphGlitch').checked = c.glitch !== false; $('aphReplay').checked = c.replay === true;
+  $('aphTxt').value = typeof saved.txt === 'string' ? saved.txt : '';
+  $('aphTxtSize').value = aphNum(c.txtSize, 12, 240, 64); $('aphTxtColor').value = aphHex(c.txtColor, '#ffffff');
+  $('aphTxtAlign').value = ['left','center','right'].includes(c.txtAlign) ? c.txtAlign : 'center';
+  $('aphTxtV').value = ['top','center','bottom'].includes(c.txtV) ? c.txtV : 'center';
+  $('aphTxtFont').value = ['heading','body','mono'].includes(c.txtFont) ? c.txtFont : 'heading';
+  $('aphTxtWeight').value = [400,500,700,900].includes(Number(c.txtWeight)) ? String(c.txtWeight) : '700';
+  $('aphTxtTrack').value = aphNum(c.txtTrack, -10, 40, 0); $('aphTxtLine').value = aphNum(c.txtLine, 70, 200, 100); $('aphTxtPad').value = aphNum(c.txtPad, 0, 30, 8);
+  $('aphTxtUpper').checked = c.txtCase === 'upper';
   aphPaint();
 }
-['aphShow','aphSide','aphAlign','aphMobile','aphWidth','aphBgMode','aphBg1','aphBg2','aphUseGrad','aphAngle','aphFx','aphFy','aphPngScale','aphPngX','aphPngY','aphGlitch','aphReplay'].forEach(id => $(id).addEventListener('input', aphPaint));
+['aphTxt','aphTxtSize','aphTxtColor','aphTxtAlign','aphTxtV','aphTxtFont','aphTxtWeight','aphTxtTrack','aphTxtLine','aphTxtPad','aphTxtUpper','aphShow','aphSide','aphAlign','aphMobile','aphWidth','aphBgMode','aphBg1','aphBg2','aphUseGrad','aphAngle','aphFx','aphFy','aphPngScale','aphPngX','aphPngY','aphGlitch','aphReplay'].forEach(id => $(id).addEventListener('input', aphPaint));
 $('aboutPhotoFile').addEventListener('change', () => { const f = $('aboutPhotoFile').files[0]; aphObjUrl = f ? URL.createObjectURL(f) : ''; aphPaint(); });
 $('aboutPngFile').addEventListener('change', () => { const f = $('aboutPngFile').files[0]; aphPngObj = f ? URL.createObjectURL(f) : ''; aphPaint(); aphPlay(); });
 $('aphPhoto').addEventListener('pointerdown', event => {
