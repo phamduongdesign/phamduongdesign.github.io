@@ -593,6 +593,17 @@ p.ib-p { font-size:17px; line-height:1.9; opacity:.88; }
 .flip.is-full .flip-ar { position:absolute; top:50%; transform:translateY(-50%); width:44px; height:44px; pointer-events:auto; background:rgba(20,20,18,.55); color:#fff; border-color:transparent; }
 .flip.is-full .flip-ar:first-child { left:max(10px, env(safe-area-inset-left)); }
 .flip.is-full .flip-ar:last-child { right:max(10px, env(safe-area-inset-right)); }
+
+/* Chế độ tối (trang chi tiết dự án nằm trên nền tối): nút chọn dự án trong Editorial (TSVN, Magazine Layout...) và nút chọn cỡ sách S/M/L.
+   Chưa chọn = chữ + viền khung xám trắng dịu; đang chọn = bỏ viền, đổ mực trắng, chữ theo màu nền tối. Hiệu ứng đổ mực khi rê/chạm cũng đổi sang mực trắng, chữ tối. Chế độ sáng giữ nguyên. */
+@media (prefers-color-scheme: dark) {
+  /* Chưa chọn / chưa rê chuột: chữ và viền xám trắng dịu cho sang; rê chuột thì đổ mực trắng, chữ tối */
+  .flip-issues { --issue-fg:#bdb9ae; --issue-line:rgba(189,185,174,.52); --issue-line-on:transparent; }
+  html:root .flip-tools .flip-tool:not(.on):not(:hover):not(:focus-visible) { color:#bdb9ae; border-color:rgba(189,185,174,.52); }
+  .flip-issues .filter.issue, .flip-tools .flip-tool { --liq-bg:#f4f0e8; --liq-fg:#20201d; }
+  html:root .flip-issues .filter.issue.active, html:root .flip-issues .filter.issue.active:hover, html:root .flip-issues .filter.issue.active[data-liq-hold], html:root .flip-issues .filter.issue.active[data-liq-ink] { background:#f4f0e8; color:#20201d; border-color:transparent; }
+  html:root .flip-tools .flip-tool.on, html:root .flip-tools .flip-tool.on:hover { background:#f4f0e8; color:#20201d; border-color:transparent; }
+}
 </style>
 </head>
 <body>
