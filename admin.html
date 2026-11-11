@@ -230,6 +230,66 @@ input[type=checkbox]{width:auto}
 .info-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:8px; }
 .info-grid label { font-size:12px; margin:0 0 3px; }
 .info-list.auto .adv { display:none; }
+.info-bg { margin:10px 0 12px; padding:10px 12px; border:1px solid var(--line, #ddd8cd); border-radius:8px; background:#fff; }
+.info-bgrow { display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin:6px 0 8px; }
+.info-bgrow input[type=color] { width:56px; height:44px; padding:2px; border:1px solid var(--line, #bbb); border-radius:8px; background:#fff; cursor:pointer; }
+.info-bgrow input[type=text] { width:110px; font-variant-numeric:tabular-nums; text-transform:lowercase; }
+.info-bgsample { padding:10px 16px; border:1px solid rgba(0,0,0,.15); border-radius:8px; font-size:13px; }
+.info-swatches { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:6px; }
+.info-sw { width:34px; height:34px; padding:0; border:1px solid rgba(0,0,0,.2); border-radius:50%; cursor:pointer; }
+.info-sw.on { outline:2px solid #1a1a1a; outline-offset:2px; }
+.info-type { margin:10px 0; padding:10px 12px; border:1px solid var(--line, #ddd8cd); border-radius:8px; background:#fff; }
+.info-type summary { cursor:pointer; font-size:13px; font-weight:600; }
+.info-tbody { display:grid; gap:10px; margin-top:10px; }
+.info-tcard { border:1px solid var(--line, #ddd8cd); border-radius:8px; padding:10px; }
+.info-rout { font-variant-numeric:tabular-nums; font-weight:600; }
+.info-tcard input[type=range] { width:100%; }
+/* ===== Bảng Character / Paragraph kiểu Photoshop ===== */
+.ps { margin-top:10px; background:#2f2f2f; border:1px solid #1b1b1b; border-radius:8px; overflow:hidden; color:#d9d9d9; font:12px/1.3 Inter,Arial,sans-serif; }
+.ps button, .ps input, .ps select { font:inherit; border-radius:3px; }
+.ps-sample { margin:10px 10px 0; padding:14px 16px; border-radius:4px; background:#fff; color:#161614; max-height:190px; overflow:auto; }
+.ps-sample .ib-t { margin-left:0; margin-right:0; }
+.ps-samplecap { margin:6px 12px 0; color:#8d8d8d; font-size:11px; }
+.ps-styles { display:flex; gap:4px; padding:8px 8px 0; background:#252525; flex-wrap:wrap; }
+.ps-styles button { padding:6px 12px; border:1px solid #1a1a1a; border-bottom:0; border-radius:4px 4px 0 0; background:#303030; color:#a8a8a8; }
+.ps-styles button.on { background:#383838; color:#fff; box-shadow:inset 0 2px 0 #2d8ceb; }
+.ps-tabs { display:flex; align-items:center; background:#252525; border-bottom:1px solid #1a1a1a; padding-top:4px; }
+.ps-tab { padding:7px 16px; border:0; border-top:2px solid transparent; background:none; color:#9a9a9a; letter-spacing:.02em; }
+.ps-tab.on { background:#383838; color:#fff; border-top-color:#2d8ceb; }
+.ps-reset { margin:0 8px 0 auto; padding:4px 10px; border:1px solid #1a1a1a; background:#3d3d3d; color:#cfcfcf; }
+.ps-reset:hover { background:#4a4a4a; }
+.ps-body { padding:12px; background:#383838; display:grid; gap:9px; }
+.ps-row { display:flex; gap:8px; align-items:center; }
+.ps-row > * { flex:1 1 0; min-width:0; }
+.ps-row > .ps-grow2 { flex:2 1 0; }
+.ps-f { display:flex; align-items:center; gap:4px; height:28px; padding-right:6px; background:#262626; border:1px solid #1b1b1b; border-radius:3px; }
+.ps-f:focus-within { border-color:#2d8ceb; }
+.ps-ico { flex:none; width:30px; height:100%; display:flex; align-items:center; justify-content:center; color:#9d9d9d; font-size:11px; font-weight:600; cursor:ew-resize; user-select:none; touch-action:none; }
+.ps-ico:hover { color:#fff; }
+.ps .ps-f input[type=number] { width:100%; min-width:0; padding:0 2px; border:0; background:transparent; color:#eee; text-align:right; outline:0; -moz-appearance:textfield; }
+.ps .ps-f input[type=number]::-webkit-outer-spin-button, .ps .ps-f input[type=number]::-webkit-inner-spin-button { -webkit-appearance:none; margin:0; }
+.ps-unit { flex:none; color:#8d8d8d; font-size:11px; min-width:16px; }
+.ps select { width:100%; height:28px; padding:0 8px; border:1px solid #1b1b1b; background:#262626; color:#eee; }
+.ps select:focus { outline:0; border-color:#2d8ceb; }
+.ps-sub { margin:2px 0 -2px; padding-top:8px; border-top:1px solid #2a2a2a; color:#a8a8a8; font-size:11px; text-transform:uppercase; letter-spacing:.08em; }
+.ps-ax { display:grid; grid-template-columns:150px 1fr 44px; gap:10px; align-items:center; }
+.ps-ax span:first-child { color:#bdbdbd; }
+.ps-ax output { text-align:right; color:#eee; font-variant-numeric:tabular-nums; }
+.ps .ps-ax input[type=range] { width:100%; padding:0; border:0; background:transparent; accent-color:#2d8ceb; }
+.ps-faux { display:flex; gap:4px; }
+.ps-faux button, .ps-al button { flex:1 1 0; height:28px; padding:0; border:1px solid #1b1b1b; background:#2b2b2b; color:#cfcfcf; }
+.ps-faux button:hover, .ps-al button:hover { background:#444; }
+.ps-faux button.on, .ps-al button.on { background:#2d8ceb; border-color:#2d8ceb; color:#fff; }
+.ps-al { display:flex; gap:4px; }
+.ps-al svg { display:block; margin:auto; width:18px; height:18px; fill:currentColor; }
+.ps-al .ps-gap { flex:0 0 8px; background:none; border:0; pointer-events:none; }
+.ps-color { display:flex; align-items:center; gap:6px; }
+.ps .ps-color input[type=color] { width:40px; height:28px; padding:1px; border:1px solid #1b1b1b; background:#262626; cursor:pointer; }
+.ps .ps-color input[type=text] { flex:1; min-width:0; height:28px; padding:0 8px; border:1px solid #1b1b1b; background:#262626; color:#eee; text-transform:lowercase; }
+.ps-color button { height:28px; padding:0 9px; border:1px solid #1b1b1b; background:#2b2b2b; color:#cfcfcf; }
+.ps-check { display:flex; align-items:center; gap:8px; margin:0; font-weight:400; color:#d9d9d9; }
+.ps-hint { margin:0; color:#8d8d8d; font-size:11px; line-height:1.5; }
+@media (max-width:560px) { .ps-ax { grid-template-columns:1fr 44px; } .ps-ax span:first-child { grid-column:1 / -1; } }
 .info-list .col-only { display:none; } .info-list.auto.mag .col-only { display:block; }
 .info-prev.grid6 { display:grid; grid-template-columns:repeat(6, minmax(0, 1fr)); gap:10px; max-width:640px; }
 .info-prev.grid6 img { display:block; width:100%; height:auto; }
@@ -723,6 +783,17 @@ input[type=checkbox]{width:auto}
           <label class="aph-check"><input type="radio" name="infoMode" value="custom"> Tự điều chỉnh — tự sắp xếp ảnh và chữ: chiều rộng, căn lề, khoảng cách, chú thích, đoạn chữ (giống bố cục một bài báo dài)</label>
         </div>
         <small class="upload-note" id="infoNote">Trang chi tiết Infographic hiển thị trong <strong>cột hẹp khoảng 760 px</strong>, hai bên chừa nhiều khoảng trống. Tải ảnh theo đúng thứ tự muốn đọc (ảnh dọc dài vẫn giữ nguyên tỷ lệ). Ảnh mới được tải lên khi bạn bấm Lưu dự án.</small>
+        <div class="info-bg">
+          <label>Màu nền trang chi tiết</label>
+          <div class="info-bgrow">
+            <input type="color" id="infoBgColor" value="#ffffff" aria-label="Chọn màu nền">
+            <input type="text" id="infoBgHex" maxlength="7" placeholder="Mặc định" spellcheck="false" aria-label="Mã màu hex">
+            <span id="infoBgSample" class="info-bgsample">Aa — chữ mẫu</span>
+            <button type="button" class="btn secondary" id="infoBgReset">Mặc định theo website</button>
+          </div>
+          <div class="info-swatches" id="infoBgSwatches" role="group" aria-label="Màu gợi ý"></div>
+          <small class="upload-note">Bấm ô màu để chọn bất kỳ màu nào, hoặc gõ mã hex, hoặc chọn nhanh một màu gợi ý. Chữ tự đổi sáng/tối theo độ sáng của nền. Nền phủ kín bề ngang trang của bài này.</small>
+        </div>
         <input id="infoFiles" type="file" accept="image/*" multiple>
         <div id="infoTools" class="info-tools" hidden>
           <button type="button" class="btn secondary" data-add="h2">+ Tiêu đề</button>
@@ -730,6 +801,11 @@ input[type=checkbox]{width:auto}
           <button type="button" class="btn secondary" data-add="quote">+ Trích dẫn</button>
           <button type="button" class="btn secondary" data-add="note">+ Ghi chú nhỏ</button>
         </div>
+        <details id="infoType" class="info-type" hidden>
+          <summary>Kiểu chữ — bảng Character &amp; Paragraph (giống Photoshop) cho Tiêu đề / Đoạn văn / Trích dẫn / Ghi chú nhỏ</summary>
+          <small class="upload-note">Chọn kiểu chữ ở thanh trên cùng, rồi chỉnh trong <strong>Character</strong> (font, variation, cỡ chữ, giãn dòng, giãn chữ, màu, nghiêng, gạch chân, chữ hoa…) và <strong>Paragraph</strong> (căn lề, thụt lề, khoảng cách trước/sau đoạn). Kéo ngang trên biểu tượng nhỏ bên trái ô số để tăng/giảm giá trị như Photoshop. Font được tải từ Google Fonts khi người xem mở bài.</small>
+          <div id="infoTypeBody" class="info-tbody"></div>
+        </details>
         <div id="infoList" class="info-list"></div>
         <div class="bp-title" style="margin-top:14px">Xem trước (cột hẹp như trên website)</div>
         <div id="infoPreview" class="info-prev"></div>
@@ -1806,7 +1882,7 @@ async function uploadGalleryImage(file) {
 
 
 /* ===== Infographic: trình sắp xếp bố cục (tự động / tự điều chỉnh). Lưu trong gallery_images: {type:'layout', mode}, ảnh {url,width,align,caption,gap}, chữ {type:'text',style,text,align,gap} ===== */
-let infoBlocks = [], infoMode = 'auto';
+let infoBlocks = [], infoMode = 'auto', infoFonts = {}, infoBg = '';
 const isInfoForm = () => ['infographic', 'emagazine'].includes($('category').value); // eMagazine dùng chung trình sắp xếp bố cục với Infographic
 const isMagForm = () => $('category').value === 'emagazine';
 const INFO_GAP = { s:'16px', m:'36px', l:'72px' };
@@ -1814,12 +1890,12 @@ const infoPick = (value, list, dflt) => list.includes(value) ? value : dflt;
 function infoImg(e) { return { type:'image', columns:[1, 2, 3].includes(Number(e.columns)) ? Number(e.columns) : (isMagForm() ? 3 : 1), url:e.url || '', file:e.file || null, prev:e.prev || '', w:Number(e.w) || 0, h:Number(e.h) || 0, width:infoPick(e.width, ['narrow','col','wide','half'], 'col'), align:infoPick(e.align, ['left','center','right'], 'center'), caption:String(e.caption || ''), gap:infoPick(e.gap, ['s','m','l'], 's') }; }
 function infoLoad(list) {
   infoBlocks.forEach(b => { if (b.prev) URL.revokeObjectURL(b.prev); });
-  infoBlocks = []; infoMode = 'auto';
+  infoBlocks = []; infoMode = 'auto'; infoFonts = {}; infoBg = '';
   (Array.isArray(list) ? list : []).forEach(e => {
     if (typeof e === 'string') { infoBlocks.push(infoImg({url:e})); return; }
     if (!e || typeof e !== 'object') return;
-    if (e.type === 'layout') { infoMode = e.mode === 'custom' ? 'custom' : 'auto'; return; }
-    if (e.type === 'text') { infoBlocks.push({type:'text', style:infoPick(e.style, ['h2','p','quote','note'], 'p'), text:String(e.text || ''), align:infoPick(e.align, ['left','center','right','justify'], 'left'), gap:infoPick(e.gap, ['s','m','l'], 'm')}); return; }
+    if (e.type === 'layout') { infoMode = e.mode === 'custom' ? 'custom' : 'auto'; infoFonts = infoCleanFonts(e.fonts); infoBg = infoCleanBg(e.bg); return; }
+    if (e.type === 'text') { infoBlocks.push({type:'text', style:infoPick(e.style, ['h2','p','quote','note'], 'p'), text:String(e.text || ''), align:infoPick(e.align, ['','left','center','right','justify'], 'left'), gap:infoPick(e.gap, ['s','m','l'], 'm')}); return; }
     const url = e.url || e.src || e.image_url || ''; if (url) infoBlocks.push(infoImg(Object.assign({}, e, {url})));
   });
 }
@@ -1838,7 +1914,8 @@ async function infoSaveNote(id, list) {
   return { text:' Đã lưu ' + want + ' ảnh trong bố cục.', warn:false };
 }
 async function infoSerialize() {
-  const out = [{type:'layout', mode:infoMode}];
+  const layout = {type:'layout', mode:infoMode}, fonts = infoCleanFonts(infoFonts); if (Object.keys(fonts).length) layout.fonts = fonts; if (infoCleanBg(infoBg)) layout.bg = infoCleanBg(infoBg);
+  const out = [layout];
   for (const b of infoBlocks) {
     if (b.type === 'text') { if (b.text.trim()) out.push({type:'text', style:b.style, text:b.text, align:b.align, gap:b.gap}); continue; }
     const url = b.file ? await uploadGalleryImage(b.file) : b.url; if (!url) continue;
@@ -1860,18 +1937,243 @@ function infoBuildDom(blocks, custom, box) {
     if (b.type === 'text') {
       if (!custom || !b.text.trim()) continue;
       const el = document.createElement(b.style === 'h2' ? 'h2' : b.style === 'quote' ? 'blockquote' : 'p');
-      el.className = 'ib-t ib-' + b.style; el.textContent = b.text; el.style.textAlign = b.align; el.style.setProperty('--ib-g', INFO_GAP[b.gap]); box.appendChild(el); continue;
+      el.className = 'ib-t ib-' + b.style; el.textContent = b.text; infoSetAlign(el, b.align, infoFonts[b.style]); el.style.setProperty('--ib-g', INFO_GAP[b.gap]); infoApplyFont(el, infoFonts[b.style], .7); box.appendChild(el); continue;
     }
     const half = custom && b.width === 'half', next = blocks[i + 1];
     if (half && next && next.type === 'image' && next.width === 'half') { const row = document.createElement('div'); row.className = 'ib-row'; row.style.setProperty('--ib-g', INFO_GAP[next.gap]); row.append(figure(b, 'half'), figure(next, 'half')); box.appendChild(row); i++; continue; }
     const fig = figure(b, half ? 'narrow' : ''); fig.style.setProperty('--ib-g', INFO_GAP[custom ? b.gap : 's']); box.appendChild(fig);
   }
 }
+/* ===== Font variable cho khối chữ eMagazine / Infographic: font, trục variation (wght, wdth, slnt, opsz...), cỡ chữ, giãn dòng, giãn chữ. Lưu trong mục layout của gallery_images: fonts = { h2:{family,axes,size,lh,ls}, p:{...}, quote:{...}, note:{...} } ===== */
+const INFO_FONTS = {
+  '': { axes:[['wght', 100, 900]] },
+  'Inter': { axes:[['opsz', 14, 32], ['wght', 100, 900]] },
+  'Roboto Flex': { axes:[['opsz', 8, 144], ['slnt', -10, 0], ['wdth', 25, 151], ['wght', 100, 1000]] },
+  'Open Sans': { axes:[['wdth', 75, 100], ['wght', 300, 800]] },
+  'Archivo': { axes:[['wdth', 62, 125], ['wght', 100, 900]] },
+  'Bricolage Grotesque': { axes:[['opsz', 12, 96], ['wdth', 75, 100], ['wght', 200, 800]] },
+  'Fraunces': { axes:[['opsz', 9, 144], ['wght', 100, 900], ['SOFT', 0, 100], ['WONK', 0, 1]] },
+  'Playfair Display': { axes:[['wght', 400, 900]] },
+  'Cormorant Garamond': { axes:[['wght', 300, 700]] },
+  'DM Sans': { axes:[['opsz', 9, 40], ['wght', 100, 1000]] },
+  'Manrope': { axes:[['wght', 200, 800]] },
+  'Source Serif 4': { axes:[['opsz', 8, 60], ['wght', 200, 900]] }
+};
+function infoLoadFont(family) {
+  const f = INFO_FONTS[family]; if (!family || !f) return;
+  const id = 'infofont-' + family.replace(/\W+/g, '-'); if (document.getElementById(id)) return;
+  const axes = f.axes.slice().sort((a, b) => { const la = a[0] === a[0].toLowerCase(), lb = b[0] === b[0].toLowerCase(); return la === lb ? (a[0] < b[0] ? -1 : 1) : (la ? -1 : 1); }); // Google Fonts: trục chữ thường trước, chữ hoa sau
+  const link = document.createElement('link'); link.id = id; link.rel = 'stylesheet';
+  link.href = 'https://fonts.googleapis.com/css2?family=' + family.replace(/ /g, '+') + ':' + axes.map(a => a[0]).join(',') + '@' + axes.map(a => a[1] + '..' + a[2]).join(',') + '&display=swap';
+  document.head.appendChild(link);
+}
+function infoCleanFonts(raw) {
+  const out = {}; if (!raw || typeof raw !== 'object') return out;
+  const num = (v, lo, hi) => (v === undefined || v === null || v === '' || !Number.isFinite(Number(v))) ? undefined : Math.min(hi, Math.max(lo, Number(v)));
+  const hex = v => { v = String(v || '').trim().toLowerCase(); if (/^#[0-9a-f]{3}$/.test(v)) v = '#' + v[1] + v[1] + v[2] + v[2] + v[3] + v[3]; return /^#[0-9a-f]{6}$/.test(v) ? v : ''; };
+  ['h2', 'p', 'quote', 'note'].forEach(k => {
+    const c = raw[k]; if (!c || typeof c !== 'object') return;
+    const fam = (typeof c.family === 'string' && c.family && INFO_FONTS[c.family]) ? c.family : '', f = INFO_FONTS[fam], o = {};
+    if (fam) o.family = fam;
+    const ax = {}; if (c.axes && typeof c.axes === 'object') f.axes.forEach(([t, lo, hi]) => { const v = num(c.axes[t], lo, hi); if (v !== undefined) ax[t] = v; });
+    if (Object.keys(ax).length) o.axes = ax;
+    const size = num(c.size, 10, 96), lh = num(c.lh, .8, 3), ls = num(c.ls, -.1, .3);
+    if (size !== undefined) o.size = size; if (lh !== undefined) o.lh = lh; if (ls !== undefined) o.ls = ls;
+    /* Bảng Character (kiểu Photoshop): màu chữ, nghiêng, gạch chân, gạch ngang, chữ hoa / small caps, kerning */
+    const col = hex(c.color); if (col) o.color = col;
+    ['it', 'ul', 'st', 'hy'].forEach(t => { if (typeof c[t] === 'boolean') o[t] = c[t]; });
+    if (c.caps === 'upper' || c.caps === 'small') o.caps = c.caps;
+    if (c.kern === 'none') o.kern = 'none';
+    /* Bảng Paragraph: căn lề, thụt lề trái/phải/dòng đầu, khoảng cách trước/sau đoạn */
+    if (['left', 'center', 'right', 'jl', 'jc', 'jr', 'ja'].includes(c.align)) o.align = c.align;
+    [['indL', 0, 200], ['indR', 0, 200], ['indF', -100, 200], ['spB', 0, 200], ['spA', 0, 200]].forEach(([t, lo, hi]) => { const v = num(c[t], lo, hi); if (v !== undefined) o[t] = v; });
+    if (Object.keys(o).length) out[k] = o;
+  });
+  return out;
+}
+function infoApplyFont(el, cfg, scale) {
+  if (!cfg) return;
+  const fam = (cfg.family && INFO_FONTS[cfg.family]) ? cfg.family : '', f = INFO_FONTS[fam];
+  if (fam) { infoLoadFont(fam); el.style.fontFamily = '"' + fam + '", var(--site-font-body, sans-serif)'; }
+  const axes = cfg.axes || {}, vs = [];
+  Object.keys(axes).forEach(k => { if (f.axes.some(a => a[0] === k)) { if (fam) vs.push('"' + k + '" ' + axes[k]); if (k === 'wght') el.style.fontWeight = axes[k]; } });
+  if (vs.length) el.style.fontVariationSettings = vs.join(', ');
+  if (cfg.size) el.style.fontSize = 'min(' + (cfg.size * (scale || 1)).toFixed(1) + 'px, 9vw)';
+  if (cfg.lh) el.style.lineHeight = String(cfg.lh);
+  if (typeof cfg.ls === 'number') el.style.letterSpacing = cfg.ls + 'em';
+  /* Character: màu, nghiêng, gạch chân / gạch ngang, chữ hoa, small caps, kerning */
+  const s = scale || 1, px = v => (v * s).toFixed(1) + 'px';
+  if (cfg.color) el.style.color = cfg.color;
+  if (typeof cfg.it === 'boolean') el.style.fontStyle = cfg.it ? 'italic' : 'normal';
+  const deco = []; if (cfg.ul) deco.push('underline'); if (cfg.st) deco.push('line-through'); if (deco.length) el.style.textDecoration = deco.join(' ');
+  if (cfg.caps === 'upper') el.style.textTransform = 'uppercase'; else if (cfg.caps === 'small') el.style.fontVariantCaps = 'small-caps';
+  if (cfg.kern === 'none') el.style.fontKerning = 'none';
+  /* Paragraph: thụt lề, khoảng cách trước/sau đoạn, ngắt từ bằng dấu gạch nối */
+  if (cfg.indF !== undefined) el.style.textIndent = px(cfg.indF);
+  const qp = el.classList.contains('ib-quote') ? 20 * s : 0;
+  if (cfg.indL !== undefined) el.style.paddingLeft = (qp + cfg.indL * s).toFixed(1) + 'px';
+  if (cfg.indR !== undefined) el.style.paddingRight = px(cfg.indR);
+  if (cfg.spB !== undefined) el.style.marginTop = px(cfg.spB);
+  if (cfg.spA !== undefined) el.style.marginBottom = 'calc(var(--ib-g, 28px) + ' + px(cfg.spA) + ')';
+  if (typeof cfg.hy === 'boolean') el.style.hyphens = cfg.hy ? 'auto' : 'manual';
+}
+/* Căn lề đoạn: ưu tiên căn lề riêng của khối chữ; nếu khối để \"Theo bảng Paragraph\" thì dùng căn lề trong bảng Paragraph của kiểu chữ đó */
+function infoSetAlign(el, blockAlign, cfg) {
+  const M = { left:['left', 'auto'], center:['center', 'auto'], right:['right', 'auto'], justify:['justify', 'auto'], jl:['justify', 'left'], jc:['justify', 'center'], jr:['justify', 'right'], ja:['justify', 'justify'] };
+  const key = (blockAlign && blockAlign !== 'left' && M[blockAlign]) ? blockAlign : (cfg && M[cfg.align] ? cfg.align : (M[blockAlign] ? blockAlign : 'left')); // khối để trống / "Trái" thì theo bảng Paragraph (nếu đã chọn); căn giữa / phải / đều hai bên riêng của khối vẫn được giữ
+  el.style.textAlign = M[key][0]; el.style.textAlignLast = M[key][1];
+}
+
+const INFO_STYLES = [['h2', 'Tiêu đề'], ['p', 'Đoạn văn'], ['quote', 'Trích dẫn'], ['note', 'Ghi chú nhỏ']];
+const INFO_DEF = { h2:{ size:28, lh:1.28, ls:-.02, wght:600 }, p:{ size:17, lh:1.9, ls:0, wght:400 }, quote:{ size:19, lh:1.75, ls:0, wght:400, it:true }, note:{ size:13.5, lh:1.7, ls:0, wght:400 } };
+const AXIS_LABEL = { wght:'Weight — độ đậm (wght)', wdth:'Width — độ rộng chữ (wdth)', slnt:'Slant — độ nghiêng (slnt)', opsz:'Optical size (opsz)', SOFT:'Softness — độ mềm (SOFT)', WONK:'Wonk — nét lạ (WONK)' };
+function infoRange(label, min, max, step, value, on) {
+  const wrap = document.createElement('div'), l = document.createElement('label'), out = document.createElement('span'), inp = document.createElement('input');
+  out.className = 'info-rout'; out.textContent = value; l.textContent = label + ': '; l.appendChild(out);
+  inp.type = 'range'; inp.min = min; inp.max = max; inp.step = step; inp.value = value;
+  inp.addEventListener('input', () => { out.textContent = inp.value; on(Number(inp.value)); renderInfoPreview(); });
+  wrap.append(l, inp); return wrap;
+}
+/* ===== Bảng Character & Paragraph kiểu Photoshop (mỗi kiểu chữ: Tiêu đề / Đoạn văn / Trích dẫn / Ghi chú nhỏ) ===== */
+let psStyle = 'p', psTab = 'char';
+const PS_WEIGHTS = [[100, 'Thin'], [200, 'ExtraLight'], [300, 'Light'], [400, 'Regular'], [500, 'Medium'], [600, 'SemiBold'], [700, 'Bold'], [800, 'ExtraBold'], [900, 'Black'], [1000, 'Extra Black']];
+const PS_CHAR_KEYS = ['family', 'axes', 'size', 'lh', 'ls', 'color', 'it', 'ul', 'st', 'caps', 'kern'], PS_PARA_KEYS = ['align', 'indL', 'indR', 'indF', 'spB', 'spA', 'hy'];
+function psEl(tag, cls, html) { const e = document.createElement(tag); if (cls) e.className = cls; if (html !== undefined) e.innerHTML = html; return e; }
+const psFmt = v => String(Math.round(v * 100) / 100);
+// Ô số giống Photoshop: gõ số, hoặc kéo ngang trên biểu tượng bên trái để tăng/giảm
+function psNum(ico, title, unit, min, max, step, value, on) {
+  const f = psEl('div', 'ps-f'), lab = psEl('span', 'ps-ico', ico), inp = document.createElement('input'), u = psEl('span', 'ps-unit', unit || '');
+  f.title = title; inp.type = 'number'; inp.min = min; inp.max = max; inp.step = step; inp.value = psFmt(value);
+  const set = v => { v = Math.min(max, Math.max(min, v)); inp.value = psFmt(v); on(v); renderInfoPreview(); };
+  inp.addEventListener('input', () => { const v = parseFloat(inp.value); if (Number.isFinite(v)) { on(Math.min(max, Math.max(min, v))); renderInfoPreview(); } });
+  inp.addEventListener('blur', () => { const v = parseFloat(inp.value); set(Number.isFinite(v) ? v : value); });
+  let x0 = 0, v0 = 0, drag = false;
+  lab.addEventListener('pointerdown', e => { drag = true; x0 = e.clientX; v0 = parseFloat(inp.value) || 0; lab.setPointerCapture(e.pointerId); e.preventDefault(); });
+  lab.addEventListener('pointermove', e => { if (!drag) return; const d = Math.round((e.clientX - x0) / 3) * step * (e.shiftKey ? 10 : 1); set(Math.round((v0 + d) / step) * step); });
+  const end = () => { drag = false; }; lab.addEventListener('pointerup', end); lab.addEventListener('pointercancel', end);
+  f.append(lab, inp, u); return f;
+}
+function psSelect(title, opts, value, on) {
+  const sel = document.createElement('select'); sel.title = title;
+  opts.forEach(([v, t]) => { const o = document.createElement('option'); o.value = v; o.textContent = t; sel.appendChild(o); });
+  sel.value = value; sel.addEventListener('change', () => on(sel.value)); return sel;
+}
+function psAlignIcon(type) {
+  const W = { left:[14, 9, 14, 9, 12], center:[14, 9, 14, 9, 12], right:[14, 9, 14, 9, 12], jl:[14, 14, 14, 14, 8], jc:[14, 14, 14, 14, 8], jr:[14, 14, 14, 14, 8], ja:[14, 14, 14, 14, 14] }[type];
+  const al = { left:'l', center:'c', right:'r', jl:'l', jc:'c', jr:'r', ja:'l' }[type];
+  return '<svg viewBox="0 0 18 18" aria-hidden="true">' + W.map((w, i) => { const x = al === 'l' ? 2 : al === 'c' ? (18 - w) / 2 : 16 - w; return '<rect x="' + x + '" y="' + (2.2 + i * 3.1) + '" width="' + w + '" height="1.6" rx=".4"/>'; }).join('') + '</svg>';
+}
+function renderInfoType() {
+  const body = $('infoTypeBody'); body.innerHTML = '';
+  const key = psStyle, cfg = infoFonts[key] || (infoFonts[key] = {}), def = INFO_DEF[key];
+  const fam = (cfg.family && INFO_FONTS[cfg.family]) ? cfg.family : '', f = INFO_FONTS[fam];
+  const ps = psEl('div', 'ps');
+  // Thanh chọn kiểu chữ đang chỉnh
+  const styles = psEl('div', 'ps-styles');
+  INFO_STYLES.forEach(([k, label]) => { const b = psEl('button', k === key ? 'on' : '', label); b.type = 'button'; b.addEventListener('click', () => { psStyle = k; renderInfoType(); }); styles.appendChild(b); });
+  // Tab Character / Paragraph + nút đặt lại
+  const tabs = psEl('div', 'ps-tabs');
+  [['char', 'Character'], ['para', 'Paragraph']].forEach(([t, label]) => { const b = psEl('button', 'ps-tab' + (t === psTab ? ' on' : ''), label); b.type = 'button'; b.addEventListener('click', () => { psTab = t; renderInfoType(); }); tabs.appendChild(b); });
+  const reset = psEl('button', 'ps-reset', 'Đặt lại'); reset.type = 'button'; reset.title = 'Xóa chỉnh sửa của bảng ' + (psTab === 'char' ? 'Character' : 'Paragraph') + ' cho kiểu chữ này';
+  reset.addEventListener('click', () => { (psTab === 'char' ? PS_CHAR_KEYS : PS_PARA_KEYS).forEach(k => { delete cfg[k]; }); renderInfoType(); renderInfoPreview(); });
+  tabs.appendChild(reset);
+  const pane = psEl('div', 'ps-body');
+  if (psTab === 'char') {
+    // Hàng 1: Font family + Font style (tên độ đậm)
+    const wAxis = f.axes.find(a => a[0] === 'wght'), curW = cfg.axes && cfg.axes.wght !== undefined ? cfg.axes.wght : Math.min(wAxis[2], Math.max(wAxis[1], def.wght));
+    const wOpts = PS_WEIGHTS.filter(([w]) => w >= wAxis[1] && w <= wAxis[2]).map(([w, n]) => [String(w), n]); const wMatch = wOpts.some(([w]) => Number(w) === Number(curW)); if (!wMatch) wOpts.unshift(['', 'Tùy chỉnh (' + psFmt(curW) + ')']);
+    const r1 = psEl('div', 'ps-row');
+    const fsel = psSelect('Font family', Object.keys(INFO_FONTS).map(n => [n, n || 'Kế thừa font website']), fam, v => { cfg.family = v || undefined; cfg.axes = {}; infoLoadFont(v); renderInfoType(); renderInfoPreview(); }); fsel.className = 'ps-grow2';
+    const wsel = psSelect('Font style (độ đậm)', wOpts, wMatch ? String(curW) : '', v => { if (v === '') return; cfg.axes = cfg.axes || {}; cfg.axes.wght = Number(v); renderInfoType(); renderInfoPreview(); });
+    r1.append(fsel, wsel); pane.appendChild(r1);
+    // Hàng 2: cỡ chữ + giãn dòng (leading)
+    const r2 = psEl('div', 'ps-row');
+    r2.append(psNum('<span style="font-size:9px">T</span><span style="font-size:14px">T</span>', 'Font size — cỡ chữ (px)', 'px', 10, 96, .5, cfg.size !== undefined ? cfg.size : def.size, v => { cfg.size = v; }),
+      psNum('A<span style="font-size:13px;line-height:1">↕</span>', 'Leading — giãn dòng (% cỡ chữ)', '%', 80, 300, 1, Math.round((cfg.lh !== undefined ? cfg.lh : def.lh) * 100), v => { cfg.lh = Math.round(v) / 100; }));
+    pane.appendChild(r2);
+    // Hàng 3: kerning + tracking
+    const r3 = psEl('div', 'ps-row'), kw = psEl('div', 'ps-f'), kl = psEl('span', 'ps-ico', 'VA'); kl.style.cursor = 'default'; kw.title = 'Kerning — khoảng cách giữa từng cặp chữ';
+    const ksel = psSelect('Kerning', [['', 'Metrics'], ['none', '0 (tắt kerning)']], cfg.kern || '', v => { cfg.kern = v || undefined; renderInfoPreview(); }); ksel.style.border = '0'; ksel.style.background = 'transparent'; ksel.style.height = '26px'; kw.append(kl, ksel);
+    r3.append(kw, psNum('V<span style="font-size:13px;line-height:1">↔</span>A', 'Tracking — giãn chữ (1/1000 em)', '', -100, 300, 5, Math.round((cfg.ls !== undefined ? cfg.ls : def.ls) * 1000), v => { cfg.ls = Math.round(v) / 1000; }));
+    pane.appendChild(r3);
+    // Hàng 4: màu chữ
+    const r4 = psEl('div', 'ps-color'), cp = document.createElement('input'), ct = document.createElement('input'), cx = psEl('button', '', '✕');
+    cp.type = 'color'; cp.value = cfg.color || '#161614'; cp.title = 'Color — màu chữ'; ct.type = 'text'; ct.placeholder = 'Theo màu trang'; ct.maxLength = 7; ct.value = cfg.color || ''; cx.type = 'button'; cx.title = 'Bỏ màu riêng, dùng màu của trang';
+    const setCol = v => { const c = infoCleanBg(v); if (!c) return; cfg.color = c; cp.value = c; renderInfoPreview(); };
+    cp.addEventListener('input', () => { ct.value = cp.value; setCol(cp.value); });
+    ct.addEventListener('input', () => { const v = ct.value.trim(); setCol(v[0] === '#' ? v : '#' + v); });
+    cx.addEventListener('click', () => { delete cfg.color; ct.value = ''; renderInfoPreview(); });
+    const cl = psEl('span', 'ps-unit', 'Color'); cl.style.minWidth = '38px'; r4.append(cl, cp, ct, cx); pane.appendChild(r4);
+    // Hàng 5: nút kiểu chữ giả (faux): nghiêng, HOA, small caps, gạch chân, gạch ngang
+    const faux = psEl('div', 'ps-faux'), effIt = cfg.it !== undefined ? cfg.it : !!def.it;
+    [['it', 'Italic — chữ nghiêng', '<i style="font-family:serif;font-size:14px">T</i>', effIt, () => { cfg.it = !effIt; }],
+     ['caps-upper', 'All Caps — VIẾT HOA', 'TT', cfg.caps === 'upper', () => { cfg.caps = cfg.caps === 'upper' ? undefined : 'upper'; }],
+     ['caps-small', 'Small Caps', 'T<span style="font-size:9px">T</span>', cfg.caps === 'small', () => { cfg.caps = cfg.caps === 'small' ? undefined : 'small'; }],
+     ['ul', 'Underline — gạch chân', '<span style="text-decoration:underline;font-size:14px">T</span>', !!cfg.ul, () => { cfg.ul = !cfg.ul; }],
+     ['st', 'Strikethrough — gạch ngang', '<span style="text-decoration:line-through;font-size:14px">T</span>', !!cfg.st, () => { cfg.st = !cfg.st; }]
+    ].forEach(([, title, html, on, fn]) => { const b = psEl('button', on ? 'on' : '', html); b.type = 'button'; b.title = title; b.addEventListener('click', () => { fn(); renderInfoType(); renderInfoPreview(); }); faux.appendChild(b); });
+    pane.appendChild(faux);
+    // Variable font: các trục variation
+    pane.appendChild(psEl('div', 'ps-sub', fam ? 'Variable font — ' + fam : 'Font website — chỉ có độ đậm'));
+    f.axes.forEach(([tag, lo, hi]) => {
+      const dv = tag === 'wght' ? Math.min(hi, Math.max(lo, def.wght)) : Math.min(hi, Math.max(lo, ({ wdth:100, slnt:0, opsz:14, SOFT:0, WONK:0 })[tag] || 0));
+      const cur = cfg.axes && cfg.axes[tag] !== undefined ? cfg.axes[tag] : dv;
+      const row = psEl('div', 'ps-ax'), nm = psEl('span', '', AXIS_LABEL[tag] || tag), out = document.createElement('output'), rg = document.createElement('input');
+      rg.type = 'range'; rg.min = lo; rg.max = hi; rg.step = 1; rg.value = cur; out.textContent = cur;
+      rg.addEventListener('input', () => { out.textContent = rg.value; cfg.axes = cfg.axes || {}; cfg.axes[tag] = Number(rg.value); if (tag === 'wght') { const has = Array.from(wsel.options).some(o => o.value === rg.value); if (has) wsel.value = rg.value; else { let co = wsel.querySelector('option[value=""]'); if (!co) { co = new Option('', ''); wsel.insertBefore(co, wsel.firstChild); } co.textContent = 'Tùy chỉnh (' + rg.value + ')'; wsel.value = ''; } } renderInfoPreview(); });
+      row.append(nm, rg, out); pane.appendChild(row);
+    });
+  } else {
+    // Paragraph: căn lề (7 kiểu như Photoshop)
+    const al = psEl('div', 'ps-al'), effA = cfg.align || '';
+    const ALS = [['left', 'Căn trái'], ['center', 'Căn giữa'], ['right', 'Căn phải'], null, ['jl', 'Đều hai bên, dòng cuối căn trái'], ['jc', 'Đều hai bên, dòng cuối căn giữa'], ['jr', 'Đều hai bên, dòng cuối căn phải'], null, ['ja', 'Đều hai bên, ép cả dòng cuối']];
+    ALS.forEach(it => { if (!it) { al.appendChild(psEl('span', 'ps-gap')); return; } const b = psEl('button', it[0] === effA ? 'on' : '', psAlignIcon(it[0])); b.type = 'button'; b.title = it[1]; b.addEventListener('click', () => { if (cfg.align === it[0]) delete cfg.align; else cfg.align = it[0]; renderInfoType(); renderInfoPreview(); }); al.appendChild(b); });
+    pane.appendChild(al);
+    const r1 = psEl('div', 'ps-row'); r1.append(
+      psNum('<span style="font-size:13px">→|</span>', 'Indent left margin — thụt lề trái (px)', 'px', 0, 200, 1, cfg.indL || 0, v => { cfg.indL = v; }),
+      psNum('<span style="font-size:13px">|←</span>', 'Indent right margin — thụt lề phải (px)', 'px', 0, 200, 1, cfg.indR || 0, v => { cfg.indR = v; })); pane.appendChild(r1);
+    const r2 = psEl('div', 'ps-row'); r2.append(
+      psNum('<span style="font-size:13px">→¶</span>', 'Indent first line — thụt dòng đầu (px)', 'px', -100, 200, 1, cfg.indF || 0, v => { cfg.indF = v; }), psEl('div')); pane.appendChild(r2);
+    const r3 = psEl('div', 'ps-row'); r3.append(
+      psNum('<span style="font-size:12px">↥¶</span>', 'Space before paragraph — cách đoạn phía trên (px)', 'px', 0, 200, 1, cfg.spB || 0, v => { cfg.spB = v; }),
+      psNum('<span style="font-size:12px">¶↧</span>', 'Space after paragraph — cách đoạn phía dưới (px, cộng thêm vào \"Khoảng cách phía dưới\" của khối)', 'px', 0, 200, 1, cfg.spA || 0, v => { cfg.spA = v; })); pane.appendChild(r3);
+    const hy = psEl('label', 'ps-check'), hc = document.createElement('input'); hc.type = 'checkbox'; hc.checked = !!cfg.hy; hc.addEventListener('change', () => { cfg.hy = hc.checked; renderInfoPreview(); });
+    hy.append(hc, document.createTextNode('Hyphenate — tự ngắt từ bằng dấu gạch nối')); pane.appendChild(hy);
+    pane.appendChild(psEl('p', 'ps-hint', 'Căn lề chọn ở đây áp dụng cho mọi khối chữ cùng kiểu có \"Căn lề\" là \"Theo bảng Paragraph\" hoặc \"Trái\"; khối đã đặt riêng Giữa / Phải / Đều hai bên thì giữ nguyên. Thụt dòng đầu tính cho cả khối chữ; muốn thụt ở từng đoạn, tách mỗi đoạn thành một khối riêng.'));
+  }
+  pane.appendChild(psEl('p', 'ps-hint', 'Mẹo: rê chuột vào biểu tượng để xem tên; kéo ngang trên biểu tượng để đổi giá trị (giữ Shift để nhảy nhanh ×10).'));
+  const sample = psEl('div', 'ps-sample'); sample.id = 'psSample'; const cap = psEl('div', 'ps-samplecap', 'Xem trước trực tiếp — kiểu chữ đang chỉnh');
+  ps.append(styles, cap, sample, tabs, pane); body.appendChild(ps); psSampleUpdate();
+}
+const PS_SAMPLE = { h2:'Tiêu đề bài viết', p:'Đoạn văn mẫu: chữ sẽ thay đổi ngay khi bạn chỉnh Character hoặc Paragraph. Thêm khối chữ ở trên để xem bằng nội dung thật của bạn.', quote:'“Một câu trích dẫn nổi bật cho bài viết.”', note:'Ghi chú nhỏ: nguồn ảnh, chú thích.' };
+function psSampleUpdate() {
+  const box = document.getElementById('psSample'); if (!box) return; box.innerHTML = '';
+  const key = psStyle, src = infoBlocks.find(b => b.type === 'text' && b.style === key && b.text.trim());
+  const el = document.createElement(key === 'h2' ? 'h2' : key === 'quote' ? 'blockquote' : 'p'); el.className = 'ib-t ib-' + key;
+  el.textContent = src ? src.text.slice(0, 400) : PS_SAMPLE[key]; infoSetAlign(el, src ? src.align : '', infoFonts[key]); infoApplyFont(el, infoFonts[key], .7); el.style.setProperty('--ib-g', '0px'); box.appendChild(el);
+}
+/* Màu nền trang chi tiết (eMagazine / Infographic): lưu trong mục layout của gallery_images: bg = '#rrggbb'. Màu chữ tự đổi sáng/tối cho dễ đọc. */
+const infoCleanBg = value => { let v = String(value || '').trim().toLowerCase(); if (/^#[0-9a-f]{3}$/.test(v)) v = '#' + v[1] + v[1] + v[2] + v[2] + v[3] + v[3]; return /^#[0-9a-f]{6}$/.test(v) ? v : ''; };
+const infoFgFor = hex => { const c = [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16) / 255).map(v => v <= .03928 ? v / 12.92 : Math.pow((v + .055) / 1.055, 2.4)); return (.2126 * c[0] + .7152 * c[1] + .0722 * c[2]) > .4 ? '#161614' : '#f4f0e8'; };
+const INFO_BG_PRESETS = [['#ffffff', 'Trắng'], ['#f6f4ef', 'Kem nhạt (màu website)'], ['#efe6d8', 'Be ấm'], ['#e6efe9', 'Xanh lá nhạt'], ['#e3ecf7', 'Xanh dương nhạt'], ['#f6e7e4', 'Hồng nhạt'], ['#eeeeee', 'Xám nhạt'], ['#161614', 'Đen'], ['#0f1b2d', 'Xanh navy đậm'], ['#1f3a2e', 'Xanh rêu đậm']];
+function infoBgSync() {
+  const bg = infoCleanBg(infoBg);
+  $('infoBgColor').value = bg || '#ffffff'; if (document.activeElement !== $('infoBgHex')) $('infoBgHex').value = bg;
+  const sm = $('infoBgSample'); sm.style.background = bg || '#f6f4ef'; sm.style.color = infoFgFor(bg || '#f6f4ef');
+  document.querySelectorAll('#infoBgSwatches button').forEach(b => b.classList.toggle('on', b.dataset.c === bg));
+}
+function infoBgSet(value) { infoBg = infoCleanBg(value); infoBgSync(); renderInfoPreview(); }
+INFO_BG_PRESETS.forEach(([c, name]) => { const b = document.createElement('button'); b.type = 'button'; b.className = 'info-sw'; b.dataset.c = c; b.title = name + ' ' + c; b.setAttribute('aria-label', name + ' ' + c); b.style.background = c; b.addEventListener('click', () => infoBgSet(c)); $('infoBgSwatches').appendChild(b); });
+$('infoBgColor').addEventListener('input', () => infoBgSet($('infoBgColor').value));
+$('infoBgHex').addEventListener('input', () => { const v = $('infoBgHex').value.trim(); const c = infoCleanBg(v[0] === '#' ? v : '#' + v); if (c) infoBgSet(c); });
+$('infoBgHex').addEventListener('blur', infoBgSync);
+$('infoBgReset').addEventListener('click', () => infoBgSet(''));
 function renderInfoPreview() {
   const box = $('infoPreview'); box.innerHTML = '';
+  box.style.background = infoCleanBg(infoBg) || ''; box.style.color = infoCleanBg(infoBg) ? infoFgFor(infoCleanBg(infoBg)) : '';
   const grid = isMagForm() && infoMode !== 'custom'; box.classList.toggle('grid6', grid); // eMagazine tự động: lưới theo số ảnh mỗi hàng
   if (grid) infoBlocks.forEach(b => { if (b.type !== 'image') return; const im = document.createElement('img'); im.src = b.prev || b.url; im.alt = ''; im.style.gridColumn = 'span ' + (6 / b.columns); box.appendChild(im); });
-  else infoBuildDom(infoBlocks, infoMode === 'custom', box); if (!box.children.length) box.innerHTML = '<p class="info-empty">Chưa có ảnh hoặc chữ nào.</p>'; }
+  else infoBuildDom(infoBlocks, infoMode === 'custom', box); if (!box.children.length) box.innerHTML = '<p class="info-empty">Chưa có ảnh hoặc chữ nào.</p>'; psSampleUpdate(); }
 function infoSel(label, opts, value, on) {
   const wrap = document.createElement('div'), l = document.createElement('label'), sel = document.createElement('select'); l.textContent = label;
   opts.forEach(([v, t]) => { const o = document.createElement('option'); o.value = v; o.textContent = t; sel.appendChild(o); }); sel.value = value;
@@ -1879,8 +2181,10 @@ function infoSel(label, opts, value, on) {
 }
 function infoBtn(text, title, fn, off) { const b = document.createElement('button'); b.type = 'button'; b.textContent = text; b.title = title; b.disabled = !!off; b.addEventListener('click', fn); return b; }
 function renderInfoEditor() {
+  infoBgSync();
   const list = $('infoList'); list.innerHTML = '';
   list.classList.toggle('auto', infoMode !== 'custom'); list.classList.toggle('mag', isMagForm()); $('infoTools').hidden = infoMode !== 'custom';
+  $('infoType').hidden = infoMode !== 'custom'; if (infoMode === 'custom') renderInfoType();
   document.querySelectorAll('input[name="infoMode"]').forEach(r => { r.checked = r.value === infoMode; });
   const GAPS = [['s', 'Nhỏ (16px)'], ['m', 'Vừa (36px)'], ['l', 'Lớn (72px)']], ALIGN = [['left', 'Trái'], ['center', 'Giữa'], ['right', 'Phải']];
   infoBlocks.forEach((b, i) => {
@@ -1905,7 +2209,7 @@ function renderInfoEditor() {
       const f = document.createElement('div'); f.className = 'info-fields';
       const g = document.createElement('div'); g.className = 'info-grid';
       g.append(infoSel('Kiểu chữ', [['h2', 'Tiêu đề'], ['p', 'Đoạn văn'], ['quote', 'Trích dẫn'], ['note', 'Ghi chú nhỏ']], b.style, v => { b.style = v; }),
-        infoSel('Căn lề', [['left', 'Trái'], ['center', 'Giữa'], ['right', 'Phải'], ['justify', 'Đều hai bên (justify)']], b.align, v => { b.align = v; }), infoSel('Khoảng cách phía dưới', GAPS, b.gap, v => { b.gap = v; }));
+        infoSel('Căn lề', [['', 'Theo bảng Paragraph'], ['left', 'Trái'], ['center', 'Giữa'], ['right', 'Phải'], ['justify', 'Đều hai bên (justify)']], b.align, v => { b.align = v; }), infoSel('Khoảng cách phía dưới', GAPS, b.gap, v => { b.gap = v; }));
       const ta = document.createElement('textarea'); ta.rows = 4; ta.maxLength = 4000; ta.placeholder = 'Nội dung chữ (xuống dòng để tách đoạn)'; ta.value = b.text; ta.addEventListener('input', () => { b.text = ta.value; renderInfoPreview(); });
       f.append(g, ta); body.appendChild(f);
     }
@@ -1929,7 +2233,7 @@ $('infoFiles').addEventListener('change', async () => {
   $('infoFiles').value = ''; renderInfoEditor();
 });
 document.querySelectorAll('input[name="infoMode"]').forEach(r => r.addEventListener('change', () => { if (r.checked) { infoMode = r.value; renderInfoEditor(); } }));
-document.querySelectorAll('#infoTools [data-add]').forEach(btn => btn.addEventListener('click', () => { infoBlocks.push({type:'text', style:btn.dataset.add, text:'', align:'left', gap:'m'}); renderInfoEditor(); }));
+document.querySelectorAll('#infoTools [data-add]').forEach(btn => btn.addEventListener('click', () => { infoBlocks.push({type:'text', style:btn.dataset.add, text:'', align:'', gap:'m'}); renderInfoEditor(); }));
 
 function renderGalleryPreview() {
   const container = $('galleryPreview');
@@ -2361,6 +2665,9 @@ $('projectForm').addEventListener('submit', async e => {
     if (isEditorialForm() && galleryImages[0]) galleryImages[0].kind = 'single'; // bìa trước luôn là trang đơn
     const finalGallery = isInfoForm() ? await infoSerialize() : galleryImages; // Infographic: lưu theo bố cục đã sắp xếp
 
+    if (!cover) { const first = finalGallery.find(entry => entry && entry.url); if (first) cover = first.url; } // chưa chọn ảnh bìa: lấy ảnh đầu tiên làm bìa để dự án vẫn hiện trên trang chủ
+    const draftNote = $('published').checked ? '' : ' Lưu ý: dự án đang là Bản nháp nên chưa hiện trên trang chủ — bấm "Công khai" ở danh sách dự án.';
+
     const record = {
       title: $('title').value.trim(),
       category: $('category').value,
@@ -2379,11 +2686,11 @@ $('projectForm').addEventListener('submit', async e => {
       const {error} = await db.from('projects').update(record).eq('id',id);
       if (error) throw error;
       const savedNote = await infoSaveNote(id, finalGallery);
-      message('Đã cập nhật dự án thành công.' + savedNote.text, savedNote.warn);
+      message('Đã cập nhật dự án thành công.' + savedNote.text + draftNote, savedNote.warn);
     } else {
       const {error} = await db.from('projects').insert(record);
       if (error) throw error;
-      message('Đã thêm dự án thành công.' + infoCountText(finalGallery));
+      message('Đã thêm dự án thành công.' + infoCountText(finalGallery) + draftNote);
     }
 
     resetForm();
