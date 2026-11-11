@@ -1542,15 +1542,26 @@ function infoApplyFont(el, cfg, scale) {
   if (cfg.caps === 'upper') el.style.textTransform = 'uppercase'; else if (cfg.caps === 'small') el.style.fontVariantCaps = 'small-caps';
   if (cfg.kern === 'none') el.style.fontKerning = 'none';
   /* Paragraph: thụt lề, khoảng cách trước/sau đoạn, ngắt từ bằng dấu gạch nối */
-  if (cfg.indF !== undefined) el.style.textIndent = px(cfg.indF);
   const qp = el.classList.contains('ib-quote') ? 20 * s : 0;
   if (cfg.indL !== undefined) el.style.paddingLeft = (qp + cfg.indL * s).toFixed(1) + 'px';
   if (cfg.indR !== undefined) el.style.paddingRight = px(cfg.indR);
-  if (cfg.spB !== undefined) el.style.marginTop = px(cfg.spB);
-  if (cfg.spA !== undefined) el.style.marginBottom = 'calc(var(--ib-g, 28px) + ' + px(cfg.spA) + ')';
   if (typeof cfg.hy === 'boolean') el.style.hyphens = cfg.hy ? 'auto' : 'manual';
 }
 /* Căn lề đoạn: ưu tiên căn lề riêng của khối chữ; nếu khối để \"Theo bảng Paragraph\" thì dùng căn lề trong bảng Paragraph của kiểu chữ đó */
+/* Từng đoạn theo nội dung: mỗi lần xuống dòng là một đoạn. Space before / Space after / thụt dòng đầu áp dụng riêng cho từng đoạn (không tính khoảng trước đoạn đầu và sau đoạn cuối, vì đã có khoảng cách của khối). Không dùng các thiết lập này thì giữ nguyên cách hiển thị cũ. */
+function infoSetText(el, text, cfg, scale) {
+  const s = scale || 1, c = cfg || {}, b = c.spB > 0 ? c.spB : 0, a = c.spA > 0 ? c.spA : 0, f = c.indF ? c.indF : 0;
+  if (!b && !a && !f) { el.textContent = text; return; }
+  const paras = String(text).split('\n').filter(t => t.trim());
+  el.textContent = ''; el.style.display = 'flex'; el.style.flexDirection = 'column';
+  paras.forEach((t, i) => {
+    const p = document.createElement('span'); p.className = 'ib-para'; p.style.display = 'block'; p.textContent = t;
+    if (f) p.style.textIndent = (f * s).toFixed(1) + 'px';
+    if (i > 0 && b) p.style.marginTop = (b * s).toFixed(1) + 'px';
+    if (i < paras.length - 1 && a) p.style.marginBottom = (a * s).toFixed(1) + 'px';
+    el.appendChild(p);
+  });
+}
 function infoSetAlign(el, blockAlign, cfg) {
   const M = { left:['left', 'auto'], center:['center', 'auto'], right:['right', 'auto'], justify:['justify', 'auto'], jl:['justify', 'left'], jc:['justify', 'center'], jr:['justify', 'right'], ja:['justify', 'justify'] };
   const key = (blockAlign && blockAlign !== 'left' && M[blockAlign]) ? blockAlign : (cfg && M[cfg.align] ? cfg.align : (M[blockAlign] ? blockAlign : 'left')); // khối để trống / "Trái" thì theo bảng Paragraph (nếu đã chọn); căn giữa / phải / đều hai bên riêng của khối vẫn được giữ
@@ -1591,8 +1602,8 @@ function buildInfographic(raw, fallbackImages) {
       if (!custom) continue;
       const style = pick(block.style, ['h2', 'p', 'quote', 'note'], 'p');
       const el = document.createElement(style === 'h2' ? 'h2' : style === 'quote' ? 'blockquote' : 'p');
-      el.className = 'ib-t ib-' + style; el.textContent = String(block.text).slice(0, 4000);
-      infoSetAlign(el, block.align, fonts[style]); infoApplyFont(el, fonts[style], 1); el.style.setProperty('--ib-g', GAP[pick(block.gap, ['s', 'm', 'l'], 'm')]);
+      el.className = 'ib-t ib-' + style;
+      infoSetAlign(el, block.align, fonts[style]); infoApplyFont(el, fonts[style], 1); infoSetText(el, String(block.text).slice(0, 4000), fonts[style], 1); el.style.setProperty('--ib-g', GAP[pick(block.gap, ['s', 'm', 'l'], 'm')]);
       box.appendChild(el); continue;
     }
     const isHalf = custom && block.width === 'half', next = blocks[i + 1];
