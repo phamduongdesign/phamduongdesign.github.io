@@ -181,6 +181,7 @@ h1 em { font-family:Georgia,serif; font-weight:400; letter-spacing:-.04em; }
 .detail-hero-art { position:relative; display:block; width:100%; border-radius:calc(8px * var(--site-radius-scale)); overflow:hidden; background:transparent !important; line-height:0; font-size:0; }
 .detail-hero-art img { position:static !important; inset:auto !important; display:block !important; width:100% !important; height:auto !important; max-width:100% !important; max-height:none !important; margin:0 !important; padding:0 !important; border:0 !important; object-fit:contain !important; vertical-align:top; }
 .detail-hero-art { margin-bottom:38px; }
+.detail-page.no-hero .detail-hero-art { display:none !important; }
 .detail-hero-art svg { display:block; width:100%; height:auto; }
 .detail-story { display:none; }
 .detail-story h2 { font-size:clamp(24px,3vw,38px); font-weight:500; letter-spacing:-.03em; margin:0; }
@@ -489,6 +490,10 @@ html.liq-touch :is(.filter, .skill, .contact-action, .footer-social a)[data-liq=
 
 /* Trang chi tiết Infographic: nội dung nằm trong cột hẹp, khoảng trống hai bên rộng hơn */
 .detail-page.is-info { --info-col:760px; }
+/* Màu nền tùy biến của bài (Admin → eMagazine / Infographic): nền tràn hai bên, chữ tự đổi sáng/tối */
+.detail-page.has-bg { background:var(--info-bg); color:var(--info-fg); box-shadow:0 0 0 100vmax var(--info-bg); clip-path:inset(0 -100vmax); }
+.detail-page.has-bg :is(.detail-back, .detail-meta small, .detail-summary, .detail-category, .ib figcaption, .ib-note) { color:color-mix(in srgb, var(--info-fg) 68%, transparent); }
+.detail-page.has-bg .ib-quote { border-left-color:var(--info-fg); }
 .detail-page.is-info .detail-hero-art, .detail-page.is-info .detail-heading, .detail-page.is-info .detail-meta, .detail-page.is-info .detail-summary, .detail-page.is-info .detail-mockups { width:min(100%, var(--info-col)); max-width:var(--info-col); margin-left:auto; margin-right:auto; }
 .detail-page.is-info .detail-heading h1 { font-size:clamp(32px,4.6vw,52px); line-height:1.12; }
 .detail-page.is-info .detail-summary { margin-bottom:56px; }
@@ -1472,15 +1477,98 @@ addEventListener('keydown', e => { if (e.key === 'Escape' && flip.el && flip.el.
 flipMQ.addEventListener('change', e => { if (flip.el && flip.el.isConnected) { flip.single = e.matches && !FLIP_MOBILE_SPREAD; flipRender(); } });
 /* ===== Infographic: bài dài trong cột hẹp, khoảng trống hai bên rộng (kiểu bài báo). gallery_images gồm: {type:'layout', mode:'auto'|'custom'}, ảnh {url, width, align, caption, gap} và khối chữ {type:'text', style, text, align, gap}.
    Chế độ auto: ảnh xếp dọc theo thứ tự. Chế độ custom: theo đúng bố cục sắp xếp trong Admin. ===== */
+/* ===== Font variable cho khối chữ eMagazine / Infographic: font, trục variation (wght, wdth, slnt, opsz...), cỡ chữ, giãn dòng, giãn chữ. Lưu trong mục layout của gallery_images: fonts = { h2:{family,axes,size,lh,ls}, p:{...}, quote:{...}, note:{...} } ===== */
+const INFO_FONTS = {
+  '': { axes:[['wght', 100, 900]] },
+  'Inter': { axes:[['opsz', 14, 32], ['wght', 100, 900]] },
+  'Roboto Flex': { axes:[['opsz', 8, 144], ['slnt', -10, 0], ['wdth', 25, 151], ['wght', 100, 1000]] },
+  'Open Sans': { axes:[['wdth', 75, 100], ['wght', 300, 800]] },
+  'Archivo': { axes:[['wdth', 62, 125], ['wght', 100, 900]] },
+  'Bricolage Grotesque': { axes:[['opsz', 12, 96], ['wdth', 75, 100], ['wght', 200, 800]] },
+  'Fraunces': { axes:[['opsz', 9, 144], ['wght', 100, 900], ['SOFT', 0, 100], ['WONK', 0, 1]] },
+  'Playfair Display': { axes:[['wght', 400, 900]] },
+  'Cormorant Garamond': { axes:[['wght', 300, 700]] },
+  'DM Sans': { axes:[['opsz', 9, 40], ['wght', 100, 1000]] },
+  'Manrope': { axes:[['wght', 200, 800]] },
+  'Source Serif 4': { axes:[['opsz', 8, 60], ['wght', 200, 900]] }
+};
+function infoLoadFont(family) {
+  const f = INFO_FONTS[family]; if (!family || !f) return;
+  const id = 'infofont-' + family.replace(/\W+/g, '-'); if (document.getElementById(id)) return;
+  const axes = f.axes.slice().sort((a, b) => { const la = a[0] === a[0].toLowerCase(), lb = b[0] === b[0].toLowerCase(); return la === lb ? (a[0] < b[0] ? -1 : 1) : (la ? -1 : 1); }); // Google Fonts: trục chữ thường trước, chữ hoa sau
+  const link = document.createElement('link'); link.id = id; link.rel = 'stylesheet';
+  link.href = 'https://fonts.googleapis.com/css2?family=' + family.replace(/ /g, '+') + ':' + axes.map(a => a[0]).join(',') + '@' + axes.map(a => a[1] + '..' + a[2]).join(',') + '&display=swap';
+  document.head.appendChild(link);
+}
+function infoCleanFonts(raw) {
+  const out = {}; if (!raw || typeof raw !== 'object') return out;
+  const num = (v, lo, hi) => (v === undefined || v === null || v === '' || !Number.isFinite(Number(v))) ? undefined : Math.min(hi, Math.max(lo, Number(v)));
+  const hex = v => { v = String(v || '').trim().toLowerCase(); if (/^#[0-9a-f]{3}$/.test(v)) v = '#' + v[1] + v[1] + v[2] + v[2] + v[3] + v[3]; return /^#[0-9a-f]{6}$/.test(v) ? v : ''; };
+  ['h2', 'p', 'quote', 'note'].forEach(k => {
+    const c = raw[k]; if (!c || typeof c !== 'object') return;
+    const fam = (typeof c.family === 'string' && c.family && INFO_FONTS[c.family]) ? c.family : '', f = INFO_FONTS[fam], o = {};
+    if (fam) o.family = fam;
+    const ax = {}; if (c.axes && typeof c.axes === 'object') f.axes.forEach(([t, lo, hi]) => { const v = num(c.axes[t], lo, hi); if (v !== undefined) ax[t] = v; });
+    if (Object.keys(ax).length) o.axes = ax;
+    const size = num(c.size, 10, 96), lh = num(c.lh, .8, 3), ls = num(c.ls, -.1, .3);
+    if (size !== undefined) o.size = size; if (lh !== undefined) o.lh = lh; if (ls !== undefined) o.ls = ls;
+    /* Bảng Character (kiểu Photoshop): màu chữ, nghiêng, gạch chân, gạch ngang, chữ hoa / small caps, kerning */
+    const col = hex(c.color); if (col) o.color = col;
+    ['it', 'ul', 'st', 'hy'].forEach(t => { if (typeof c[t] === 'boolean') o[t] = c[t]; });
+    if (c.caps === 'upper' || c.caps === 'small') o.caps = c.caps;
+    if (c.kern === 'none') o.kern = 'none';
+    /* Bảng Paragraph: căn lề, thụt lề trái/phải/dòng đầu, khoảng cách trước/sau đoạn */
+    if (['left', 'center', 'right', 'jl', 'jc', 'jr', 'ja'].includes(c.align)) o.align = c.align;
+    [['indL', 0, 200], ['indR', 0, 200], ['indF', -100, 200], ['spB', 0, 200], ['spA', 0, 200]].forEach(([t, lo, hi]) => { const v = num(c[t], lo, hi); if (v !== undefined) o[t] = v; });
+    if (Object.keys(o).length) out[k] = o;
+  });
+  return out;
+}
+function infoApplyFont(el, cfg, scale) {
+  if (!cfg) return;
+  const fam = (cfg.family && INFO_FONTS[cfg.family]) ? cfg.family : '', f = INFO_FONTS[fam];
+  if (fam) { infoLoadFont(fam); el.style.fontFamily = '"' + fam + '", var(--site-font-body, sans-serif)'; }
+  const axes = cfg.axes || {}, vs = [];
+  Object.keys(axes).forEach(k => { if (f.axes.some(a => a[0] === k)) { if (fam) vs.push('"' + k + '" ' + axes[k]); if (k === 'wght') el.style.fontWeight = axes[k]; } });
+  if (vs.length) el.style.fontVariationSettings = vs.join(', ');
+  if (cfg.size) el.style.fontSize = 'min(' + (cfg.size * (scale || 1)).toFixed(1) + 'px, 9vw)';
+  if (cfg.lh) el.style.lineHeight = String(cfg.lh);
+  if (typeof cfg.ls === 'number') el.style.letterSpacing = cfg.ls + 'em';
+  /* Character: màu, nghiêng, gạch chân / gạch ngang, chữ hoa, small caps, kerning */
+  const s = scale || 1, px = v => (v * s).toFixed(1) + 'px';
+  if (cfg.color) el.style.color = cfg.color;
+  if (typeof cfg.it === 'boolean') el.style.fontStyle = cfg.it ? 'italic' : 'normal';
+  const deco = []; if (cfg.ul) deco.push('underline'); if (cfg.st) deco.push('line-through'); if (deco.length) el.style.textDecoration = deco.join(' ');
+  if (cfg.caps === 'upper') el.style.textTransform = 'uppercase'; else if (cfg.caps === 'small') el.style.fontVariantCaps = 'small-caps';
+  if (cfg.kern === 'none') el.style.fontKerning = 'none';
+  /* Paragraph: thụt lề, khoảng cách trước/sau đoạn, ngắt từ bằng dấu gạch nối */
+  if (cfg.indF !== undefined) el.style.textIndent = px(cfg.indF);
+  const qp = el.classList.contains('ib-quote') ? 20 * s : 0;
+  if (cfg.indL !== undefined) el.style.paddingLeft = (qp + cfg.indL * s).toFixed(1) + 'px';
+  if (cfg.indR !== undefined) el.style.paddingRight = px(cfg.indR);
+  if (cfg.spB !== undefined) el.style.marginTop = px(cfg.spB);
+  if (cfg.spA !== undefined) el.style.marginBottom = 'calc(var(--ib-g, 28px) + ' + px(cfg.spA) + ')';
+  if (typeof cfg.hy === 'boolean') el.style.hyphens = cfg.hy ? 'auto' : 'manual';
+}
+/* Căn lề đoạn: ưu tiên căn lề riêng của khối chữ; nếu khối để \"Theo bảng Paragraph\" thì dùng căn lề trong bảng Paragraph của kiểu chữ đó */
+function infoSetAlign(el, blockAlign, cfg) {
+  const M = { left:['left', 'auto'], center:['center', 'auto'], right:['right', 'auto'], justify:['justify', 'auto'], jl:['justify', 'left'], jc:['justify', 'center'], jr:['justify', 'right'], ja:['justify', 'justify'] };
+  const key = (blockAlign && blockAlign !== 'left' && M[blockAlign]) ? blockAlign : (cfg && M[cfg.align] ? cfg.align : (M[blockAlign] ? blockAlign : 'left')); // khối để trống / "Trái" thì theo bảng Paragraph (nếu đã chọn); căn giữa / phải / đều hai bên riêng của khối vẫn được giữ
+  el.style.textAlign = M[key][0]; el.style.textAlignLast = M[key][1];
+}
+/* Màu nền trang chi tiết (eMagazine / Infographic): lưu trong mục layout của gallery_images: bg = '#rrggbb'. Màu chữ tự đổi sáng/tối cho dễ đọc. */
+const infoCleanBg = value => { let v = String(value || '').trim().toLowerCase(); if (/^#[0-9a-f]{3}$/.test(v)) v = '#' + v[1] + v[1] + v[2] + v[2] + v[3] + v[3]; return /^#[0-9a-f]{6}$/.test(v) ? v : ''; };
+const infoFgFor = hex => { const c = [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16) / 255).map(v => v <= .03928 ? v / 12.92 : Math.pow((v + .055) / 1.055, 2.4)); return (.2126 * c[0] + .7152 * c[1] + .0722 * c[2]) > .4 ? '#161614' : '#f4f0e8'; };
+const infoApplyBg = value => { const bg = infoCleanBg(value); detailPage.classList.toggle('has-bg', !!bg); if (bg) { detailPage.style.setProperty('--info-bg', bg); detailPage.style.setProperty('--info-fg', infoFgFor(bg)); } else { detailPage.style.removeProperty('--info-bg'); detailPage.style.removeProperty('--info-fg'); } };
 const apSetVw = () => document.documentElement.style.setProperty('--vw', document.documentElement.clientWidth + 'px'); // chiều rộng thật của trang (trừ thanh cuộn) cho ảnh tràn hai bên
 apSetVw(); addEventListener('resize', apSetVw);
 function buildInfographic(raw, fallbackImages) {
   const box = detailFields.mockups; box.classList.remove('flip-on'); box.classList.add('info-flow'); box.innerHTML = '';
-  let custom = false; const blocks = [];
+  let custom = false, fonts = {}; const blocks = [];
   raw.forEach(entry => {
     if (typeof entry === 'string') { blocks.push({ type:'image', url:entry }); return; }
     if (!entry || typeof entry !== 'object') return;
-    if (entry.type === 'layout') { custom = entry.mode === 'custom'; return; }
+    if (entry.type === 'layout') { custom = entry.mode === 'custom'; fonts = infoCleanFonts(entry.fonts); return; }
     if (entry.type === 'text') { if (String(entry.text || '').trim()) blocks.push(entry); return; }
     const url = entry.url || entry.src || entry.image_url || '';
     if (url) blocks.push(Object.assign({}, entry, { type:'image', url }));
@@ -1504,7 +1592,7 @@ function buildInfographic(raw, fallbackImages) {
       const style = pick(block.style, ['h2', 'p', 'quote', 'note'], 'p');
       const el = document.createElement(style === 'h2' ? 'h2' : style === 'quote' ? 'blockquote' : 'p');
       el.className = 'ib-t ib-' + style; el.textContent = String(block.text).slice(0, 4000);
-      el.style.textAlign = pick(block.align, ['left', 'center', 'right', 'justify'], 'left'); el.style.setProperty('--ib-g', GAP[pick(block.gap, ['s', 'm', 'l'], 'm')]);
+      infoSetAlign(el, block.align, fonts[style]); infoApplyFont(el, fonts[style], 1); el.style.setProperty('--ib-g', GAP[pick(block.gap, ['s', 'm', 'l'], 'm')]);
       box.appendChild(el); continue;
     }
     const isHalf = custom && block.width === 'half', next = blocks[i + 1];
@@ -1536,7 +1624,10 @@ function openProject(project, updateHistory = true) {
   const isInfo = groupOf(project.dataset.category) === 'Infographic';
   const useFlow = isInfo || (groupOf(project.dataset.category) === 'eMagazine' && rawGallery.some(entry => entry && entry.type === 'layout' && entry.mode === 'custom')); // eMagazine ở chế độ tự điều chỉnh dùng chung bố cục với Infographic
   detailPage.classList.toggle('is-info', isInfo);
+  detailPage.classList.toggle('no-hero', isInfo || groupOf(project.dataset.category) === 'eMagazine'); // Infographic & eMagazine: không hiện ảnh bìa lớn ở đầu trang chi tiết
   detailFields.mockups.classList.remove('info-flow');
+  const layoutEntry = rawGallery.find(entry => entry && typeof entry === 'object' && entry.type === 'layout');
+  infoApplyBg((isInfo || groupOf(project.dataset.category) === 'eMagazine') && layoutEntry ? layoutEntry.bg : ''); // màu nền tùy biến (nếu có)
   if (useFlow) buildInfographic(rawGallery, galleryImages);
   (useFlow ? [] : galleryImages).forEach((item, index) => {
     const frame = document.createElement('div');
@@ -1581,7 +1672,9 @@ async function loadHomepageProjects() {
   if (error) throw error;
   if (!Array.isArray(data)) throw new Error('Dữ liệu dự án không hợp lệ');
   const gallery = document.getElementById('gallery');
-  const published = data.filter(item => item.cover_image);
+  // Dự án chưa có ảnh bìa riêng (hay gặp ở Infographic/eMagazine khi chỉ tải ảnh bố cục) thì dùng ảnh đầu tiên trong bố cục làm bìa, để vẫn hiện trên trang chủ
+  const coverOf = item => item.cover_image || ((Array.isArray(item.gallery_images) ? item.gallery_images : []).map(entry => typeof entry === 'string' ? entry : (entry && (entry.url || entry.src || entry.image_url)) || '').find(Boolean) || '');
+  const published = data.filter(item => coverOf(item));
   if (!published.length) { gallery.innerHTML = ''; projects = []; count.textContent = '/ 00'; return; }
   const getValue = (item, keys, fallback = '') => {
     for (const key of keys) if (item[key] !== undefined && item[key] !== null && String(item[key]).trim() !== '') return String(item[key]).trim();
@@ -1594,7 +1687,7 @@ async function loadHomepageProjects() {
     const discipline = getValue(item, ['discipline', 'design_type', 'type', 'category'], category);
     const year = getValue(item, ['year'], '');
     const description = getValue(item, ['summary', 'description'], '');
-    const imageUrl = getValue(item, ['cover_image']);
+    const imageUrl = coverOf(item);
     const card = document.createElement('article');
     card.className = 'project'; card.tabIndex = 0; card.setAttribute('role', 'button');
     card.dataset.category = category; card.dataset.title = title; card.dataset.type = discipline; card.dataset.description = description; card.dataset.galleryImages = JSON.stringify(item.gallery_images || []);
